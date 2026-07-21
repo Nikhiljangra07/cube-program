@@ -30,6 +30,12 @@ maybe ANY 60% subset of an already judge-gated corpus is enough (redundancy, not
 The control separates *fewer tokens* from *selected tokens*. This was the pattern in the
 van Noorden stimuli too (Control 1 / Control 2 same-frequency arms).
 
+**Run-day deviation (2026-07-21):** trains run with `--gc` (gradient checkpointing) added —
+bs8/seq1024/r64 all-linear OOMs on the RTX 6000 Ada's 48GB without it (the v5 baseline
+evidently trained on a larger card). GC recomputes activations instead of storing them:
+identical gradients, identical optimization — recipe comparability to v5full is unaffected;
+only wall-clock is ~30% slower.
+
 ## 3. What is reused vs new
 
 Reused byte-identical (verified with cmp at copy time): `train_lora.py`, `dav_eval_v5.py`,
