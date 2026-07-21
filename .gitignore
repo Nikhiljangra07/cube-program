@@ -1,0 +1,6 @@
+.env*
+__pycache__/
+data/
+out/
+*.tgz
+.DS_Store
