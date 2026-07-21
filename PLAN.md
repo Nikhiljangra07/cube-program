@@ -80,7 +80,36 @@ Known noise floor: judge session wobble was measured at ±0.05, and 48-problem m
 | Gemini re-judge, 4 × 48, one session | ~$2.50 | |
 | **Total** | **~$5** | |
 
-## 7. Safety rails
+## 7. RESULTS (2026-07-21, Sonnet 5 single-session judge, n=47/48/48/48)
+
+| arm | overall | distinct | dist>=4% | decisive | concrete | foresight | viability |
+|---|---|---|---|---|---|---|---|
+| base | 3.28 | 2.43 | 17.0% | 3.30 | 3.30 | 3.02 | 3.62 |
+| v5full (~1.05M tk) | 3.56 | 3.73 | 75.0% | 4.44 | 3.52 | 2.88 | 2.52 |
+| dense60 (~0.63M tk) | 3.53 | 3.58 | 62.5% | 4.29 | 3.60 | 2.94 | 2.50 |
+| rand60 (~0.63M tk) | 3.58 | 3.62 | 64.6% | 4.31 | 3.67 | 3.00 | 2.58 |
+
+**Signal A (efficiency): HOLDS** — dense60 3.53 vs v5full 3.56 (Δ0.03 « 0.15). 60% of the
+tokens bought the full corpus's benchmark, across every dimension.
+**Signal B (selection): FAILS** — dense60 3.53 vs rand60 3.58 (Δ −0.05, inside the ±0.1
+noise floor). The NLL band added nothing over random at matched token mass.
+
+**Frozen-grid reading (§5, A-holds/B-fails):** the v5 corpus is REDUNDANT at this size —
+any 60% subset reproduces it. Token count was not the binding constraint; the selection
+gate is unproven. Do not scale the selection gate on hope.
+
+**Post-hoc diagnosis (labeled as such):** the corpus was already judge-gated — the 6-dim
+judge had already removed the junk tail, so the NLL band had little variance left to
+exploit (double-gating). This is the least favorable arena for a selection effect
+(consistent with Ankner 2024: band value is corpus-dependent; and with WORKING_PAPER §15:
+the quality gate is where the leverage lives). A selection effect smaller than the
+48-problem noise floor (~±0.1) would also be invisible at this scale.
+
+**Judge-run cost note:** three verdict passes were needed (Sonnet 5 rejects `temperature`;
+thinking tokens ate max_tokens at 600 and partially at 4000; final pass at 12000 with
+retry-on-empty reached full coverage). Only the full-coverage pass counts.
+
+## 7b. Safety rails
 
 - No API keys in this repo, ever. Keys live in `~/Desktop/reasoningEngine/.env`; export
   without echoing (see RUNBOOK). `.gitignore` blocks `.env*`.

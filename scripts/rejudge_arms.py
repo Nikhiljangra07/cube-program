@@ -30,8 +30,12 @@ import head2head_v5 as H
 JUDGE_MODEL = "claude-sonnet-5"
 
 
-async def sonnet_call(client, prompt, max_tokens=600):
-    body = {"model": JUDGE_MODEL, "max_tokens": max_tokens, "temperature": 0.0,
+async def sonnet_call(client, prompt, max_tokens=12000):
+    # Sonnet 5 is a thinking model: thinking tokens count toward max_tokens, so the budget
+    # must be VERY generous or the JSON never arrives (4000 still lost 20/48 on one arm).
+    # NOTE: `temperature` is deprecated/rejected on Sonnet 5 — omit it (judge is one session
+    # regardless; exact decoding determinism is no longer a controllable knob on this family).
+    body = {"model": JUDGE_MODEL, "max_tokens": max_tokens,
             "messages": [{"role": "user", "content": prompt}]}
     async with H.SEM:
         for a in range(4):
@@ -42,8 +46,13 @@ async def sonnet_call(client, prompt, max_tokens=600):
                                                "content-type": "application/json"},
                                       json=body, timeout=120)
                 r.raise_for_status()
-                return "".join(p.get("text", "") for p in r.json().get("content", [])
+                d = r.json()
+                text = "".join(p.get("text", "") for p in d.get("content", [])
                                if p.get("type") == "text").strip()
+                if not text:
+                    print(f"    [judge empty: stop={d.get('stop_reason')}]", flush=True)
+                    continue  # retry — empty text (thinking ate the budget or refusal)
+                return text
             except Exception:
                 await asyncio.sleep(2 * (a + 1))
     return None
@@ -106,11 +115,17 @@ async def main():
     print(f"\nWROTE {summary}")
     d, r, f = out.get("dense60", {}), out.get("rand60", {}), out.get("v5full", {})
     if d and r and f:
+        ns = [out[k]["n"] for k in ("base", "v5full", "dense60", "rand60")]
         print("\n--- READ (PLAN.md §5) ---")
-        print(f"Signal A (efficiency): dense60 overall {d['overall']} vs v5full {f['overall']} "
-              f"(within 0.15 = holds)")
-        print(f"Signal B (selection):  dense60 overall {d['overall']} vs rand60 {r['overall']} "
-              f"(dense - rand >= 0.20 = holds)")
+        if min(ns) < 44:
+            print(f"COVERAGE INSUFFICIENT (n={ns}) — do not read signals until all arms >= 44/48")
+        a_holds = abs(d["overall"] - f["overall"]) <= 0.15
+        b_holds = (d["overall"] - r["overall"]) >= 0.20
+        print(f"Signal A (efficiency): dense60 {d['overall']} vs v5full {f['overall']} -> "
+              f"{'HOLDS' if a_holds else 'FAILS'}")
+        print(f"Signal B (selection):  dense60 {d['overall']} vs rand60 {r['overall']} "
+              f"(delta {round(d['overall'] - r['overall'], 2)}) -> "
+              f"{'HOLDS' if b_holds else 'FAILS'}")
 
 
 if __name__ == "__main__":
