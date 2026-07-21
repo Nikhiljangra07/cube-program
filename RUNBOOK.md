@@ -53,7 +53,9 @@ tokens-seen figure for the paper trail (v5full baseline: dec 1.149e6, wrk 4.107e
 The bench problems stand in as eval_problems for the harness, exactly like the original bench run:
 ```bash
 # on laptop: scp data/bench/problems.jsonl <pod>:/workspace/div/bench_data/eval_problems.jsonl
-export ANTHROPIC_API_KEY=...   # from ~/Desktop/reasoningEngine/.env — do NOT echo/print it
+# KEYS PATHWAY: on the laptop run `source ~/Desktop/reasoningEngine/load_keys.sh`, then start the
+# pod shell with the key injected (never typed/pasted):
+#   ssh <pod> "export ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY; exec bash"
 cd /workspace/div
 V5_DATA=/workspace/div/bench_data python dav_eval_v5.py --label bench_dense60 --n 48 \
     --dec adapters/dec_dense60 --wrk adapters/wrk_dense60
@@ -73,7 +75,7 @@ scp <pod>:/workspace/div/out/*_scored.jsonl out/   # if not already pulled
 ## 7. Verdict judge — single Gemini session, all four arms (LOCAL)
 ```bash
 cd ~/Desktop/density-method/scripts
-export GEMINI_API_KEY=$(grep '^GEMINI_API_KEY=' ~/Desktop/reasoningEngine/.env | cut -d= -f2-)
+source ~/Desktop/reasoningEngine/load_keys.sh   # central vault — exports GEMINI_API_KEY et al.
 python3 rejudge_arms.py
 ```
 Reads base + v5full threads from data/bench and the two new arms from out/.
@@ -85,4 +87,7 @@ Writes out/rejudge_summary.json and prints the Signal A / Signal B read (PLAN.md
   and re-judging everything in one session.
 - If a train diverges (loss not < 1.0 by end like the v5 log), stop and compare the arm's
   manifest before burning eval budget.
-- Keys: export from reasoningEngine/.env via grep (never echo, never commit).
+- Keys: single vault = ~/Desktop/reasoningEngine/.env. Load with
+  `source ~/Desktop/reasoningEngine/load_keys.sh` (exports all, prints count only, never values).
+  A gitignored `.env` symlink at this repo's root serves the python-dotenv scripts. Never
+  copy keys into any repo; never echo them.
