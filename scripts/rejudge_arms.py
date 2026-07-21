@@ -1,9 +1,11 @@
 """
-rejudge_arms.py — SINGLE-SESSION Gemini 2.5 Pro judge over all four arms (local, needs GEMINI_API_KEY).
+rejudge_arms.py — SINGLE-SESSION judge over all four arms (local; keys via the vault symlink).
 
-The §12 lesson (session wobble ±0.05, judge-family skew ~0.9): never compare scores from
-different judging sessions. This re-judges everything in ONE session with the byte-identical
-JUDGE_PROMPT from head2head_v5.py (temp 0):
+JUDGE = Claude Sonnet 5 (Nikhil's call, 2026-07-21), temp 0, byte-identical JUDGE_PROMPT +
+thread formatting + JSON parsing from head2head_v5.py — only the model behind the prompt
+changed. NOTE: absolute scores are NOT comparable to the historical Gemini-judged numbers
+in WORKING_PAPER (§12 measured ~0.9 judge-family skew); comparability here comes from all
+four arms being judged by the SAME judge in the SAME session:
 
   base       — untrained granite-4.0-micro   (threads already on disk, from the v5 bench run)
   v5full     — v5 SFT, full corpus ~1.05M tk (threads already on disk — THE baseline)
@@ -24,6 +26,43 @@ import numpy as np
 import httpx
 
 import head2head_v5 as H
+
+JUDGE_MODEL = "claude-sonnet-5"
+
+
+async def sonnet_call(client, prompt, max_tokens=600):
+    body = {"model": JUDGE_MODEL, "max_tokens": max_tokens, "temperature": 0.0,
+            "messages": [{"role": "user", "content": prompt}]}
+    async with H.SEM:
+        for a in range(4):
+            try:
+                r = await client.post("https://api.anthropic.com/v1/messages",
+                                      headers={"x-api-key": H.ANTHROPIC_KEY,
+                                               "anthropic-version": "2023-06-01",
+                                               "content-type": "application/json"},
+                                      json=body, timeout=120)
+                r.raise_for_status()
+                return "".join(p.get("text", "") for p in r.json().get("content", [])
+                               if p.get("type") == "text").strip()
+            except Exception:
+                await asyncio.sleep(2 * (a + 1))
+    return None
+
+
+async def sonnet_judge(client, problem, angles, threads):
+    # identical formatting + parsing to H.judge — only the model call differs
+    block = "\n".join(f"{i+1}. [{H.fam_of(a)}] {t}" for i, (a, t) in enumerate(zip(angles, threads)))
+    out = await sonnet_call(client, H.JUDGE_PROMPT.format(problem=problem, threads=block))
+    j = H.parse_json(out)
+    if not j:
+        return None
+    try:
+        s = {d: int(j[d]) for d in H.DIMS}
+    except Exception:
+        return None
+    s["mean"] = round(sum(s[d] for d in H.DIMS) / 6, 2)
+    return s
+
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -55,7 +94,7 @@ async def main():
             res = []
 
             async def one(r):
-                j = await H.judge(client, r["problem"], r["angles"], r["threads"])
+                j = await sonnet_judge(client, r["problem"], r["angles"], r["threads"])
                 res.append({"problem": r["problem"], "judge": j})
 
             await asyncio.gather(*[one(r) for r in rows if r.get("threads")])
