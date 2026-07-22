@@ -76,16 +76,19 @@ async def sonnet_judge(client, problem, angles, threads):
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 FILES = {
-    # SESSION 2 (2026-07-22): mastery + keep40 vs anchors. Session-1 set kept below for reference.
-    "dense60":   ROOT / "out/eval_bench_dense60_v5_threads.jsonl",
-    "keep100":   ROOT / "out/eval_bench_keep100_v5_threads.jsonl",
-    "keep60":    ROOT / "out/eval_bench_keep60_v5_threads.jsonl",
-    "keep40":    ROOT / "out/eval_bench_keep40_v5_threads.jsonl",
-    "mastery60": ROOT / "out/eval_bench_mastery60_v5_threads.jsonl",
-    # session-1 arms (re-add if a future session needs them re-anchored):
-    # "base":   ROOT / "data/bench/eval_bench_base_v5_threads.jsonl",
-    # "v5full": ROOT / "data/bench/eval_bench_sft_v5_threads.jsonl",
-    # "rand60": ROOT / "out/eval_bench_rand60_v5_threads.jsonl",
+    # SESSION 3 (2026-07-22): book run — all 7 sets generated on the SAME card (RTX PRO 6000);
+    # anchors regenerated on-card per RUNBOOK3 Amendment 2 (card-class control).
+    "book_A":    ROOT / "out/eval_book_A_v5_threads.jsonl",
+    "book_B04":  ROOT / "out/eval_book_B04_v5_threads.jsonl",
+    "book_B06":  ROOT / "out/eval_book_B06_v5_threads.jsonl",
+    "book_C04":  ROOT / "out/eval_book_C04_v5_threads.jsonl",
+    "book_C06":  ROOT / "out/eval_book_C06_v5_threads.jsonl",
+    "keep100":   ROOT / "out/eval_anchor_keep100_v5_threads.jsonl",
+    "mastery60": ROOT / "out/eval_anchor_mastery60_v5_threads.jsonl",
+    # session-2 set (Ada-generated — do NOT mix into a PRO-6000 session):
+    # "dense60":   ROOT / "out/eval_bench_dense60_v5_threads.jsonl",
+    # "keep60":    ROOT / "out/eval_bench_keep60_v5_threads.jsonl",
+    # "keep40":    ROOT / "out/eval_bench_keep40_v5_threads.jsonl",
 }
 
 
@@ -120,35 +123,41 @@ async def main():
     summary.write_text(json.dumps(out, indent=2))
     print(f"\nWROTE {summary}")
     ns = [v["n"] for v in out.values()]
-    print("\n--- READ ---")
+    print("\n--- READ (RUNBOOK3 frozen criteria) ---")
     if min(ns) < 44:
         print(f"COVERAGE INSUFFICIENT (n={ns}) — do not read signals until all arms >= 44/48")
-    d, r, f = out.get("dense60", {}), out.get("rand60", {}), out.get("v5full", {})
-    if d and r and f:
-        print(f"[run1] Signal A: dense60 {d['overall']} vs v5full {f['overall']} -> "
-              f"{'HOLDS' if abs(d['overall'] - f['overall']) <= 0.15 else 'FAILS'}")
-        print(f"[run1] Signal B: dense60 {d['overall']} vs rand60 {r['overall']} "
-              f"(delta {round(d['overall'] - r['overall'], 2)}) -> "
-              f"{'HOLDS' if (d['overall'] - r['overall']) >= 0.20 else 'FAILS'}")
-    k1, k6 = out.get("keep100", {}), out.get("keep60", {})
-    if k1 and d:
-        faithful = abs(k1["overall"] - d["overall"]) <= 0.15
-        print(f"[run2] Pipeline control: keep100 {k1['overall']} vs dense60 {d['overall']} -> "
-              f"{'FAITHFUL' if faithful else 'NOT FAITHFUL — run 2 uninterpretable'}")
-    if k6 and k1:
-        c_holds = abs(k6["overall"] - k1["overall"]) <= 0.15
-        print(f"[run2] Signal C (occlusion): keep60 {k6['overall']} vs keep100 {k1['overall']} "
-              f"(delta {round(k6['overall'] - k1['overall'], 2)}) -> "
-              f"{'HOLDS' if c_holds else 'FAILS'}")
-    k4, ms = out.get("keep40", {}), out.get("mastery60", {})
-    if k4 and k1:
-        print(f"[run2c] keep40 {k4['overall']} vs keep100 {k1['overall']} "
-              f"(delta {round(k4['overall'] - k1['overall'], 2)}) -> "
-              f"{'HOLDS' if abs(k4['overall'] - k1['overall']) <= 0.15 else 'FAILS'}")
-    if ms and k6:
-        print(f"[run2b] MASTERY vs fixed: mastery60 {ms['overall']} vs keep60 {k6['overall']} "
-              f"(delta {round(ms['overall'] - k6['overall'], 2)}); vs control keep100 "
-              f"{k1.get('overall', '?')} (delta {round(ms['overall'] - k1['overall'], 2) if k1 else '?'})")
+    bA = out.get("book_A", {})
+    b04, b06 = out.get("book_B04", {}), out.get("book_B06", {})
+    c04, c06 = out.get("book_C04", {}), out.get("book_C06", {})
+    k1, ms = out.get("keep100", {}), out.get("mastery60", {})
+    book_arms = {"book_A": bA, "book_B04": b04, "book_B06": b06, "book_C04": c04, "book_C06": c06}
+    if all([bA, b04, b06, c04, c06, k1]):
+        # Signal D headline: mastery-blanks vs plain reading (best C arm vs A, +0.20)
+        best_c_label, best_c = max((("book_C04", c04), ("book_C06", c06)), key=lambda t: t[1]["overall"])
+        dd = round(best_c["overall"] - bA["overall"], 2)
+        print(f"[run3] Signal D: {best_c_label} {best_c['overall']} vs book_A {bA['overall']} "
+              f"(delta {dd}) -> {'HOLDS' if dd >= 0.20 else 'FAILS'}")
+        print(f"[run3]   blanks' share: B04 {b04['overall']} / B06 {b06['overall']} vs A {bA['overall']}; "
+              f"mastery's share: C04-B04 {round(c04['overall'] - b04['overall'], 2)}, "
+              f"C06-B06 {round(c06['overall'] - b06['overall'], 2)}")
+        # Fraction curve: does 0.4 match 0.6?
+        print(f"[run3] Fraction curve: C04 {c04['overall']} vs C06 {c06['overall']} "
+              f"(delta {round(c04['overall'] - c06['overall'], 2)}) -> "
+              f"{'0.4 PAR — keep-0.3/0.35 licensed' if c04['overall'] - c06['overall'] >= -0.15 else '0.4 BELOW — floor is between 0.4 and 0.6'}")
+        # Book value check vs in-session keep100 anchor
+        best_label, best = max(book_arms.items(), key=lambda t: t[1]["overall"])
+        print(f"[run3] Book value: best book arm {best_label} {best['overall']} vs keep100 anchor "
+              f"{k1['overall']} -> {'BOOK ADDED VALUE' if best['overall'] > k1['overall'] else 'NO MEASURABLE BOOK VALUE on this bench'}")
+        # CHECKPOINT 1 WATCH: foresight >= keep100 foresight + 0.25 AND >= 3.25 absolute
+        fs_label, fs_arm = max(book_arms.items(), key=lambda t: t[1].get("foresight", 0))
+        fs, fk = fs_arm.get("foresight", 0), k1.get("foresight", 0)
+        claimed = fs >= fk + 0.25 and fs >= 3.25
+        print(f"[run3] CHECKPOINT 1 foresight: best {fs_label} {fs} vs anchor keep100 {fk} "
+              f"(needs >= {round(fk + 0.25, 2)} AND >= 3.25) -> "
+              f"{'CLAIMED' if claimed else 'watch continues'}")
+    if ms and k1:
+        print(f"[run3] Anchor sanity (same-card regen): mastery60 {ms['overall']} vs keep100 {k1['overall']} "
+              f"(delta {round(ms['overall'] - k1['overall'], 2)}; run-2 read was par)")
 
 
 if __name__ == "__main__":

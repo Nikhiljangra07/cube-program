@@ -72,3 +72,45 @@ Budget update: pod ~3h @ $1.99 ≈ $6 | judge 7x48 ≈ $10 | all-in ≈ $16-17.
 ## Budget
 Scoring ~15 min | 3 worker trains ~60 min | 3 bench gens ~75 min | pod total ~3h ≈ $2.60
 Judge session 3 (5 arms x 48) ≈ $7. All-in ≈ $10.
+
+---
+
+## RESULTS (2026-07-22, single-session Sonnet 5 judge, all 7 thread sets generated on the
+## RTX PRO 6000 — card-class control honoured; verdicts computed by rejudge_arms.py)
+
+| arm | overall | foresight | dist>=4% | n |
+|---|---|---|---|---|
+| book_A (plain reading) | 3.60 | 3.00 | 62.5 | 48 |
+| book_B04 (blanks 0.4) | 3.52 | 2.90 | 64.6 | 48 |
+| book_B06 (blanks 0.6) | 3.59 | 3.02 | 66.7 | 48 |
+| book_C04 (mastery 0.4) | 3.46 | 2.94 | 66.7 | 48 |
+| book_C06 (mastery 0.6) | 3.50 | 2.92 | 75.0 | 48 |
+| keep100 anchor (regen) | **3.69** | 3.15 | 77.1 | 48 |
+| mastery60 anchor (regen) | 3.50 | 2.93 | 56.5 | 46 |
+
+**Against the frozen criteria:**
+- **Format survival: PASS** — every arm >= 46/48. The 300-row anchor slice did its job on all
+  five book arms (zero format fails on 48-problem gens for the book arms).
+- **Signal D: FAILS** — book_C06 3.50 vs book_A 3.60 (delta -0.10; needed +0.20). Neither
+  blanks (B ~= A) nor mastery (C slightly under B) extracted more than plain reading.
+- **Fraction curve: 0.4 PAR with 0.6** (C04 3.46 vs C06 3.50, delta -0.04) — deep cuts do no
+  harm on raw books, replicating run 2's Signal C on a new substrate. keep-0.3/0.35 is
+  technically licensed but POINTLESS here until any book arm shows value at all.
+- **Book value: NONE** — best book arm (A, 3.60) < in-session keep100 anchor (3.69). The
+  PRE-REGISTERED null fired: Clausewitz continuation-training added nothing measurable to a
+  modern-decision bench. Finding about substrate-bench match, not the occlusion method.
+- **CHECKPOINT 1: watch continues** — best book foresight 3.02 (needed >= 3.40 in-session
+  AND >= 3.25). No arm moved the ceiling.
+- **Anchor-regen wrinkle (unplanned observation):** mastery60 regenerated on the PRO 6000
+  reads -0.19 vs keep100 in-session (3.50 vs 3.69), where run 2's Ada-generated threads read
+  PAR (3.65 vs 3.66), and its foresight 2.93 vs run-2's 3.19. Same adapters, same judge
+  family, different card + session. Either (a) greedy-decode card drift is larger than
+  assumed, or (b) run-2's mastery-par carried more session luck than the +-0.05 wobble
+  estimate. Run 2's stacked headline (par at ~36% tokens / 70% compute) should be quoted
+  with this asterisk until a third regen settles it.
+
+**Reading:** raw-book occlusion at this scale does not move this bench — the transformation
+gate (fluent dense re-render, method 4-strong) is now the only remaining path for book
+substrates, exactly as the frozen null clause anticipated. The durable positive across
+runs 2-3: grading 40-60% of completion tokens is FREE (never hurts) on both curated corpus
+and raw book. Costs: pod ~$5.60 + judge ~$10 = ~$16 all-in.
