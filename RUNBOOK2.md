@@ -90,3 +90,13 @@ python3 rejudge_arms.py
   Full disclosure, concentrated solving.
 - Judge lessons already encoded in rejudge_arms.py: no temperature, 12k max_tokens,
   retry-on-empty, coverage guard ≥44/48 per arm.
+
+## RESULTS (2026-07-22, six-arm single-session Sonnet 5 judge, n=47/48/48/48/48/44)
+keep100 3.60 | keep60 3.64 | (dense60 3.52, rand60 3.60, v5full 3.56, base 3.27 — run-1 replicated)
+- Pipeline control FAITHFUL (keep100 vs dense60 delta 0.08).
+- **Signal C HOLDS**: keep60 vs keep100 delta +0.04 — 60% of tokens graded, benchmark at par.
+  Stacked with run 1: ~36% of v5full's corpus tokens carry gradient at par benchmark.
+- Caveats: keep60 answered 44/48 (4 decomposer format fails — survivorship flattering in its
+  mean; format fragility is a real cost). Heldout-NLL ranking contradicted the bench —
+  confirmed biased toward unmasked arms; treat heldout NLL as pipeline check only, never verdict.
+- Next: keep0.4 + mastery60 threads -> judge session 2 (same-session with keep100/keep60/dense60).
