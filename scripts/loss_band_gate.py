@@ -31,7 +31,7 @@ MAX_LEN = 1024  # must stay == train_lora.py max_length
 
 
 @torch.no_grad()
-def score_row(model, tok, messages, device):
+def score_row(model, tok, messages, device, per_token=False):
     # transformers 5.x: apply_chat_template returns a BatchEncoding — take .input_ids explicitly
     prompt_ids = tok.apply_chat_template(messages[:-1], add_generation_prompt=True,
                                          return_tensors="pt").input_ids[0]
@@ -49,7 +49,10 @@ def score_row(model, tok, messages, device):
     logprobs = torch.log_softmax(logits[:, :-1].float(), dim=-1)
     targets = full[:, 1:]
     nll = -logprobs.gather(-1, targets.unsqueeze(-1)).squeeze(-1)  # [1, L-1]
-    comp = nll[:, n_prompt - 1:]  # tokens predicted at positions >= prompt end
+    comp = nll[:, n_prompt - 1:]  # comp[i] = NLL of target input position (n_prompt + i)
+    if per_token:
+        toks = [round(float(x), 3) for x in comp[0].tolist()]
+        return float(comp.mean()), int(comp.shape[1]), int(full.shape[1]), n_prompt, toks
     return float(comp.mean()), int(comp.shape[1]), int(full.shape[1])
 
 
@@ -57,6 +60,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--per-token", action="store_true",
+                    help="emit per-token completion NLLs + n_prompt (for the occlusion/masking gate)")
     args = ap.parse_args()
 
     device = "cuda"
@@ -70,12 +75,18 @@ def main():
         for idx, line in enumerate(Path(args.data).open()):
             row = json.loads(line)
             try:
-                r = score_row(model, tok, row["messages"], device)
+                r = score_row(model, tok, row["messages"], device, per_token=args.per_token)
             except Exception as e:
                 r = None
             if r is None:
                 f.write(json.dumps({"idx": idx, "skip": "prefix_or_truncation"}) + "\n")
                 n_skip += 1
+            elif args.per_token:
+                mean_nll, n_comp, n_total, n_prompt, toks = r
+                f.write(json.dumps({"idx": idx, "mean_nll": round(mean_nll, 5),
+                                    "n_comp_tokens": n_comp, "n_total_tokens": n_total,
+                                    "n_prompt": n_prompt, "nll": toks}) + "\n")
+                n_ok += 1
             else:
                 mean_nll, n_comp, n_total = r
                 f.write(json.dumps({"idx": idx, "mean_nll": round(mean_nll, 5),
