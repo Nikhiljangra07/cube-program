@@ -80,6 +80,9 @@ FILES = {
     "v5full":  ROOT / "data/bench/eval_bench_sft_v5_threads.jsonl",
     "dense60": ROOT / "out/eval_bench_dense60_v5_threads.jsonl",
     "rand60":  ROOT / "out/eval_bench_rand60_v5_threads.jsonl",
+    # run 2 (occlusion sweep): pipeline control + heldout-ranked winner
+    "keep100": ROOT / "out/eval_bench_keep100_v5_threads.jsonl",
+    "keep60":  ROOT / "out/eval_bench_keep60_v5_threads.jsonl",
 }
 
 
@@ -113,19 +116,27 @@ async def main():
     summary = ROOT / "out/rejudge_summary.json"
     summary.write_text(json.dumps(out, indent=2))
     print(f"\nWROTE {summary}")
+    ns = [v["n"] for v in out.values()]
+    print("\n--- READ ---")
+    if min(ns) < 44:
+        print(f"COVERAGE INSUFFICIENT (n={ns}) — do not read signals until all arms >= 44/48")
     d, r, f = out.get("dense60", {}), out.get("rand60", {}), out.get("v5full", {})
     if d and r and f:
-        ns = [out[k]["n"] for k in ("base", "v5full", "dense60", "rand60")]
-        print("\n--- READ (PLAN.md §5) ---")
-        if min(ns) < 44:
-            print(f"COVERAGE INSUFFICIENT (n={ns}) — do not read signals until all arms >= 44/48")
-        a_holds = abs(d["overall"] - f["overall"]) <= 0.15
-        b_holds = (d["overall"] - r["overall"]) >= 0.20
-        print(f"Signal A (efficiency): dense60 {d['overall']} vs v5full {f['overall']} -> "
-              f"{'HOLDS' if a_holds else 'FAILS'}")
-        print(f"Signal B (selection):  dense60 {d['overall']} vs rand60 {r['overall']} "
+        print(f"[run1] Signal A: dense60 {d['overall']} vs v5full {f['overall']} -> "
+              f"{'HOLDS' if abs(d['overall'] - f['overall']) <= 0.15 else 'FAILS'}")
+        print(f"[run1] Signal B: dense60 {d['overall']} vs rand60 {r['overall']} "
               f"(delta {round(d['overall'] - r['overall'], 2)}) -> "
-              f"{'HOLDS' if b_holds else 'FAILS'}")
+              f"{'HOLDS' if (d['overall'] - r['overall']) >= 0.20 else 'FAILS'}")
+    k1, k6 = out.get("keep100", {}), out.get("keep60", {})
+    if k1 and d:
+        faithful = abs(k1["overall"] - d["overall"]) <= 0.15
+        print(f"[run2] Pipeline control: keep100 {k1['overall']} vs dense60 {d['overall']} -> "
+              f"{'FAITHFUL' if faithful else 'NOT FAITHFUL — run 2 uninterpretable'}")
+    if k6 and k1:
+        c_holds = abs(k6["overall"] - k1["overall"]) <= 0.15
+        print(f"[run2] Signal C (occlusion): keep60 {k6['overall']} vs keep100 {k1['overall']} "
+              f"(delta {round(k6['overall'] - k1['overall'], 2)}) -> "
+              f"{'HOLDS' if c_holds else 'FAILS'}")
 
 
 if __name__ == "__main__":
