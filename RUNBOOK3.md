@@ -25,11 +25,18 @@ The book teaches substance; the anchor holds format. Identical across arms = can
 | B book_blank | band **keep-0.4** of page tokens (per-token NLL, 3:1 easy-bias, band RE-MEASURED on book) | uniform |
 | C book_mastery | same labels as B | mastery loop, 85% exit, capped at A/B's steps |
 
-**AMENDMENT (2026-07-22, pre-training, Nikhil's call):** keep-frac 0.6 -> **0.4**. Rationale:
-a book is self-redundant (core concepts restated many times), so the easy token fraction is
-larger than on the twice-distilled corpus where 0.4 sat at the tolerance edge — deeper cut
-is better-motivated on raw prose. Accepted interpretation cost: if book arms fail, "blanks
-fail on books" vs "0.4 too deep" needs one follow-up arm at 0.6 (~$3) to separate.
+**AMENDMENT 1 (2026-07-22, pre-training, Nikhil):** keep-frac 0.6 -> 0.4 (books are
+self-redundant; deeper cut better-motivated on raw prose).
+**AMENDMENT 2 (2026-07-22, pre-training, Nikhil):** run BOTH fractions in parallel on a
+bigger card (RTX PRO 6000, 96GB) — arms B/C at 0.4 AND B'/C' at 0.6. This converts the
+gamble into the fraction-response curve on books: C-0.4 vs C-0.6 decides whether keep-0.3/
+0.35 is licensed next. Five worker trains total; pair trains 2-at-a-time (~45GB each,
+sequential fallback on OOM).
+**Card-class control:** PRO 6000 is a different arch than the Ada that generated all prior
+threads — so the session-3 ANCHOR threads (keep100, mastery60) are REGENERATED on the PRO
+pod from archived adapters. Every thread set judged in session 3 then shares one card.
+Judge session 3 = 7 arms: bookA, bookB04, bookC04, bookB06, bookC06, keep100*, mastery60*.
+Budget update: pod ~3h @ $1.99 ≈ $6 | judge 7x48 ≈ $10 | all-in ≈ $16-17.
 
 **Steps:** A and B train 5 epochs over (855 book + 300 anchor) rows; C capped at same steps.
 
