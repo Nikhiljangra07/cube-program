@@ -76,13 +76,16 @@ async def sonnet_judge(client, problem, angles, threads):
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 FILES = {
-    "base":    ROOT / "data/bench/eval_bench_base_v5_threads.jsonl",
-    "v5full":  ROOT / "data/bench/eval_bench_sft_v5_threads.jsonl",
-    "dense60": ROOT / "out/eval_bench_dense60_v5_threads.jsonl",
-    "rand60":  ROOT / "out/eval_bench_rand60_v5_threads.jsonl",
-    # run 2 (occlusion sweep): pipeline control + heldout-ranked winner
-    "keep100": ROOT / "out/eval_bench_keep100_v5_threads.jsonl",
-    "keep60":  ROOT / "out/eval_bench_keep60_v5_threads.jsonl",
+    # SESSION 2 (2026-07-22): mastery + keep40 vs anchors. Session-1 set kept below for reference.
+    "dense60":   ROOT / "out/eval_bench_dense60_v5_threads.jsonl",
+    "keep100":   ROOT / "out/eval_bench_keep100_v5_threads.jsonl",
+    "keep60":    ROOT / "out/eval_bench_keep60_v5_threads.jsonl",
+    "keep40":    ROOT / "out/eval_bench_keep40_v5_threads.jsonl",
+    "mastery60": ROOT / "out/eval_bench_mastery60_v5_threads.jsonl",
+    # session-1 arms (re-add if a future session needs them re-anchored):
+    # "base":   ROOT / "data/bench/eval_bench_base_v5_threads.jsonl",
+    # "v5full": ROOT / "data/bench/eval_bench_sft_v5_threads.jsonl",
+    # "rand60": ROOT / "out/eval_bench_rand60_v5_threads.jsonl",
 }
 
 
@@ -137,6 +140,15 @@ async def main():
         print(f"[run2] Signal C (occlusion): keep60 {k6['overall']} vs keep100 {k1['overall']} "
               f"(delta {round(k6['overall'] - k1['overall'], 2)}) -> "
               f"{'HOLDS' if c_holds else 'FAILS'}")
+    k4, ms = out.get("keep40", {}), out.get("mastery60", {})
+    if k4 and k1:
+        print(f"[run2c] keep40 {k4['overall']} vs keep100 {k1['overall']} "
+              f"(delta {round(k4['overall'] - k1['overall'], 2)}) -> "
+              f"{'HOLDS' if abs(k4['overall'] - k1['overall']) <= 0.15 else 'FAILS'}")
+    if ms and k6:
+        print(f"[run2b] MASTERY vs fixed: mastery60 {ms['overall']} vs keep60 {k6['overall']} "
+              f"(delta {round(ms['overall'] - k6['overall'], 2)}); vs control keep100 "
+              f"{k1.get('overall', '?')} (delta {round(ms['overall'] - k1['overall'], 2) if k1 else '?'})")
 
 
 if __name__ == "__main__":

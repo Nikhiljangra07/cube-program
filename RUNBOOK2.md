@@ -100,3 +100,13 @@ keep100 3.60 | keep60 3.64 | (dense60 3.52, rand60 3.60, v5full 3.56, base 3.27 
   mean; format fragility is a real cost). Heldout-NLL ranking contradicted the bench —
   confirmed biased toward unmasked arms; treat heldout NLL as pipeline check only, never verdict.
 - Next: keep0.4 + mastery60 threads -> judge session 2 (same-session with keep100/keep60/dense60).
+
+## RESULTS session 2 (2026-07-22, five-arm single session, n=48/48/44/48/47)
+dense60 3.57 | keep100 3.66 | keep60 3.66 | keep40 3.54 | mastery60 3.65
+- Signal C re-confirmed (keep60 vs keep100 delta 0.00).
+- keep40 HOLDS at tolerance edge (-0.12): ~24% of original tokens graded ≈ par; likely near dial floor.
+- MASTERY (2b): par overall (3.65) at 70% compute (484/685 steps, all 1093 pages mastered,
+  mean 3.52 visits — self-discovered Muennighoff's ~4-epoch zone). Best-ever dist>=4% (85.1%),
+  best-ever foresight (3.19), 1 format fail vs keep60's 4. Direction: mastery regime = same
+  quality, less compute, better consistency. Individually within noise; jointly consistent.
+- Session wobble +~0.05 vs session 1 across all arms — within-session deltas only, as always.
