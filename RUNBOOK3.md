@@ -22,8 +22,14 @@ The book teaches substance; the anchor holds format. Identical across arms = can
 | arm | book labels | schedule |
 |---|---|---|
 | A book_plain | ALL page tokens graded | uniform (train_masked, keep-frac 1.0 build) |
-| B book_blank | band keep-0.6 of page tokens (per-token NLL, 3:1 easy-bias — run-2 recipe, band RE-MEASURED on book) | uniform |
+| B book_blank | band **keep-0.4** of page tokens (per-token NLL, 3:1 easy-bias, band RE-MEASURED on book) | uniform |
 | C book_mastery | same labels as B | mastery loop, 85% exit, capped at A/B's steps |
+
+**AMENDMENT (2026-07-22, pre-training, Nikhil's call):** keep-frac 0.6 -> **0.4**. Rationale:
+a book is self-redundant (core concepts restated many times), so the easy token fraction is
+larger than on the twice-distilled corpus where 0.4 sat at the tolerance edge — deeper cut
+is better-motivated on raw prose. Accepted interpretation cost: if book arms fail, "blanks
+fail on books" vs "0.4 too deep" needs one follow-up arm at 0.6 (~$3) to separate.
 
 **Steps:** A and B train 5 epochs over (855 book + 300 anchor) rows; C capped at same steps.
 
