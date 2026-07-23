@@ -54,6 +54,19 @@ JSON parse drops. Register check against bench problems confirmed third-person i
 (bench briefs are third-person case statements) — first-person "fix" rejected. All fixes
 applied at the prompt+gate level; gen-2 rendered fresh. Cost of discard: ~$3.
 
+### Gen-2 QC verdict (2026-07-23, Nikhil's call: ACCEPT & GO GPU)
+Final corpus: 843/855 scenes, ~469k est tokens. Gates: coverage PASS, bloat PASS (median
+285w, max 419), 4-gram jaccard PASS (0.0004), domains PASS (1.30), 5-gram echo PASS (4.3%),
+phrase-family PASS (all <=14%), templates PASS (0 Option-labels, 0 second-person),
+fidelity spot-check PASS (3 deep reads — principle mapping verified incl. non-obvious
+treasury->hidden-compensation transfer). ACCEPTED RESIDUALS (asterisks, furniture-level):
+(a) recurring secondary surname "Okonkwo" ~9% of scenes, (b) "Tuesday" deadlines ~17%,
+(c) protagonist-pool names recruited as secondary characters (~16% mention-rate for worst).
+Lesson recorded: BAN-LISTS DON'T DIVERSIFY — the model promotes its next default
+(Maya->Priya-as-secondary, Voss->Okonkwo, Friday->Tuesday); INJECTION diversifies
+(assigned protagonists hit ~1.6% by construction). Future lanes: inject secondary
+names/companies/weekdays too. Render cost total (gen-1 + gen-2 + retries): ~$11 OpenRouter.
+
 ## Success criteria (FROZEN before training)
 - **Format survival:** laneF >= 44/48 answered.
 - **SIGNAL E (headline): laneF foresight >= in-session keep100 foresight + 0.25 AND

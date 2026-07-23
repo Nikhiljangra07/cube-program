@@ -100,7 +100,8 @@ PROJECTION (becomes the assistant turn, 220-320 words):
 - Include at least ONE second-order effect (a consequence of a consequence).
 - Include ONE explicit condition under which this projection fails.
 - End with a directional close: which path the reasoning favors and what would flip it.
-- Express all of the above in fresh natural language — do NOT copy phrases from this brief ("second-order", "what would break this projection", "the single condition that flips it").
+- Express all of the above in fresh natural language — do NOT copy phrases from this brief ("second-order", "what would break this projection", "the single condition that flips it") and do NOT use the stock phrase "this projection collapses if" — state the failure condition in wording unique to this scene.
+- Invent fresh names for companies and secondary characters unique to this scene. NEVER use: Voss, Meridian, Chen, Marta, Anya, Elena (as secondary characters), or any name from a previous scene you may imagine.
 - Dense and concrete throughout: no filler, no hedging boilerplate, no "it depends" without saying on WHAT. Every sentence must carry a fact, a projection, or a tension.
 
 Return ONLY valid JSON, no code fences. Inside JSON string values avoid double-quote characters — use single quotes or em-dashes in prose:
