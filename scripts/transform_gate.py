@@ -40,6 +40,19 @@ GATE_MODEL = "gemini-2.5-flash"
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent"
 OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions"
 
+# Protagonist names rotate deterministically by page index — QC gate 3a found K2.6
+# collapses to "Maya" for 67% of scenes when left to choose. Diversity is injected, not hoped for.
+NAMES = [
+    "Arjun", "Wei", "Fatima", "Tomasz", "Amara", "Diego", "Ingrid", "Kenji",
+    "Priya", "Omar", "Sofia", "Dmitri", "Zainab", "Marcus", "Yuki", "Thabo",
+    "Elena", "Rafael", "Noor", "Henrik", "Kavya", "Jamal", "Astrid", "Chen",
+    "Leila", "Pavel", "Rosa", "Tariq", "Mei", "Stefan", "Adaeze", "Lucas",
+    "Sana", "Viktor", "Carmen", "Hassan", "Freja", "Ravi", "Dalia", "Owen",
+    "Nadia", "Koji", "Ines", "Bogdan", "Amina", "Mateo", "Sigrid", "Deepak",
+    "Yasmin", "Anton", "Lucia", "Farid", "Hana", "Emil", "Zola", "Nikhil",
+    "Aisha", "Petra", "Joaquin", "Salma", "Erik", "Devi", "Malik", "Greta",
+]
+
 # Surface domains rotate deterministically by page index — same principle, many worlds.
 DOMAINS = [
     "a small business owner deciding on expansion",
@@ -68,11 +81,12 @@ SOURCE PASSAGE:
 ---
 
 ASSIGNED SURFACE DOMAIN: {domain}
+PROTAGONIST NAME (use exactly this): {name}
 
 Write a scene that embodies the passage's core strategic principle inside the assigned domain. Requirements:
 
 SCENARIO (becomes the user turn, 80-140 words):
-- A named person, concrete stakes (numbers, deadlines, relationships), and ONE live decision point with 2-3 genuinely distinct options.
+- The named protagonist ({name}), concrete stakes (numbers, deadlines, relationships), and ONE live decision point with 2-3 genuinely distinct options.
 - No mention of the treatise, war theory, or any author. The principle must live in the situation, not be cited.
 
 PROJECTION (becomes the assistant turn, 220-320 words):
@@ -184,11 +198,12 @@ async def one_page(client, sem, row, done_ids, out_f, rej_f, lock, counters):
         return
     page = row["messages"][2]["content"]
     domain = DOMAINS[k % len(DOMAINS)]
+    name = NAMES[k % len(NAMES)]
     async with sem:
         feedback, reason = "", "render produced no parseable scene JSON"
         for attempt in range(2):
             raw = await openrouter(client, RENDER_MODEL,
-                                   RENDER_PROMPT.format(page=page, domain=domain) + feedback, 0.9)
+                                   RENDER_PROMPT.format(page=page, domain=domain, name=name) + feedback, 0.9)
             scene = parse_json(raw) if raw else None
             if not scene or not all(scene.get(f) for f in ("principle", "scenario", "projection")):
                 feedback = "\n\nPREVIOUS ATTEMPT was not valid JSON with all three fields. Fix that."
