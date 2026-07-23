@@ -36,7 +36,9 @@ ROOT = HERE.parent
 SRC = ROOT / "data/book/book_pages_train.jsonl"
 OUT_DIR = ROOT / "data/lane_foresight"
 RENDER_MODEL = "moonshotai/kimi-k2.6"   # via OpenRouter (no native Moonshot key in vault)
-GATE_MODEL = "gemini-2.5-flash"
+# Same Gemini Flash gate, billed via OpenRouter — native Gemini prepay depleted 2026-07-23
+# (the K3-vs-K2.6 blind judging on 2.5 Pro ate it). Model identical; only billing moved.
+GATE_MODEL = "google/gemini-2.5-flash"
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent"
 OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -81,22 +83,27 @@ SOURCE PASSAGE:
 ---
 
 ASSIGNED SURFACE DOMAIN: {domain}
-PROTAGONIST NAME (use exactly this): {name}
+PROTAGONIST (use exactly this first name, and NO surname): {name}
 
 Write a scene that embodies the passage's core strategic principle inside the assigned domain. Requirements:
 
 SCENARIO (becomes the user turn, 80-140 words):
-- The named protagonist ({name}), concrete stakes (numbers, deadlines, relationships), and ONE live decision point with 2-3 genuinely distinct options.
-- No mention of the treatise, war theory, or any author. The principle must live in the situation, not be cited.
+- Third person, like a case brief ({name} is described, never "I" or "you") — this matches how decision problems are posed downstream.
+- Concrete stakes with numbers, deadlines, relationships — invented UNIQUE to this scene. Do NOT default to stock figures: no "$340K", no "Friday 5pm", no "72 hours" unless they arise from the scene's own logic. Vary the opening — do not always start "{name}, a <role>,".
+- ONE live decision point with 2-3 genuinely distinct options.
+- No mention of the treatise, war theory, or any author. No military metaphors (war chest, battle, campaign, siege) unless the domain itself is military. The principle must live in the situation, not be cited.
 
 PROJECTION (becomes the assistant turn, 220-320 words):
+- Third-person analysis (refer to {name} by name or pronoun — never address "you").
+- Never label choices "Option A/B/1/2" — refer to each by its substance (e.g. "the price war", "the renovation").
 - Project consequences of each live option across at least TWO distinct time horizons (immediate: days-weeks; medium: months; long: years where it matters).
 - Include at least ONE second-order effect (a consequence of a consequence).
-- Include ONE explicit "what would break this projection" condition.
-- End with a directional close: which option the reasoning favors and the single condition that would flip it.
+- Include ONE explicit condition under which this projection fails.
+- End with a directional close: which path the reasoning favors and what would flip it.
+- Express all of the above in fresh natural language — do NOT copy phrases from this brief ("second-order", "what would break this projection", "the single condition that flips it").
 - Dense and concrete throughout: no filler, no hedging boilerplate, no "it depends" without saying on WHAT. Every sentence must carry a fact, a projection, or a tension.
 
-Return ONLY valid JSON, no code fences:
+Return ONLY valid JSON, no code fences. Inside JSON string values avoid double-quote characters — use single quotes or em-dashes in prose:
 {{"principle": "<the passage's core principle in one sentence>", "scenario": "<the user-turn text>", "projection": "<the assistant-turn text>"}}"""
 
 GATE_PROMPT = """You are a strict quality gate for training data. Given a source passage and a generated scene, verdict PASS or FAIL.
@@ -115,7 +122,8 @@ FAIL if ANY of these hold:
 2. CONCRETENESS: scenario lacks a named actor, concrete stakes, or a real decision point with distinct options.
 3. FORESIGHT DENSITY: projection lacks two distinct time horizons, OR lacks a second-order effect, OR lacks a "what breaks this projection" condition.
 4. COLLAPSE: generic advice-prose that could have been written without the source passage; meta-text ("this scene illustrates"); treatise/war-theory references leaking into a non-military domain.
-5. CLOSE: no directional close (no option favored, or no flip condition).
+5. CLOSE: no directional close (no path favored, or no flip condition).
+6. TEMPLATE: choices labeled "Option A/B/1/2"; or the projection copies brief phrasing verbatim ("what would break this projection", "single condition that flips"); or the text addresses the reader as "you"; or a surname was invented for the protagonist.
 
 Return ONLY valid JSON, no code fences:
 {{"verdict": "PASS" or "FAIL", "reason": "<one sentence, empty if PASS>"}}"""
@@ -213,7 +221,7 @@ async def one_page(client, sem, row, done_ids, out_f, rej_f, lock, counters):
                 reason = f"projection too long ({n_words} words; max 420) — bloat, not density"
                 feedback = f"\n\nPREVIOUS ATTEMPT FAILED: {reason}\nCompress to 220-320 words. Cut nothing concrete; cut everything else."
                 continue
-            g_raw = await gemini(client, GATE_MODEL, GATE_PROMPT.format(page=page, **scene), 0.0)
+            g_raw = await openrouter(client, GATE_MODEL, GATE_PROMPT.format(page=page, **scene), 0.0)
             g = parse_json(g_raw) if g_raw else None
             if g and g.get("verdict") == "PASS":
                 out_row = {"messages": [

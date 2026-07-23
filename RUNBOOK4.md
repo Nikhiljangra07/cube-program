@@ -37,10 +37,22 @@ session (run-3 lesson: mastery60 anchor read PAR on Ada, -0.19 on PRO 6000 regen
 ## Pre-training QC gates (data must pass BEFORE any GPU spend)
 1. Coverage: >=800/855 scenes on disk (drop rate <=6.5%); rejected.jsonl reviewed.
 2. Bloat: median projection 220-360 words; NO scene >420 (guard enforced at render).
-3. Diversity/collapse: (a) no actor first-name appearing in >4% of scenes,
+3. Diversity/collapse: (a) no actor first-name OR surname in >4% of scenes,
    (b) mean pairwise 4-gram Jaccard on 200 random scene pairs < 0.05,
-   (c) all 16 domains within 2x of each other in count.
+   (c) all 16 domains within 2x of each other in count,
+   (d) no deadline/dollar token in >15% of scenes (gen-1: "Friday" 44%, "$340K" 9%),
+   (e) no 5-gram in >5% of scenes (gen-1: brief-phrase echoes up to 19%),
+   (f) zero "Option A/B/1/2" labels; zero second-person projections (bench is third-person).
 4. Fidelity spot-check: 10 random scenes read manually against their source pages.
+
+### Gen-1 post-mortem (2026-07-23, full corpus discarded before GPU — the gates worked)
+Deep scan of the 812-scene gen-1 corpus found, beyond the known Maya-collapse (67%):
+surname collapse ("Chen" 69%, "Voss" 22%), Option-A/B template in 77%, renderer parroting
+the brief's own phrases (up to 19% of scenes), stock deadlines/dollars ("Friday" 44%,
+"72 hours" 17%), war metaphors leaking into 11% of non-military scenes, and 6% mechanical
+JSON parse drops. Register check against bench problems confirmed third-person is CORRECT
+(bench briefs are third-person case statements) — first-person "fix" rejected. All fixes
+applied at the prompt+gate level; gen-2 rendered fresh. Cost of discard: ~$3.
 
 ## Success criteria (FROZEN before training)
 - **Format survival:** laneF >= 44/48 answered.
