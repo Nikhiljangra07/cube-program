@@ -87,3 +87,39 @@ names/companies/weekdays too. Render cost total (gen-1 + gen-2 + retries): ~$11 
 Render ~$2.50 (OpenRouter K2.6) + gate ~$0.30 (Gemini Flash) | pod (score + 1 train +
 3 gens, RTX 6000 Ada class) ~2h ≈ $2 | judge session 4 (3 arms x 48) ≈ $4-5.
 All-in ≈ $9-10.
+
+---
+
+## RESULTS (2026-07-23, single-session Sonnet 5 judge, all 3 thread sets same-card RTX 6000 Ada)
+
+| arm | overall | foresight | dist>=4% | viability | n |
+|---|---|---|---|---|---|
+| keep100 anchor (no book) | **3.61** | 3.02 | 72.9 | 2.73 | 48 |
+| book_C06 (raw book, keep-0.6+mastery) | 3.60 | 2.96 | 64.6 | 2.65 | 48 |
+| laneF (TRANSFORMED book, keep-0.6+mastery) | 3.47 | 2.85 | 75.0 | 2.46 | 48 |
+
+**Against the frozen criteria:**
+- **SIGNAL E: FAILS** — laneF foresight 2.85 vs needed >= 3.27. Foresight did not rise;
+  it reads 0.17 BELOW the in-session anchor. The dimension the lane was built to move
+  did not move.
+- **Narrowing-tax guard: HOLDS by 0.01** (3.47 vs floor 3.46) — technically no tax, but
+  viability 2.46 is the arm's worst dimension, the same narrowing signature as run 3's
+  mastery arms.
+- **Transformation vs raw: WITHIN NOISE** (-0.13 overall, -0.11 foresight vs book_C06).
+  The cleanest one-variable ablation the program has run: same book, same masking, same
+  schedule — transformed scenes bought NOTHING over raw pages.
+- **Book value: still none** (3.47 < 3.61). Two runs, five arms, two data forms: Clausewitz
+  does not move this bench at 3.4B.
+
+**THE PROGRAM-LEVEL READ (runs 1-4):** all three data-side levers have now returned
+honest nulls on the "higher score" half of the density thesis at 3.4B — selection
+(run 1), schedule (runs 2-3), substance/transformation (run 4). The v3 conclusion
+("foresight is capacity-bound — model ceiling, not corpus") has survived its strongest
+attack. What SURVIVES and replicates is the efficiency half: par benchmark at ~36-40%
+of tokens and ~70% of compute (runs 2-3, both substrates). Mastery telemetry footnote:
+transformed scenes took MORE work to master (4.53 mean visits vs 3.52 raw) — denser to
+chew, but the extra chewing bought no benchmark. Next forks (Nikhil's call): (a) bigger
+base (7-9B / H-Small class) where capacity may unlock the levers, (b) different lane
+(foresight may be uniquely capacity-bound), (c) bank the efficiency result and write the
+program up. Costs: run 4 ~= $17 all-in (renders $11 + pod $1.90 + judge $4).
+Adapters: divergent-model-backups/density_run4/run4_bundle.tgz (md5 5d2a7ff9, verified).

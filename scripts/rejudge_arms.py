@@ -76,19 +76,15 @@ async def sonnet_judge(client, problem, angles, threads):
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 FILES = {
-    # SESSION 3 (2026-07-22): book run — all 7 sets generated on the SAME card (RTX PRO 6000);
-    # anchors regenerated on-card per RUNBOOK3 Amendment 2 (card-class control).
-    "book_A":    ROOT / "out/eval_book_A_v5_threads.jsonl",
-    "book_B04":  ROOT / "out/eval_book_B04_v5_threads.jsonl",
-    "book_B06":  ROOT / "out/eval_book_B06_v5_threads.jsonl",
-    "book_C04":  ROOT / "out/eval_book_C04_v5_threads.jsonl",
-    "book_C06":  ROOT / "out/eval_book_C06_v5_threads.jsonl",
+    # SESSION 4 (2026-07-23): transformation-gate run — all 3 sets generated on the SAME
+    # card (RTX 6000 Ada, fresh pod); keep100 + book_C06 regenerated on-card (card-class
+    # control). laneF = keep-0.6 band + mastery on the foresight-lane transformed corpus.
+    "laneF":     ROOT / "out/eval_laneF_v5_threads.jsonl",
     "keep100":   ROOT / "out/eval_anchor_keep100_v5_threads.jsonl",
-    "mastery60": ROOT / "out/eval_anchor_mastery60_v5_threads.jsonl",
-    # session-2 set (Ada-generated — do NOT mix into a PRO-6000 session):
-    # "dense60":   ROOT / "out/eval_bench_dense60_v5_threads.jsonl",
-    # "keep60":    ROOT / "out/eval_bench_keep60_v5_threads.jsonl",
-    # "keep40":    ROOT / "out/eval_bench_keep40_v5_threads.jsonl",
+    "book_C06":  ROOT / "out/eval_book_C06_v5_threads.jsonl",
+    # session-3 set (PRO-6000-generated — do NOT mix into this Ada session):
+    # "book_A":    ROOT / "out/eval_book_A_v5_threads.jsonl",
+    # "book_B04":  ROOT / "out/eval_book_B04_v5_threads.jsonl",
 }
 
 
@@ -123,41 +119,28 @@ async def main():
     summary.write_text(json.dumps(out, indent=2))
     print(f"\nWROTE {summary}")
     ns = [v["n"] for v in out.values()]
-    print("\n--- READ (RUNBOOK3 frozen criteria) ---")
+    print("\n--- READ (RUNBOOK4 frozen criteria) ---")
     if min(ns) < 44:
         print(f"COVERAGE INSUFFICIENT (n={ns}) — do not read signals until all arms >= 44/48")
-    bA = out.get("book_A", {})
-    b04, b06 = out.get("book_B04", {}), out.get("book_B06", {})
-    c04, c06 = out.get("book_C04", {}), out.get("book_C06", {})
-    k1, ms = out.get("keep100", {}), out.get("mastery60", {})
-    book_arms = {"book_A": bA, "book_B04": b04, "book_B06": b06, "book_C04": c04, "book_C06": c06}
-    if all([bA, b04, b06, c04, c06, k1]):
-        # Signal D headline: mastery-blanks vs plain reading (best C arm vs A, +0.20)
-        best_c_label, best_c = max((("book_C04", c04), ("book_C06", c06)), key=lambda t: t[1]["overall"])
-        dd = round(best_c["overall"] - bA["overall"], 2)
-        print(f"[run3] Signal D: {best_c_label} {best_c['overall']} vs book_A {bA['overall']} "
-              f"(delta {dd}) -> {'HOLDS' if dd >= 0.20 else 'FAILS'}")
-        print(f"[run3]   blanks' share: B04 {b04['overall']} / B06 {b06['overall']} vs A {bA['overall']}; "
-              f"mastery's share: C04-B04 {round(c04['overall'] - b04['overall'], 2)}, "
-              f"C06-B06 {round(c06['overall'] - b06['overall'], 2)}")
-        # Fraction curve: does 0.4 match 0.6?
-        print(f"[run3] Fraction curve: C04 {c04['overall']} vs C06 {c06['overall']} "
-              f"(delta {round(c04['overall'] - c06['overall'], 2)}) -> "
-              f"{'0.4 PAR — keep-0.3/0.35 licensed' if c04['overall'] - c06['overall'] >= -0.15 else '0.4 BELOW — floor is between 0.4 and 0.6'}")
-        # Book value check vs in-session keep100 anchor
-        best_label, best = max(book_arms.items(), key=lambda t: t[1]["overall"])
-        print(f"[run3] Book value: best book arm {best_label} {best['overall']} vs keep100 anchor "
-              f"{k1['overall']} -> {'BOOK ADDED VALUE' if best['overall'] > k1['overall'] else 'NO MEASURABLE BOOK VALUE on this bench'}")
-        # CHECKPOINT 1 WATCH: foresight >= keep100 foresight + 0.25 AND >= 3.25 absolute
-        fs_label, fs_arm = max(book_arms.items(), key=lambda t: t[1].get("foresight", 0))
-        fs, fk = fs_arm.get("foresight", 0), k1.get("foresight", 0)
-        claimed = fs >= fk + 0.25 and fs >= 3.25
-        print(f"[run3] CHECKPOINT 1 foresight: best {fs_label} {fs} vs anchor keep100 {fk} "
+    lf, k1, c06 = out.get("laneF", {}), out.get("keep100", {}), out.get("book_C06", {})
+    if all([lf, k1, c06]):
+        # SIGNAL E headline: laneF foresight >= keep100 foresight + 0.25 AND >= 3.25 absolute
+        fs, fk = lf["foresight"], k1["foresight"]
+        print(f"[run4] SIGNAL E foresight: laneF {fs} vs keep100 {fk} "
               f"(needs >= {round(fk + 0.25, 2)} AND >= 3.25) -> "
-              f"{'CLAIMED' if claimed else 'watch continues'}")
-    if ms and k1:
-        print(f"[run3] Anchor sanity (same-card regen): mastery60 {ms['overall']} vs keep100 {k1['overall']} "
-              f"(delta {round(ms['overall'] - k1['overall'], 2)}; run-2 read was par)")
+              f"{'CLAIMED — checkpoint 1 broken' if (fs >= fk + 0.25 and fs >= 3.25) else 'FAILS — watch continues'}")
+        # Narrowing-tax guard
+        print(f"[run4] Narrowing-tax guard: laneF overall {lf['overall']} vs keep100 {k1['overall']} "
+              f"(floor {round(k1['overall'] - 0.15, 2)}) -> "
+              f"{'HOLDS' if lf['overall'] >= k1['overall'] - 0.15 else 'FAILS — purity tax detected'}")
+        # Transformation's share: laneF vs book_C06 (same book, same machinery, raw vs transformed)
+        do, df = round(lf["overall"] - c06["overall"], 2), round(fs - c06["foresight"], 2)
+        active = do >= 0.20 or df >= 0.30
+        print(f"[run4] Transformation vs raw: laneF-book_C06 overall {do}, foresight {df} -> "
+              f"{'TRANSFORMATION IS THE ACTIVE INGREDIENT' if active else 'within noise of raw book'}")
+        # Book value re-check with transformed data
+        print(f"[run4] Book value (transformed): laneF {lf['overall']} vs keep100 {k1['overall']} -> "
+              f"{'BOOK NOW ADDS VALUE' if lf['overall'] > k1['overall'] else 'still no measurable book value'}")
 
 
 if __name__ == "__main__":
