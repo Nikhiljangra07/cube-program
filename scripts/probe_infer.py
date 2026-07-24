@@ -44,8 +44,9 @@ def main():
             for kind, q in (("recall", r["recall_q"]), ("manip", r["manip_q"])):
                 msgs = [{"role": "system", "content": SYS},
                         {"role": "user", "content": q}]
-                ids = tok.apply_chat_template(msgs, add_generation_prompt=True,
-                                              return_tensors="pt").to("cuda")
+                enc = tok.apply_chat_template(msgs, add_generation_prompt=True,
+                                              return_tensors="pt")
+                ids = (enc if torch.is_tensor(enc) else enc["input_ids"]).to("cuda")
                 with torch.no_grad():
                     gen = model.generate(ids, max_new_tokens=320, do_sample=False,
                                          pad_token_id=tok.eos_token_id)
