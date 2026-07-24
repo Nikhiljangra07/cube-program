@@ -53,6 +53,29 @@ run 4b multi-angle rendering is the indicated fix).
   scene-name redraft), full human readback passed (incl. P05-vs-P07 decisive-vs-protracted
   consistency check and P15 barrier-scale key check). FROZEN — no edits after this point.
 
+## RESULTS (2026-07-24, blind Sonnet 5 grading, 24/24 coverage every arm)
+
+Main batch (pod-A answers; Δ vs keep100; regrade replicated every read within ±0.1):
+
+| arm | Δrecall | Δmanip | read |
+|---|---|---|---|
+| base | −0.08..−0.17 | −0.21 | (v5 SFT slightly helps both) |
+| book_C06 (raw book) | +0.04..+0.13 | −0.17..−0.13 | no storage, no usability |
+| laneF (transformed) | +0.08..+0.17 | +0.04..+0.13 | no storage, no usability |
+| fedH (negative ctrl) | −0.04..+0.08 | −0.04..0.00 | control behaves — instrument valid |
+
+Exposure extension (pod-B sweep arms): Δrecall at 1.25×/5×/10×/20× = +0.04/−0.08/−0.17/+0.04
+— no storage at any exposure.
+
+**VERDICT (frozen rule): NOT STORED.** Neither raw reading nor single-angle transformation
+puts retrievable Clausewitz content into the 3.4B, at any exposure from 1.25 to 20 per page.
+This is NOT the photograph failure mode (which would be recall-high/manip-flat) — recall
+itself never moves. Per the frozen branch: with the sweep also flat, the surviving suspects
+are presentation-diversity (multi-angle 4b, per Allen-Zhu diverse-presentations-create-
+extractable-storage) and capacity/modality (LoRA continuation at 3.4B cannot write
+extractable knowledge). 4b's motivation SHIFTS: it would now be testing
+diversity-for-STORAGE, not diversity-for-usability.
+
 ## Isolation
 
 Probe files live in `data/probes/` (never mixed into training data or bench_data). Answers:

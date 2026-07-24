@@ -69,3 +69,27 @@ size — kept in reserve for a replication).
 
 ~885 rows → ~555 steps mastery train (~1h) + 2 gens parallel (~50 min) + NLL pass (~10 min)
 ≈ 2h pod A ≈ $4. Session-H judge ≈ $3.
+
+---
+
+## RESULTS (2026-07-24, Session-H valid full-coverage read, 48/48 both arms)
+
+- **1a LEARNS-THE-BOOK (telemetry): HOLDS.** All 886 pages mastered at step 504/555, mean
+  4.48 visits (Clausewitz raw was 3.52), max 18. Blackwell PRO 6000 trained it in ~7 min.
+- **1b (fed heldout NLL): INSTRUMENT INVALIDATED by its own control.** fedH read +1.93 nats
+  WORSE than base (4.47 vs 2.53) — but the control (run-3 wrk_bookC06 on CLAUSEWITZ heldout,
+  same instrument) showed the identical inflation (+2.14: 5.13 vs 2.99). Full-token NLL is
+  biased against mastery/masked-trained adapters (extends the run-2 demotion). 1b carries
+  no signal either direction; verdict rests on 1a + guard + probes.
+- **NO-FORGETTING GUARD: FAILS, marginally.** fedH 3.43 vs keep100 3.61 (floor 3.46 —
+  missed by 0.03). NOT catastrophic (3.43 >> 3.31). The −0.18 tax matches the book-tax
+  magnitude seen on every book arm ever (run-3 arms −0.09..−0.19, laneF −0.14) — third
+  book, same signature.
+- **Probe cross-read (PROBES.md):** fedH negative control behaved (Δrecall +0.08,
+  Δmanip −0.04 on Clausewitz probes — within ±0.20); probe instrument valid.
+- **VERDICT (per frozen grid): interference-level capacity signal, softened.** The model
+  still absorbs a fresh book mechanically (1a) with no catastrophe, but pays the familiar
+  small bench tax (guard fail by 0.03) — and probes show NO book training (raw, transformed,
+  or fresh) writes retrievable knowledge at this scale. The headroom question dissolves
+  into the storage question: it is not that the 3.4B is "full" — it is that LoRA
+  continuation training does not create extractable knowledge here at any tested exposure.

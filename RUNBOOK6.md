@@ -81,3 +81,34 @@ at 3.4B.
 
 Trains 5,485 steps total split into two parallel tracks (~3.6h wall) + 6 gen sets 2-parallel
 (~2.5h) ≈ 6.2h pod B ≈ $12.5. Session-S judge ≈ $8.
+
+---
+
+## RESULTS (2026-07-24, Session-S valid full-coverage read, 48/48 all six arms)
+
+| arm | exposures | overall | foresight | dist>=4% |
+|---|---|---|---|---|
+| swp_x025 | 1.25 | **3.62** | 3.06 | 64.6 |
+| swp_x05 | 2.5 | 3.60 | 2.98 | 77.1 |
+| swp_x1 | 5 | 3.56 | 3.00 | 68.8 |
+| swp_x2 | 10 | 3.67 | 3.06 | 75.0 |
+| swp_x4 | 20 | 3.48 | 2.96 | 64.6 |
+| keep100 anchor | — | 3.66 | 2.98 | 77.1 |
+
+Frozen reads:
+1. **CURVE SHAPE: MIXED/AMBIGUOUS → flat-ish** (max−min 0.19, just past the 0.15 FLAT band,
+   no rising trend). An earlier session (invalidated: x1 n=42<44) independently showed the
+   same shape (x2 nominal peak, x4 near-last) — cross-session agreement on shape.
+2. **OUR NUMBER: 1.25 exposures/page** (x025, 3.62; cheapest within 0.10 of best x2=3.67).
+   The 5-epoch paper default buys nothing over 1.25 epochs on this data. This EXTENDS the
+   efficiency result: par benchmark at ~36-40% tokens AND ~25% of the epochs.
+3. **SATURATION HALF-CONDITION: MET** — x2/x4 within ±0.15 of x1. Exposure lever exhausted
+   at 3.4B/LoRA on this corpus.
+4. **MEMORIZATION CHECK: no formal burn** (x4 3.48 > x1−0.20), but x4 ranked last in both
+   sessions — soft over-exposure signal, within noise.
+5. No narrowing-tax flags (all arms ≥ anchor−0.30).
+
+**Exposure-probe extension (exploratory, frozen probe instrument, answers generated pod-B
+card, keep100 reference from pod-A card):** Δrecall vs keep100 at 1.25×/5×/10×/20× =
++0.04/−0.08/−0.17/+0.04 — NO storage at ANY exposure. Repetition does not create
+retrievable knowledge; the storage failure is structural, not under-exposure.
