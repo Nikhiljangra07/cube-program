@@ -65,3 +65,44 @@ the honest fork (no book narrative). Only 3/4/5 fail → cheap prompt iteration.
 
 `data/pilot8/`, `out/pilot8/`, `scripts/pilot8_*.py`. No GPU. DeepSeek ≈ $0.40
 (OpenRouter), Sonnet ≈ $1.30. **< $2 all-in.**
+
+---
+
+## RESULTS (2026-07-25 — coverage 120/120, single blind Sonnet session)
+
+| lane | G grounded | U no-passage | X wrong-passage | P pool |
+|---|---|---|---|---|
+| F foresight | 8.00 | 7.83 | 7.98 | 6.40 |
+| V viability | 7.72 | 7.70 | 7.58 | 6.60 |
+
+| read | F | V |
+|---|---|---|
+| 1 GROUNDING REAL (G≥U+0.7) | **FAIL** (+0.17) | **FAIL** (+0.02) |
+| 2 PASSAGE-SPECIFIC (G≥X+0.5) | **FAIL** (+0.02) | **FAIL** (+0.14) |
+| 3 EXTREMITY (≥50% G≥8 AND G≥P+1.5) | PASS (78.3%, +1.60) | FAIL (66.7% ✓, +1.12 ✗) |
+| 4 LEAK (≤10%) | PASS (8.3%) | PASS (0%) |
+| 5 DECISIVENESS (≤15% hedge) | PASS (0%) | PASS (0%) |
+
+**Frozen verdict (reads 1+2, both lanes): GROUNDING FALSIFIED.** Passages contribute
+nothing measurable — G ≈ U ≈ X within noise. The wrong-lane passage performs identically
+to the right one, so the passage is not even being read for content. The book-foundation
+narrative is dead for thread generation at this model scale: DeepSeek V4 Pro already
+contains the reasoning structures; the passage stage was frontier-model prompting wearing
+a book jacket, exactly the self-deception the pilot's guardrail existed to catch. Per
+the pre-registered decision rule, the grounding stage is DROPPED and any scaled corpus
+is reported honestly as prompt-only synthetic generation.
+
+**What the pilot found instead — the real lever is the worker prompt.** U (prompt-only,
+no passage) scores 7.83 F / 7.70 V vs pool 6.40/6.60: the lane-extreme prompt ALONE
+lifts foresight +1.43 and viability +1.10 over the v5 corpus, with zero hedging and
+leak within bar. Foresight already clears the full extremity bar prompt-only; viability
+misses only the mean-margin condition (+1.12 vs +1.5 needed) — a prompt-iteration
+problem (demand harder mechanism/cost/constraint density), not a pipeline problem.
+
+*Annotated confound (registered pre-run):* G/U/X threads are 4-6 sentences vs P's 2-3 —
+the G-vs-P and U-vs-P lifts partially reflect length; the clean length-matched reads are
+G-vs-U and G-vs-X, which are the ones that killed grounding.
+
+Cost: ~$0.55 DeepSeek + ~$1.9 Sonnet ≈ **$2.5 all-in.** The falsification saved the
+full-scale passage machinery (~$3 + a false paper claim) and redirected RUNBOOK8 to the
+prompt-only path with one V-prompt iteration.
