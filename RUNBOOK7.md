@@ -111,3 +111,40 @@ documented endpoint: contrast score z(own) - mean z(others), top 220 per lane.
 
 Overlaps: F&V 8%, D&F 5%, D&V 3% (bar was <=25%). Leak guards: 20 prep_v5 holdout
 problems excluded (generalist parity); bench overlap verified 0/48.
+
+---
+
+## RESULTS (2026-07-25, Session-F + Session-F2 stability replicate, 48/48 all arms both)
+
+| arm | overall s1/s2 | own lane s1/s2 (anchor) | face bar |
+|---|---|---|---|
+| faceF foresight | 3.66 / 3.71 | 3.04 / 2.94 (2.88 / 2.88) | FAIL (needed +0.20; got +0.16/+0.06) |
+| faceD distinctness | 3.72 / 3.62 | 3.65 / 3.71 (3.67 / 3.75) | FAIL (~par on own lane) |
+| faceV viability | 3.61 / 3.61 | 2.67 / 2.77 (2.58 / 2.73) | FAIL (+0.09/+0.04) |
+| faceG generalist | 3.66 / 3.56 | — | fallback seat, ≈ anchor |
+| keep100 anchor | 3.56 / 3.59 | — | — |
+
+Frozen verdict (fired in BOTH sessions): **<2 faces pass → carved behavioral faces are
+NULL as lane-specialists at 3.4B; genuine specialization requires GENERATED lane corpora.**
+
+Findings beyond the grid (replicated in both sessions):
+1. **Every cube member ≥ anchor overall** (3.56-3.72 vs 3.56/3.59) — four adapters, each
+   on 17-32% of the incumbent's row-mass at 1.25 epochs, all match-or-beat it. The
+   efficiency result replicates from a new angle (disjoint small diets).
+2. **Oracle ceiling +0.42/+0.40** — but the pre-registered oracle read is hereby annotated:
+   max-of-4-noisy-arms inflates by construction. Cross-session WIN-STABILITY is the honest
+   metric: 41.7% same-winner agreement vs 26.8% chance (real, p≈0.01, modest); hard core
+   (same winner both sessions AND ≥0.5 over anchor in both) = **7/48 problems**.
+3. **Mechanics rider: peft hot-swap CLEAN on granite** under load_adapter/set_adapter
+   (peft 0.19.1, exact output match vs fresh single loads; median swap 6.32 ms). The
+   0.19.1 landmine did not reproduce in this two-adapter pattern; dispatcher-layer
+   engineering is unblocked (out/run7/swap_verdict.json).
+
+**Stage-2 decision: dispatcher NOT built.** Routing signal exists above noise but the
+exploitable stable core (~15% of problems) bounds realistic dispatcher gain to roughly
++0.05-0.15 over the best single arm — an order below the oracle mirage, and the best
+single arm is itself session-unstable (faceD s1, faceF s2). Building a router to harvest
+7 stable problems would be the slop this runbook exists to prevent.
+
+Costs: rescore ~$8 · pod ~1h ≈ $2 · Session-F ×2 ≈ $16 · probes/none → ~$26 all-in.
+Bundle: density_run7/run7_bundle.tgz md5 b1dcf8a4… (4 adapters, threads, swap verdict).
