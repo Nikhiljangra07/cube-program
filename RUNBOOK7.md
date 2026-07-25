@@ -82,3 +82,23 @@ backup `run7_bundle.tgz`. Never mixed with runs 1-6 files.
 
 Re-score ~$8 · pod (3 trains ~200 steps each + 4 gens + mechanics test, Blackwell) ~$3 ·
 Session-F ×2 coverage margin ~$12 → **~$23 all-in; zero OpenRouter.**
+
+---
+
+## Stage 0 RESULTS — curation (2026-07-25, frozen before any GPU)
+
+Re-score: 964/964 problems, 0 failures, blind Sonnet 5, 1-10 scale (~$8). Distributions
+un-truncated: foresight sd 0.72 (4-8), distinctness sd 0.71 (4-9), viability sd 0.66 (5-8).
+
+Carve: strict quartile carve FAILED the 200-minimum for D (56) and V (81); stepwise slack
+reached size only at slack (1,1) where the other-lane constraint is vacuous. Adopted
+documented endpoint: contrast score z(own) - mean z(others), top 220 per lane.
+
+| face | problems | worker rows | own lane (pool) | other lanes | md5 |
+|---|---|---|---|---|---|
+| F foresight | 220 | 880 | 7.05 (6.44) | dist 7.85, via 5.91 | 11910a55… |
+| D distinctness | 220 | 880 | 8.61 (8.17) | fore 6.21, via 5.55 | e9feb55f… |
+| V viability | 220 | 880 | 6.91 (6.15) | fore 6.23, dist 7.84 | 0056aacb… |
+
+Overlaps: F&V 8%, D&F 5%, D&V 3% (bar was <=25%). Leak guards: 20 prep_v5 holdout
+problems excluded (generalist parity); bench overlap verified 0/48.
