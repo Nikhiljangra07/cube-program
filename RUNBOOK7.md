@@ -35,7 +35,16 @@ from response-style data — the modality where SFT provably moves dimensions at
 | `wrk_faceF` (foresight) | face-F subset | keep-0.6 band | fixed, 1.25 epochs (our number, run 6) |
 | `wrk_faceD` (distinction) | face-D subset | keep-0.6 band | fixed, 1.25 epochs |
 | `wrk_faceV` (viability) | face-V subset | keep-0.6 band | fixed, 1.25 epochs |
-| `wrk_keep1.0` generalist | (existing run-2 adapter — NOT retrained) | keep-1.0 | — |
+| `wrk_faceG` (cube generalist) | 317-problem COMPLEMENT (pool − face union; zero row-sharing with faces) | keep-1.0 | fixed, 1.25 epochs |
+| `wrk_keep1.0` anchor | (existing run-2 adapter — NOT retrained, NOT a cube member) | keep-1.0 | — |
+
+**Design amendment (2026-07-25, pre-training, Nikhil):** the cube gets its OWN generalist
+`wrk_faceG`, trained on the complement so the four cube diets PARTITION the pool — no row
+clash between members. The incumbent `wrk_keep1.0` remains the measuring stick only: the
+test becomes "four small disjoint-diet adapters (routed) vs one big-diet incumbent."
+Complement lane profile is naturally balanced (fore 6.31 / dist 8.24 / via 6.20 ≈ pool),
+md5 6915284… . Session-F grows to 5 arms; oracle is computed over the 4 CUBE members
+(faceF/D/V/G), read against the keep100 anchor.
 
 Decomposer: `dec_keep1.0` everywhere, unchanged. All new adapters train from base — no
 merges, no shared init, per the isolation mandate.
