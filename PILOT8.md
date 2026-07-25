@@ -106,3 +106,24 @@ G-vs-U and G-vs-X, which are the ones that killed grounding.
 Cost: ~$0.55 DeepSeek + ~$1.9 Sonnet ≈ **$2.5 all-in.** The falsification saved the
 full-scale passage machinery (~$3 + a false paper claim) and redirected RUNBOOK8 to the
 prompt-only path with one V-prompt iteration.
+
+---
+
+## ADDENDUM — viability prompt iterations (two-strike rule, 2026-07-25)
+
+| attempt | U mean | P mean | gap (need +1.5) | %≥8 | leak | hedge | verdict |
+|---|---|---|---|---|---|---|---|
+| v2 (hard-number mechanism density) | 8.08 | 6.62 | **+1.46** | 80.0 | 5.0% | 0% | STRIKE 1 |
+| v3 (execution-order: day-numbers, 3 numbers, instruments, tripwire) | 7.95 | 6.58 | **+1.37** | 78.3 | 6.7% | 0% | STRIKE 2 |
+
+Setting split (v2): modern gap +1.40 (U2 8.28, 90%≥8 — ceiling-compressed), classical
+gap +1.60 (low P baseline). The binding constraint is **judge scale compression**: the
+rubric reserves 9-10 for "exceptional," so a corpus mean plateaus ≈8.1 regardless of
+added density — v3's extra prescriptive structure scored LOWER than v2. The +1.5
+mean-gap bar sits above what this instrument can register for viability.
+
+**Frozen verdict: V face DROPPED from run 8 (two strikes). Run 8 is foresight-only.**
+Recorded for the paper as a bar-design lesson: extremity bars on compressed judge
+scales should be %≥threshold-based, not mean-gap-based. The V lane remains achievable
+text-wise (78-80% of threads ≥8, zero hedge) — it may return in a future run under a
+correctly-designed bar, at fresh cost, not by reinterpreting this one.
