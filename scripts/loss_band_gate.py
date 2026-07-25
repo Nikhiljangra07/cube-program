@@ -32,11 +32,13 @@ MAX_LEN = 1024  # must stay == train_lora.py max_length
 
 @torch.no_grad()
 def score_row(model, tok, messages, device, per_token=False):
-    # transformers 5.x: apply_chat_template returns a BatchEncoding — take .input_ids explicitly
-    prompt_ids = tok.apply_chat_template(messages[:-1], add_generation_prompt=True,
-                                         return_tensors="pt").input_ids[0]
-    full_ids = tok.apply_chat_template(messages, add_generation_prompt=False,
-                                       return_tensors="pt").input_ids[0]
+    # transformers 5.x returns a BatchEncoding, 4.x a bare tensor — handle both
+    def _ids(enc):
+        return (enc if torch.is_tensor(enc) else enc["input_ids"])[0]
+    prompt_ids = _ids(tok.apply_chat_template(messages[:-1], add_generation_prompt=True,
+                                              return_tensors="pt"))
+    full_ids = _ids(tok.apply_chat_template(messages, add_generation_prompt=False,
+                                            return_tensors="pt"))
     n_prompt = prompt_ids.shape[0]
     # prefix sanity: the training collator masks by this same boundary; if the template
     # breaks the prefix property the score would silently include prompt tokens — refuse instead.
