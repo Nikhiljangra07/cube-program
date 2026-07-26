@@ -137,7 +137,8 @@ async def main():
         if len(th) != 4:
             sys.exit(f"incomplete set {p}")
         sets.append({"pid": p, "problem": th[0][1], "threads": [th[i][0] for i in range(4)],
-                     "angles": srcrows[p]["angles"]})
+                     "angles": [f"[{a['family']}] {a['directive']}" if isinstance(a, dict) else str(a)
+                                for a in srcrows[p]["angles"]]})
     random.Random(98).shuffle(sets)
     print(f"{len(sets)} sets to gate (expect 220)")
 
