@@ -63,6 +63,28 @@ until replicated).
      the data — H-Small capacity fork becomes the live question.
    - Read 2 fails while 1 passes → purity's price is real; report, do not ship.
 
+## AMENDMENT (2026-07-25, pre-pod, Nikhil) — viability face reinstated
+
+Founder decision, recorded as an explicit override: the two-strike rule killed V's
+PILOT PROXY (mean-gap +1.5, diagnosed in the PILOT8 addendum as sitting above the judge
+instrument's ceiling — V2 text was 80%≥8 with zero hedge). Nikhil requires a
+two-specialist cube before any dispatcher work ("two specialists are must; the third is
+the generalist"), and makes the scale decision the proxy existed to inform. The paper
+reports this exactly as an override of a failed proxy — NOT a pass.
+
+- `wrk_faceV_gen` added: V-carve 220 problems (identity-checked vs frozen md5
+  0056aacb…), V-prompt **v2** (the stronger iteration: 8.08 mean, +1.46, 80%≥8),
+  prompt-only, 880 threads.
+- Same admission machinery as F, unchanged: set mean ≥ 7.5 AND no leak; ≥150 or stop.
+- Diet: admitted gen rows + 1 original/problem, keep-0.6, 1.25 epochs — identical recipe.
+- Sessions G/G2 grow to 4 arms: faceF_gen, faceV_gen, faceG, anchor.
+- **The bench face bar is the unmoved arbiter for BOTH faces** (own lane ≥ anchor+0.20
+  AND overall ≥ anchor−0.15, both sessions). No corpus-gate result substitutes for it.
+- F∩V carve overlap 17 problems (8%, run-7 manifest) — documented, within the ≤25% bar.
+- Budget delta: +$1.4 OR (gen) +$3.5 Sonnet (gate) +~$3 Sonnet (4th arm × 2 sessions)
+  → run total ~$25, leaving ~$4-5 Anthropic margin. Dispatcher experiments remain a
+  RUN 9 decision, contingent on ≥2 faces passing the bench bar.
+
 ## Isolation & naming
 
 `data/run8/` (corpus + gate), `out/run8/` (threads, judge), adapter `wrk_faceF_gen`,
