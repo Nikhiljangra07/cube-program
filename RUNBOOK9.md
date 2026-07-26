@@ -77,3 +77,41 @@ passes** (a fail cannot be rescued by the both-sessions bar — run-8 lesson).
 Pod ~$4 (RunPod ~$72) · Session H ~$2.5 · H2 only-if-pass ~$2.5 → **$7-9 total**,
 Anthropic balance ~$13 → margin ~$4-6. Stage gates: preflight fails → terminate pod
 immediately; ladder sanity fails → no judging; H fails → no H2.
+
+---
+
+## RESULTS (2026-07-26, Session H, 48/48 both arms; pod 41 min, preflight 'READY')
+
+| arm | overall | foresight | distinctness | viability |
+|---|---|---|---|---|
+| faceF_gen_qwen | 3.56 | **2.79** | 3.25 | 3.04 |
+| anchor keep100_qwen | 3.73 | 3.12 | 3.65 | 2.94 |
+
+**R3 FACE BAR: FAIL — worse than granite.** Foresight −0.33 vs anchor (granite run 8:
+−0.23); overall 3.56 vs floor 3.58 (floor now fails too). H2 skipped (both-session bar).
+
+**R2 ANCHOR READ (the run's positive result):** Qwen anchor 3.73 overall / 3.12
+foresight vs granite anchor 3.57 / 2.92 (cross-session, annotated) — same data, same
+recipe, stronger base → better generalist across the board. No scale-ceiling issue
+(3.12 « 4.3). **Qwen3-4B-Instruct-2507 qualifies as the program's base going forward.**
+
+### Verdict-grid outcome: DATA/BENCH-DEFINITION IS BINDING, not capacity
+
+The single-variable design did its job. A dramatically stronger base (+0.16 overall,
++0.20 foresight at the anchor) trained on the byte-identical deep-chain diet was
+dragged BELOW its own anchor by MORE than granite was (−0.33 vs −0.23). If capacity had
+been the binding cause of run 8, the stronger model should have converted the same diet
+into a smaller deficit or a gain. Instead the diet transfers a style (127 words/thread
+vs anchor 84 — restrained relative to granite's 156) that the bench's foresight rubric
+("a move or two ahead, WITHOUT over-reach") actively penalizes — and its uniform-chain
+voice also drags distinctness (3.25 vs 3.65, dist≥4% 41.7 vs 64.6). **The deep-chain
+corpus is bench-toxic on ANY base.** Run 8's cause-1 (gate ≠ bench instrument) is the
+binding cause; the capacity story is deferred, not confirmed — divergent-v3's granite
+ceiling stands as separate single-family evidence only.
+
+**Pre-registered next step (verdict grid): run 9b** — regenerate the face corpus with
+the admission gate = the bench JUDGE prompt verbatim (1-2-step realism density, no
+depth mandate), on Qwen, then train + Session I (+I2 only-if-pass). No other change.
+
+Costs: pod $1.6 · Session H ~$2.3. Bundle run9_bundle.tgz md5 708862dc… (3 qwen
+adapters + threads + logs).
