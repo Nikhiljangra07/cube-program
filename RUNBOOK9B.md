@@ -1,0 +1,79 @@
+# RUNBOOK 9B — the aligned-target foresight face (Qwen base, bench-verbatim gate)
+
+**Question:** run 9 isolated the poison — every corpus-side instrument measured a
+self-authored "foresight-as-depth" definition while the bench measures
+"foresight-as-calibration" (a realistic reaction a move or two ahead, no over-reach).
+9b removes the poison and takes the properly-aimed shot: same problems, same base
+(Qwen3-4B-Instruct-2507, qualified in run 9), same recipe — but the corpus is
+generated FOR the bench definition and admitted BY the bench judge itself.
+
+**Definition (Nikhil, 2026-07-26, adopted as the design center):** foresight =
+adversarial anticipation — "assume my opponent's move and make plans around it; be
+prepared for the actions." This matches the bench rubric ("anticipate a realistic
+downstream reaction a move or two ahead — WITHOUT over-reach") — anticipation and
+pre-positioning, not depth-prophecy.
+
+**Program law (new, permanent, earned by runs 8-9):** no instrument may define a lane
+in its own words. The verdict instrument is the single source of truth — quoted,
+never paraphrased. The 9b admission gate IS `sonnet_judge` (the bench judge prompt,
+byte-identical import), not a re-worded cousin.
+
+## RI's role (Nikhil's call, options presented 2026-07-26)
+
+Reverend Insanity feeds the corpus as an **opponent-move taxonomy inside the worker
+prompt** — its strategic repertoire distilled to 7 real-world counterparty-response
+patterns (counter-leverage, feigned concession, delay-and-starve, coalition flip,
+reputation trap, escalate-to-deter, quiet compliance). Instruction-level only: the
+proven lever (Pilot 8: prompts transfer, passages don't) with zero fantasy content
+(v5 cut RI passages for baroque-scheme leakage the bench punishes). No raw excerpts.
+
+## Corpus
+
+- Problems: run-7 F-carve 220, identity-checked vs frozen md5 11910a55… (reused).
+- Generator: **DeepSeek V4 Pro** (~$1.5 of $6 OpenRouter). Sonnet does NOT generate —
+  the generator≠judge family separation is a validity wall (Sonnet gates + judges).
+- Worker prompt (TASK_F2, frozen in run9b_generate.py): commit to the angle with
+  who/what/when + ≥1 hard number → name the counterparty's SINGLE most likely
+  realistic reaction 1-2 moves ahead (taxonomy-sharpened, real-world terms) → show the
+  plan already positioned for it → name the ONE observable signal that would falsify
+  the read. 3-5 sentences. "Anticipate, don't prophesy" — no chains past two moves.
+- **Admission gate = bench judge verbatim** (`sonnet_judge` on each problem's 4
+  generated threads): admit sets with **foresight ≥ 4 AND viability ≥ 3** (1-5 scale;
+  pool foresight floor ≈3.0, so ≥4 is genuinely high on the TRUE instrument; the
+  viability leg blocks scheme-leak). Target ≥140 admitted; one regeneration round for
+  failing problems if OpenRouter budget allows; below 140 after retry → STOP, report.
+- Diet: admitted gen rows + 1 original pos_thread per admitted problem (~20%),
+  keep-0.6 band (recomputed under Qwen), 1.25 epochs.
+
+## Pod (short: ~20 min ≈ $1)
+
+Reuse `dec_qwen` + `wrk_keep100_qwen` from run9_bundle (md5 708862dc…, no retrain).
+Train `wrk_faceF_9b_qwen` only. Gens: `faceF_9b_q` + `anchor_keep100_q9b`
+(anchor REGENERATED on-card — Session-I card-class control), V5_WRK_MAXNEW=512.
+Bundle `run9b_bundle.tgz`.
+
+## Judge Session I (+I2 only-if-pass)
+
+2 arms × 48, Sonnet 5, direct API, coverage ≥44/48 or discard whole.
+
+## Frozen reads
+
+1. **FACE BAR (unchanged, both sessions):** foresight(face) ≥ foresight(anchor) + 0.20
+   AND overall(face) ≥ overall(anchor) − 0.15.
+2. **VERDICT GRID:**
+   - PASS I and I2 → first real specialist exists; phase one complete; V face + cube
+     next (Nikhil's phase gating: "finalize phase one first").
+   - FAIL with an aligned gate → the bench's foresight headroom is not buyable with
+     SFT data at 4B — the causal chain is complete (carving null → grounding null →
+     depth-style toxic → aligned-gate null) → write up. No 9c.
+
+## Budget
+
+DeepSeek ~$1.5-2.2 (OpenRouter $6) · gate ~$3.5 · pod ~$1 · Session I ~$2.5 ·
+I2 only-if-pass ~$2.5 → **~$8.5-11.7**; Anthropic ~$10.5. Stage gates as always.
+
+## Isolation & naming
+
+`data/run9b/`, `out/run9b/`, adapter `wrk_faceF_9b_qwen`, threads `*_9b_q*`,
+scripts `run9b_*`, backup `density_run9b/run9b_bundle.tgz`. No generalist work this
+run (phase-one-only per Nikhil).
