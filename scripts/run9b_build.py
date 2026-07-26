@@ -127,6 +127,7 @@ async def main():
         by.setdefault(r["pid"], {})[r["idx"]] = (r["thread"], r["problem"])
     import hashlib as _h
     srcrows = {}
+    SRC = [DF / "corpus_v5_train/passers.jsonl", DF / "corpus_v5_topup/passers.jsonl"]
     for _p in SRC:
         for _l in _p.open():
             _r = json.loads(_l)
