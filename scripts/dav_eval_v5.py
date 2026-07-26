@@ -187,6 +187,9 @@ def run_all_sequential(probs, dec_adapter, wrk_adapter):
     return out
 
 
+WRK_MAXNEW = int(os.environ.get("V5_WRK_MAXNEW", "256"))
+
+
 class Harness:
     # SEPARATE model instance per seat (peft 0.19.1 multi-adapter switching garbles granite-4.0-micro).
     def __init__(self, dec_adapter=None, wrk_adapter=None):
@@ -208,7 +211,9 @@ class Harness:
         facets, angles = parse_decomp(dtext)
         if len(angles) < 4 or len(facets) < 1: return None
         threads = [self.gen(WRK_SYS, WRK_USER.format(problem=problem, facets=" | ".join(facets), angle=a),
-                            "wrk", 256) for a in angles]  # v5 threads run 2-3 sentences -> a touch more room than v4
+                            "wrk", WRK_MAXNEW) for a in angles]  # default 256 (v5 2-3 sentences); V5_WRK_MAXNEW
+                            # env override for long-thread adapters (run8 faceF_gen chains) — EOS-stopping
+                            # makes a larger cap a no-op for short-thread arms, so comparability holds
         return facets, angles, threads
 
 

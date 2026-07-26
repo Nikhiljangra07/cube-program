@@ -34,7 +34,9 @@ python train_masked.py --data masked/faceFgen.jsonl --out adapters/wrk_faceF_gen
 echo "TRAIN DONE faceF_gen $(date +%H:%M:%S)"
 
 echo "===== GENS Session-G card: 2-parallel then 1 $(date +%H:%M:%S)"
-gen() { V5_DATA=/workspace/div/bench_data python gen_threads.py --label "$1" --dec adapters/dec_keep1.0 --wrk "$2" > "out/gen_$1.log" 2>&1; }
+gen() { V5_DATA=/workspace/div/bench_data V5_WRK_MAXNEW=512 python gen_threads.py --label "$1" --dec adapters/dec_keep1.0 --wrk "$2" > "out/gen_$1.log" 2>&1; }
+# V5_WRK_MAXNEW=512: faceF_gen writes 4-6 sentence chains; 256 would truncate mid-chain.
+# EOS-stopping makes the larger cap a no-op for the short-thread arms (card-class control holds).
 gen faceF_gen adapters/wrk_faceF_gen &
 gen faceG_r8 adapters/wrk_faceG &
 wait
