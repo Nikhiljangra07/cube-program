@@ -63,7 +63,17 @@ until replicated).
      the data — H-Small capacity fork becomes the live question.
    - Read 2 fails while 1 passes → purity's price is real; report, do not ship.
 
-## AMENDMENT (2026-07-25, pre-pod, Nikhil) — viability face reinstated
+## AMENDMENT 2 (2026-07-25, pre-pod, Nikhil) — sequencing reverted to F-first
+
+After discussion, Nikhil adopted the original cautious sequencing: **run 8 pod trains
+faceF_gen ONLY** (3 arms, as first frozen). The V face remains approved-in-principle
+(Amendment 1) but CONTINGENT on faceF_gen passing the bench face bar in both sessions.
+V corpus generation is paused resume-safe at ~40/880 threads (threads_V.jsonl);
+run8v_* scripts stand ready. If F passes → resume V corpus, gate, train, bench (the
+Amendment-1 spec executes as run 8b). If F fails → V is not trained and the capacity
+fork becomes the live question. Dispatcher remains contingent on ≥2 passing faces.
+
+## AMENDMENT 1 (2026-07-25, pre-pod, Nikhil) — viability face reinstated
 
 Founder decision, recorded as an explicit override: the two-strike rule killed V's
 PILOT PROXY (mean-gap +1.5, diagnosed in the PILOT8 addendum as sitting above the judge
