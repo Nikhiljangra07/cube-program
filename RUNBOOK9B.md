@@ -111,3 +111,5 @@ I2 only-if-pass ~$2.5 → **~$8.5-11.7**; Anthropic ~$10.5. Stage gates as alway
 `data/run9b/`, `out/run9b/`, adapter `wrk_faceF_9b_qwen`, threads `*_9b_q*`,
 scripts `run9b_*`, backup `density_run9b/run9b_bundle.tgz`. No generalist work this
 run (phase-one-only per Nikhil).
+
+**Eval B problems FROZEN 2026-07-26: data/run9b/dossier_problems.jsonl, 24/24, md5 de754dad27c0b54ccdf0189ffe126c68.**
