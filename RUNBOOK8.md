@@ -105,3 +105,55 @@ scripts `scripts/run8_*.py|sh`, backup `run8_bundle.tgz`. Never mixed with runs 
 Generation ~$1.4 OR · gate ~$3.5 · pod ~$1.5 · sessions G+G2 ~$10 → **~$17 all-in**,
 ≥$9 Anthropic margin. Stage gates: gate fails → stop before pod; train fails → stop
 before judge; every stage reports before the next spends.
+
+---
+
+## RESULTS (2026-07-26, Session G, 48/48 all arms)
+
+| arm | overall | foresight | face bar |
+|---|---|---|---|
+| faceF_gen | 3.42 | **2.69** | **FAIL** (needed ≥3.12 = anchor+0.20; got −0.23) |
+| faceG (run-7 adapter, regen) | 3.58 | 2.96 | cube read OK (≥3.42 floor) |
+| keep100 anchor (regen) | 3.57 | 2.92 | — |
+
+Oracle(2) +0.11, best-arm 22/26 — reported only. **Session G2 skipped:** the bar
+requires a pass in BOTH sessions; a −0.23 lane deficit cannot be rescued by a second
+session, so G2 would spend ~$3.5 to re-confirm a FAIL. Recorded, not hidden.
+
+**Frozen verdict: FAIL — the generated foresight face does not specialize 3.4B.**
+
+### Diagnosis (two compounding causes, in causal order)
+
+1. **Instrument-target mismatch (design error, Claude's).** The corpus admission gate
+   scored foresight as "consequence chain THREE TO FOUR STEPS deep" (1-10). The bench
+   verdict instrument (gen_v3 JUDGE, frozen since v5) scores foresight as "a realistic
+   downstream reaction **a move or two ahead — WITHOUT fantasy over-reach**" (1-5).
+   The pipeline optimized depth; the bench rewards single-step realism and treats
+   depth-with-any-slack as over-reach. The pilot's +1.43 was measured with the gate
+   definition and therefore never predicted the bench. Lesson (paper-grade): **the
+   corpus gate must be the verdict instrument verbatim**, or the pipeline optimizes a
+   proxy — reward-target mismatch, self-inflicted.
+2. **Realism decay along deep chains at 3.4B (capacity-flavored).** The face DID write
+   what it was trained to write — 156 words/thread vs anchor 98, 0/192 truncated, chain
+   structure fully transferred at 27% diet mass. But step-3/4 links routinely break
+   plausibility (e.g. employee → "board member with 20% ownership" in 3 years). The
+   model reproduces chain FORM without chain JUDGMENT. This converges with the
+   divergent-model v3 finding (foresight is capacity-bound at 3.4B Granite — model
+   ceiling, not corpus), now replicated in a second, independent pipeline.
+
+### What survived the fail
+
+- **Behavioral transfer mechanism CONFIRMED in the positive direction:** 1,030 rows at
+  1.25 epochs radically restyled generation (60% longer threads, deep-chain form).
+  The "model becomes what the text is" law now has strong evidence both ways.
+- faceG cube read passed again (3.58 ≥ 3.42) — economics replication #6.
+- Whole run (gen + gate + pod + 1 session): **~$11**, on budget, all guards fired
+  correctly (2 upload/dep hiccups caught pre-spend).
+
+### Post-run state
+
+Per Amendment 2 the V-face contingency does NOT fire (F failed): V stays untrained,
+corpus paused at 65/880. Next-fork decision (Nikhil's): (a) run 8c — regenerate with
+the gate = bench JUDGE prompt verbatim (tests whether 1-2-step realism can be densified;
+~$12, thin margin), (b) accept the capacity verdict → H-Small/7B fork, (c) stop and
+write up. Dispatcher remains contingent on ≥2 passing faces (currently zero).
