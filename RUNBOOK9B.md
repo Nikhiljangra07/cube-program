@@ -113,3 +113,17 @@ scripts `run9b_*`, backup `density_run9b/run9b_bundle.tgz`. No generalist work t
 run (phase-one-only per Nikhil).
 
 **Eval B problems FROZEN 2026-07-26: data/run9b/dossier_problems.jsonl, 24/24, md5 de754dad27c0b54ccdf0189ffe126c68.**
+
+---
+
+## RESULTS (2026-07-26, Sessions I + J)
+
+**EVAL A (Session I, 48/48 both arms): FAIL by 0.08 — first positive sign in program history.**
+face foresight 3.29 vs anchor 3.17 (+0.12, needed +0.20); overall 3.75 vs 3.74 (face beats anchor overall, first time); viability +0.31; distinctness 3.42 vs 3.60. Trajectory on this bar: deep-chain −0.33 → aligned +0.12 (definition fix worth +0.45). I2 not run (rule).
+
+**EVAL B (Session J, 24/24 both arms): PASS — first face-bar pass in program history.**
+overall_B 3.08 vs 2.02 (+1.06, bar +0.20); every dim up: specificity +1.37, grounding +0.33 (anti-fantasy leg holds), calibration +0.66, positioning +0.42, falsifiability +2.50.
+Caveats (recorded): prototype-grade N=24 single session; face trained toward the facet B measures (legitimate specialization, frozen pre-output — but B measures the facet, not general superiority; A guards that claim at parity-plus).
+
+**VERDICT (frozen grid): SPLIT — passing facet real, phase-one close-or-iterate decision = Nikhil.**
+Costs: pod $1.9 · Session I ~$2.3 · Session J ~$1.3. Bundle run9b_bundle.tgz md5 37b5e811 verified.
