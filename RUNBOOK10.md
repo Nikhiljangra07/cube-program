@@ -85,7 +85,9 @@ training data (generator≠judge family wall). Direct API only, no Batch API.
      from the audit — one clause of natural prose naming which favorable variable
      earns the number and which friction caps it. The number must move with the
      evidence; never a bare figure.
-  3-5 sentences, cold and analytical. "Plan with what you hold, not what you wish."
+  4-6 sentences, cold and analytical (5 content beats need the extra room —
+  9b's TASK_F2 packed 4 beats into 3-5; truncation risk stays covered by
+  V5_WRK_MAXNEW=512). "Plan with what you hold, not what you wish."
   (Formatting guard: the estimate is one clause inside the final sentence, not a
   table or label — keeps Eval A leakage risk minimal, same class as 9b's
   falsification-signal line which cost nothing on A.)
@@ -145,12 +147,58 @@ the actor's own means:
     that caps it, consistent with the stated audit? (A bare or audit-inconsistent
     number = 1-2; a traceable, evidence-scaled estimate = 4-5. The number's
     "correctness" is never scored — only its chain of custody from the variables.)
-  overall-C = mean of 6. Coverage all-or-discard-whole-session, single session,
+  overall-C (reported) = mean of 6. **core-C (the bar metric) = mean of the 5
+  non-estimate dims.** Coverage all-or-discard-whole-session, single session,
   direct API, no temperature param, max_tokens 12000, retry-on-empty.
-- **C BAR (prototype-grade, single session J→L, documented as such):**
-  overall-C(face) ≥ overall-C(anchor) + 0.20 AND resource_grounding(face) ≥
-  anchor (the anti-trap leg — C must never reward confident plans that spend
-  beyond the inventory).
+- **C BAR (prototype-grade, single session L, documented as such):**
+  core-C(face) ≥ core-C(anchor) + 0.20 AND resource_grounding(face) ≥ anchor
+  (the anti-trap leg — C must never reward confident plans that spend beyond
+  the inventory).
+- **Why estimate_derivation is excluded from the bar (verification pass,
+  2026-07-29):** the eval-time worker prompt (v5, arm-neutral) never asks for an
+  estimate; only training installs the habit. The anchor therefore scores ~1 on
+  this dim BY CONSTRUCTION, and a bar including it would be rigged in the face's
+  favor — the same mechanism as 9b's falsifiability dim (face 3.88 vs anchor
+  1.38, +2.50 on a dim the anchor was never asked to express). Retroactive
+  check: 9b's B pass SURVIVES the same correction (core-4 gap +0.69 vs the
+  +0.20 bar), so the 9b verdict stands — but run 10 applies the correction
+  pre-freeze. estimate_derivation is scored and reported for both arms as
+  capability-installation evidence only.
+
+## Verification-pass findings (2026-07-29, pre-spend, all resolved or documented)
+
+1. **Rigged-bar fix (resolved):** estimate_derivation excluded from the C bar —
+   see above. core-C is the bar metric.
+2. **Estimate-clause risk on the frozen Eval A judge (covered by design):** every
+   face thread will carry an invented percentage; if the v5 judge read that as
+   fake-precision over-reach, viability would sink on A. Protection is built in:
+   the **admission gate IS the v5 judge** — if estimate-bearing threads cannot
+   clear viability ≥ 4 at the gate, generation stops before a dollar of training.
+   The gate is the canary. (A derived "~60%, earned by X, capped by Y" is a
+   judgment with shown work, not a fabricated fact-claim like the anchor's "90%
+   surgery success rate" — but the gate proves it on the instrument, not on
+   argument.)
+3. **Trap-angle fairness (defensible as designed):** the decomposer may assign
+   the trap move as one of the four angles, forcing a worker to commit to it.
+   The rubric already prices this: re-scoping the trap to fit the inventory
+   scores HIGH on resource_grounding — committing to the angle while refusing
+   its unresourced form is exactly the skill. Both arms face identical dynamics.
+4. **Generator-style confound (documented limitation, carried from 9b):**
+   DeepSeek authors both the training corpus and the Eval C problems, so the
+   face may hold a style-familiarity edge on C that the anchor lacks. Mitigants:
+   both arms see identical problems; the C rubric dims are content-checks
+   (inventory-traceability), not style; and Eval A remains the style-neutral
+   leg — which is why the dual-eval exists. Same limitation was present in
+   Eval B and is documented, not hidden.
+5. **Foresight-leg feasibility at the gate (watch item):** TASK_V4 has no
+   explicit counterparty-reaction step; the friction beat (step 4 — another
+   human's veto, legal stall) is what carries the foresight ≥ 3 gate leg. If
+   admission stalls below 140 with foresight as the binding failure, the fix is
+   one line in step 4 ("frictions include the counterparty's most likely
+   response"), rerun of failures — not a redesign.
+6. **Namespace check (clean):** no `run10`/`faceV_10`/session-K/L collisions in
+   any existing script; V-carve manifest confirms bench_overlap = 0 and
+   prep_holdout = 20 excluded.
 
 ## Frozen reads
 
