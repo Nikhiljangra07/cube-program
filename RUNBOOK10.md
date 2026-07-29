@@ -103,8 +103,9 @@ training data (generator≠judge family wall). Direct API only, no Batch API.
 
 Reuse `dec_qwen` + `wrk_keep100_qwen` from run9_bundle (md5 708862dc…, no retrain).
 Train **`wrk_faceV_10_qwen`** only. Gens: `faceV_10_qA` + `anchor_10_qA` (anchor
-regenerated on-card — card-class control) + `faceV_10_qC` + `anchor_10_qC`.
-V5_WRK_MAXNEW=512. Bundle `run10_bundle.tgz`.
+regenerated on-card — card-class control) + `faceV_10_qC` + `anchor_10_qC` (32
+base each) + `faceV_10_qCtwin` (16 perturbed twins, face only — calibration
+probe). V5_WRK_MAXNEW=512. Bundle `run10_bundle.tgz`.
 
 ## DUAL-EVAL DESIGN (the 9b architecture, facet-swapped)
 
@@ -120,7 +121,8 @@ output exists).** Measures Nikhil's foundation directly: audit-grounded planning
 Where Eval B carried a dossier of opponent behavior, Eval C carries an inventory of
 the actor's own means:
 
-- **Format:** 24 problems (prototype-grade N, documented as such). Each = a
+- **Format (Amendment 2, 2026-07-29 — Nikhil: "make it strict… only then we can
+  trust the benchmark numbers"):** **32 base problems** (up from 24). Each = a
   concrete decision scenario in a modern real-world setting + an explicit
   INVENTORY of what the actor actually holds (funds, people and their actual
   commitment level, the actor's seat/authority, hard deadlines) + at least one
@@ -128,16 +130,39 @@ the actor's own means:
   actor cannot actually resource; mirror of B's innocent counter-signal). Generated
   by DeepSeek (family separation), OOD from all training problems, md5-frozen
   before any face thread exists.
+- **Calibration probe (Amendment 2 — the objective "is the percentage right or
+  wrong" check):** 16 of the 32 base problems additionally get a **PERTURBED
+  TWIN**: the identical scenario with the inventory strengthened in exactly ONE
+  named way (one friction removed OR one concrete resource added; nothing else
+  changes). Twins are md5-frozen with the base set, used ONLY for the probe,
+  never trained on, never judged by rubric. The FACE arm generates on all 16
+  twins (anchor skipped — it emits no estimates by construction; documented).
+  **Metric (judge-free, pure arithmetic on the model's own outputs):**
+  - parseability: threads must contain a regex-extractable percentage or tight
+    range (midpoint used). A twin-pair where either side has no parseable
+    estimate counts as a FAIL — the habit must be consistent to be trusted.
+  - direction-accuracy: pair passes iff estimate(boosted twin) ≥ estimate(base).
+  A derived number MUST rise (or hold) when the inventory strengthens; a number
+  that falls when the actor gets stronger is proven mush. No LLM opinion exists
+  anywhere in this metric. (A reference-band alternative — problem-author
+  supplies a "defensible range" — was considered and REJECTED: it inserts
+  another LLM's opinion as ground truth; the monotonic probe is opinion-free.)
 - **Task per arm:** same two-seat harness, same worker prompts as Eval A — no
   arm-specific prompting; the inventory arrives as part of the problem text.
-- **Judge (Sonnet 5, new rubric, frozen in judge_run10.py):** 6 dims, 1-5 —
+- **Judge (Sonnet 5, new rubric, frozen in judge_run10.py):** 6 dims, 1-5, with
+  **HARD CAPS (Amendment 2 strictness — single violations are disqualifying,
+  not averaged away):**
   - resource_grounding: does every step spend only items in the inventory, with
     nothing invented beyond it (and the trap move either avoided or explicitly
-    re-scoped to fit the inventory)?
+    re-scoped to fit the inventory)? **CAP: any single invented resource, fact,
+    or actor anywhere in the set → this dim scores at most 2.**
   - seat_fidelity: does the actor act only from the position/authority the
-    inventory grants (no moves requiring a seat they do not hold)?
+    inventory grants (no moves requiring a seat they do not hold)? **CAP: any
+    single out-of-authority move → at most 2.**
   - causal_soundness: does each step actually produce the next — no step whose
     success depends on another party's unforced cooperation stated as certain?
+    **CAP: any step stating another party's unforced cooperation as certain →
+    at most 3.**
   - friction_realism: does the plan name real-world friction (legal, human,
     timeline) and carry an answer to it, rather than a zero-friction world?
   - decisive_completeness: does the thread still COMMIT and resolve the decision —
@@ -150,10 +175,17 @@ the actor's own means:
   overall-C (reported) = mean of 6. **core-C (the bar metric) = mean of the 5
   non-estimate dims.** Coverage all-or-discard-whole-session, single session,
   direct API, no temperature param, max_tokens 12000, retry-on-empty.
-- **C BAR (prototype-grade, single session L, documented as such):**
-  core-C(face) ≥ core-C(anchor) + 0.20 AND resource_grounding(face) ≥ anchor
-  (the anti-trap leg — C must never reward confident plans that spend beyond
-  the inventory).
+- **C BAR (prototype-grade, single session L, documented as such) — now TWO
+  legs, both required:**
+  - **Leg 1 (comparative, judged, n=32):** core-C(face) ≥ core-C(anchor) + 0.20
+    AND resource_grounding(face) ≥ anchor (the anti-trap leg — C must never
+    reward confident plans that spend beyond the inventory).
+  - **Leg 2 (absolute, objective — the trust-the-numbers leg, n=16 pairs):**
+    parseable estimates on ≥ 14/16 pairs AND direction-accuracy ≥ 12/16 (75%).
+    Binomial note: a random-number model hits 12/16 with p ≈ 0.038 — the leg
+    genuinely discriminates derived numbers from mush. If Leg 1 passes but Leg 2
+    fails, the verdict is PARTIAL: the planning face is real but the estimate
+    habit is mush — reported as such, never averaged into a pass.
 - **Why estimate_derivation is excluded from the bar (verification pass,
   2026-07-29):** the eval-time worker prompt (v5, arm-neutral) never asks for an
   estimate; only training installs the habit. The anchor therefore scores ~1 on
@@ -216,10 +248,11 @@ the actor's own means:
 
 ## Budget (staged, kill-switches at every gate)
 
-DeepSeek generation ~$1.5-2.5 (OpenRouter) · Eval C problems ~$0.5 · admission gate
-~$3.5 (Anthropic) · pod ~$1 (RunPod) · Session K ~$2.5 · Session L ~$1.5 · K2
-only-if-pass ~$2.5 → **~$10.5-14** total. Budget confirmed replenished by Nikhil
-(2026-07-26: "we got the budget… GPU as well as the Anthropic").
+DeepSeek generation ~$1.5-2.5 (OpenRouter) · Eval C problems + twins ~$0.9 ·
+admission gate ~$3.5 (Anthropic) · pod ~$1 (RunPod) · Session K ~$2.5 · Session L
+~$2.5 (32×2 arms judged; the 16-pair probe is judge-free arithmetic, $0) · K2
+only-if-pass ~$2.5 → **~$11.5-15.5** total. Budget confirmed replenished by
+Nikhil (2026-07-26: "we got the budget… GPU as well as the Anthropic").
 
 ## Isolation & naming
 
