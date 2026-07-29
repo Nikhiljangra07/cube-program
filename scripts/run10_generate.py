@@ -47,10 +47,11 @@ TASK_V = (
     "statistics, no moves outside the actor's authority. (4) Name the ONE real-world "
     "friction most likely to stall the plan (a legal step, another human's veto, a "
     "timeline slip) and the pre-arranged answer to it. (5) CLOSE with a success "
-    "estimate (a percentage or tight range) as one clause of natural prose inside the "
-    "final sentence, explicitly derived from the audit — name which favorable "
-    "variable earns the number and which friction caps it; the number must move with "
-    "the evidence, never a bare figure. Plan with what you hold, not what you wish.\n"
+    "estimate as one clause of natural prose inside the final sentence, written in "
+    "DIGITS with a % sign (e.g. '60%' or '55-65%', never spelled out in words), "
+    "explicitly derived from the audit — name which favorable variable earns the "
+    "number and which friction caps it; the number must move with the evidence, "
+    "never a bare figure. Plan with what you hold, not what you wish.\n"
     "Final line, exactly: TRACE: <favorable variable -> friction -> estimate in <=15 words>")
 HEAD = ("You are writing ONE reasoning thread for a decision dilemma. You see ONLY your "
         "assigned angle; you are blind to the other threads.\n\n")
