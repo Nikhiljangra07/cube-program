@@ -14,6 +14,23 @@ position/seat, time), and every step spends only what the audit shows. A plan th
 spends money, authority, or people the actor does not have is a paper plan, however
 detailed it sounds.
 
+**Definition extension (Nikhil, 2026-07-29 — the estimate leg):** "nothing is
+absolute… we have to put a percentage criteria based on it — only then we can
+measure something." A viable plan CLOSES with a success estimate explicitly derived
+from the audit. The number itself is unverifiable on a fictional scenario and is
+never scored; what is scored is the DERIVATION — the estimate must name which
+favorable variable earns it and which friction caps it, and must move with the
+evidence (an audit showing three frictions and no favorable variable cannot claim
+80%). Nikhil's own trap-warning is the rubric: "if the model can create any sort of
+mush out of those variables and just give a random number" — that mush is what
+`estimate_derivation` (Eval C dim 6) exists to catch.
+
+**Run-11 vision (recorded, not in scope for run 10):** the full loop Nikhil
+described — foresight seat reads the concealed opponent → viability seat audits the
+variables → the assembled chain outputs the final derived success percentage — is a
+COMPOSITION of both specialists and is therefore the cube test's target output
+shape, not a single-face capability. Run 11 inherits this as its deliverable.
+
 This aligns with the frozen bench rubric verbatim (head2head_v5.py:59-60): "are the
 four REALISTIC, LAWFUL, and actually executable in the real world (NOT fantasy, NOT
 illegal, NOT convoluted obfuscation)?" — the definition operationalizes HOW
@@ -64,7 +81,14 @@ training data (generator≠judge family wall). Direct API only, no Batch API.
      statistics, no moves outside the actor's authority.
   4. Name the ONE real-world friction most likely to stall the plan (legal step,
      another human's veto, timeline slip) and the pre-arranged answer to it.
+  5. CLOSE with a success estimate (a percentage or tight range) explicitly derived
+     from the audit — one clause of natural prose naming which favorable variable
+     earns the number and which friction caps it. The number must move with the
+     evidence; never a bare figure.
   3-5 sentences, cold and analytical. "Plan with what you hold, not what you wish."
+  (Formatting guard: the estimate is one clause inside the final sentence, not a
+  table or label — keeps Eval A leakage risk minimal, same class as 9b's
+  falsification-signal line which cost nothing on A.)
 - **Admission gate = bench judge verbatim** (`sonnet_judge` per problem on the 4
   generated threads): admit sets with **viability ≥ 4 AND foresight ≥ 3** (mirror of
   9b's gate with the legs swapped — the foresight leg blocks plans that audit well
@@ -104,7 +128,7 @@ the actor's own means:
   before any face thread exists.
 - **Task per arm:** same two-seat harness, same worker prompts as Eval A — no
   arm-specific prompting; the inventory arrives as part of the problem text.
-- **Judge (Sonnet 5, new rubric, frozen in judge_run10.py):** 5 dims, 1-5 —
+- **Judge (Sonnet 5, new rubric, frozen in judge_run10.py):** 6 dims, 1-5 —
   - resource_grounding: does every step spend only items in the inventory, with
     nothing invented beyond it (and the trap move either avoided or explicitly
     re-scoped to fit the inventory)?
@@ -116,7 +140,12 @@ the actor's own means:
     timeline) and carry an answer to it, rather than a zero-friction world?
   - decisive_completeness: does the thread still COMMIT and resolve the decision —
     audit as foundation for action, never as an excuse to hedge?
-  overall-C = mean of 5. Coverage all-or-discard-whole-session, single session,
+  - estimate_derivation: does the thread close with a success estimate that is
+    visibly DERIVED — naming the favorable variable that earns it and the friction
+    that caps it, consistent with the stated audit? (A bare or audit-inconsistent
+    number = 1-2; a traceable, evidence-scaled estimate = 4-5. The number's
+    "correctness" is never scored — only its chain of custody from the variables.)
+  overall-C = mean of 6. Coverage all-or-discard-whole-session, single session,
   direct API, no temperature param, max_tokens 12000, retry-on-empty.
 - **C BAR (prototype-grade, single session J→L, documented as such):**
   overall-C(face) ≥ overall-C(anchor) + 0.20 AND resource_grounding(face) ≥
