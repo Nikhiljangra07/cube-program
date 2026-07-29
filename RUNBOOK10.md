@@ -197,6 +197,15 @@ the actor's own means:
   pre-freeze. estimate_derivation is scored and reported for both arms as
   capability-installation evidence only.
 
+**Eval C FROZEN 2026-07-29: data/run10/inventory_problems.jsonl, 32/32, md5
+ea0707a54dd17f2a0398293743ce8e3b; data/run10/twin_problems.jsonl, 16/16, md5
+d3ec49d531cf7ca068a94683bb8346b4. Twin determinism verified 16/16 (each twin =
+base + exactly one appended UPDATE line, byte-checked). Structure verified 32/32
+(all sections present, ≥6 inventory items). Stage-1 actual cost $1.14 (incl. the
+DeepSeek reasoning-token truncation diagnosis — root cause: V4 Pro spends
+completion budget on reasoning; fix: max_tokens 2400→10000 here, 2600→8000 in
+run10_generate.py, applied before stage 2 could hit the same landmine).**
+
 ## Verification-pass findings (2026-07-29, pre-spend, all resolved or documented)
 
 1. **Rigged-bar fix (resolved):** estimate_derivation excluded from the C bar —
