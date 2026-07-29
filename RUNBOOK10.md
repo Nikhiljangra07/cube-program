@@ -263,6 +263,49 @@ admission gate ~$3.5 (Anthropic) · pod ~$1 (RunPod) · Session K ~$2.5 · Sessi
 only-if-pass ~$2.5 → **~$11.5-15.5** total. Budget confirmed replenished by
 Nikhil (2026-07-26: "we got the budget… GPU as well as the Anthropic").
 
+## RESULTS (2026-07-29, Sessions K + L + probe)
+
+**VERDICT: FAIL — all three legs.** First aligned-recipe fail in the program; the
+definition-drift excuse does not apply (gate was the bench judge verbatim, corpus
+scored viability 4.26 on the true instrument at admission).
+
+- **Eval A (Session K, 48×2):** FAIL both legs. viability face 3.17 vs anchor 3.08
+  (+0.09, positive sign but short of +0.20); overall floor BROKEN — face 3.53 vs
+  floor 3.63 (anchor 3.78). The audit-first voice costs decisiveness (3.83 vs 4.44,
+  −0.61) and concreteness (3.71 vs 4.17, −0.46) on the frozen bench: the long audit
+  opening reads as committing late. K2 not run (cannot rescue).
+- **Eval C (Session L, 32×2, hard-cap rubric):** FAIL both legs. core-C face 2.52
+  vs anchor 2.57 — the face does not beat the anchor even on its own facet bench.
+  Hard caps crushed BOTH arms (resource_grounding ≈2.0 both): at 4B, every set
+  contains at least one invention/out-of-seat move, so the caps bind universally
+  and erase differentiation. Only dim face leads: estimate_derivation 2.03 vs 1.59
+  — the excluded-from-bar dim, i.e. the habit installed but nothing else improved.
+- **Calibration probe (Leg 2, judge-free):** FAIL. Parseable 6/16 (needed 14) —
+  the estimate habit fires on only ~35% of eval threads when the prompt doesn't ask
+  for it. Direction 3/6 on parseable pairs — coin flip; wrong-direction deltas all
+  small (57.5→56.7, 41.2→39.2), i.e. noise around underived numbers. Nikhil's
+  "mush" scenario, measured and confirmed.
+
+**Diagnosis (working, honest):** run-9b (foresight) vs run-10 (viability) is now a
+controlled contrast — same base, same recipe, same aligned-gate method, opposite
+outcomes. The pattern: **structural habits transfer to 4B by SFT** (anticipate →
+position → falsifier: 9b passed Eval B +1.06), **fidelity constraints do not**
+(don't invent, stay in seat, keep numbers coherent: run-10 failed all legs).
+Viability is hallucination-adjacent — it demands sustained precision, not a
+learnable response shape. Consistent with PILOT8's two prompt-only V strikes and
+with the earlier granite foresight-ceiling finding (structure transfers, capacity
+binds). Gate-vs-eval gap corroborates: DeepSeek's threads scored 4.26 at admission,
+the trained 4B emits 3.17 — the 4B cannot reproduce its teacher's fidelity.
+
+**Frozen-grid consequence:** "FAIL both with an aligned gate → report, no 10b
+without a new causal hypothesis." The structure-vs-fidelity diagnosis IS a
+candidate hypothesis for a different second face (distinctness is structural, and
+its carve exists — own-lane mean 8.61), but that is a NEW decision for Nikhil, not
+a continuation of run 10. wrk_faceV_10_qwen is NOT a specialist.
+
+**Cost (run 10 actuals):** OpenRouter $4.43 (Eval C $1.14 + corpus $3.29; retry
+round unused) · Anthropic ≈$6-7 (gate + K + L; K2 skipped) · pod ≈$1.2 · probe $0.
+
 ## Isolation & naming
 
 `data/run10/`, `out/run10/`, adapter `wrk_faceV_10_qwen`, threads `*_10_q*`,
