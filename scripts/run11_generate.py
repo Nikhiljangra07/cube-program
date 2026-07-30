@@ -62,7 +62,11 @@ PROMPT = (
     "HARD RULES: modern voice matching the problem's own world; no historical/classical "
     "content unless the problem is set there; the revision must genuinely re-plan (not "
     "restate turn 1); proportionate numbers — one small shift never moves an estimate by "
-    "more than ~25 points."
+    "more than ~25 points. CLOSED WORLD (absolute): the plan, update, and revision may "
+    "only reference people, resources, venues, meetings, deadlines, and numbers already "
+    "stated in the problem or introduced by the update itself. Introducing ANY new actor, "
+    "event, body, or figure not derivable from those is failure — reallocate what exists, "
+    "never conjure."
 )
 
 
