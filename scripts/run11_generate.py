@@ -66,7 +66,12 @@ PROMPT = (
     "only reference people, resources, venues, meetings, deadlines, and numbers already "
     "stated in the problem or introduced by the update itself. Introducing ANY new actor, "
     "event, body, or figure not derivable from those is failure — reallocate what exists, "
-    "never conjure."
+    "never conjure. ARITHMETIC COHERENCE: if the update changes any quantity, restate the "
+    "affected arithmetic explicitly (old -> new); never leave a number contradicting turn 1. "
+    "CONSISTENCY: never contradict counts, structures, refusals, or constraints stated in "
+    "the problem or turn 1 — if someone refuses unconditionally, the revision may not "
+    "assume they agree. ESTIMATE JUSTIFICATION: argue the SIZE of the estimate move from "
+    "the changed variable's weight in one clause, never assert it bare."
 )
 
 
@@ -107,7 +112,7 @@ async def gen(client, job):
             reason = "request failed"
             try:
                 r = await client.post(OR_URL, headers={"Authorization": f"Bearer {KEY}"},
-                                      json={"model": MODEL, "max_tokens": 10000, "temperature": 0.75,
+                                      json={"model": MODEL, "max_tokens": 10000, "temperature": 0.45,
                                             "messages": [{"role": "user", "content": prompt}]},
                                       timeout=180)
                 r.raise_for_status()
