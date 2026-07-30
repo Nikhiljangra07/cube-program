@@ -124,3 +124,41 @@ nerf twins `data/run11/nerf_twins.jsonl` (16/16, md5 8cd693cf3d15183fcb0d5ce46c3
 N (Eval A regression). No collisions with runs 7-10 namespaces (verified).
 
 *Frozen 2026-07-30 pre-spend. Awaiting Nikhil's $5 OpenRouter top-up + go.*
+
+## RESULTS (2026-07-30, Eval D v1 + v2)
+
+**Eval D v1 (static-prompt priors): instrument gap** — priors carried no estimate
+for 12-16/32 pairs in every arm (the static eval prompt never asks), so bar 1 was
+structurally unpassable and nerf n shrank to 10. Genuine v1 signals: subject
+revisions tagged 31/32 (format trained); keep100 nerf 12% (sycophant exposed);
+subject mean nerf delta +2.2 (wrong side, thin n). v2 amendment (pre-committed,
+thresholds unchanged): priors regenerated WITH the tagged-estimate instruction.
+
+**Eval D v2 (full coverage): FAIL on the frozen bars — and a discovery.**
+- faceVD_11: parse 30/32 OK · boost 15/15 OK · nerf 14/15 (93%) OK · **ack 17/32
+  FAIL** (needs 24) → FAIL per grid ("ack fails → report, stop").
+- **Delta-vs-static read: −7 (needed ≥ +25) → the delta diet bought nothing** the
+  revise-prompt doesn't already elicit.
+- **The discovery (the run's real finding):** with an ANCHORED prior (old estimate
+  visible) + the revise instruction, EVERY arm — including the untrained
+  generalist — re-derives direction-correctly (keep100 nerf 12% → 100% between v1
+  and v2). v1/probe-3 "sycophancy" was largely a missing-anchor artifact: no old
+  number in view → inflate to 90s; old number in view → correct directional
+  arithmetic, universally. The TRIGGER (notice + re-derive) is therefore an
+  ENGINEERING property of the harness (track variables, present the update, show
+  the prior estimate, ask), not a capability that needs training at 4B. Nikhil's
+  variables-in-motion loop is implementable TODAY with existing adapters at
+  93-100% direction accuracy.
+- Ack 17/32: the subject's trained tight format cites fewer update surface-words
+  than the verbose arms (faceV_10 21, keep100 23) — a stylistic side effect of
+  training, reported as-is per the grid.
+- Consequence: **wrk_faceVD_11_qwen is NOT declared a specialist.** Eval A
+  regression session NOT run (spend withheld pending fork decision — the adapter
+  has no claim to guard). Run-12 design question shifts from "train the second
+  specialist" to "build the motion loop in the harness + decide what occupies the
+  viability seat." Fork is Nikhil's.
+
+**Cost (run 11 actuals):** OpenRouter ~$4.9 (3 corpus versions + nerfs + regen) ·
+Anthropic ~$11.5 (audit battle incl. my $4.5 uncached-audit mistake) · pod ~$0.8.
+Bundle run11_bundle.tgz md5 67eeb5ea (adapter + threads + evalD v1); evalD2 files
+pulled and scored locally.
