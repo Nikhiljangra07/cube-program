@@ -337,6 +337,22 @@ face licensed. Ack passes but direction fails → model narrates updates without
 deriving → numbers decorative even when prompted; reframe dies. Ack fails →
 elicitation itself beyond 4B-SFT reach here; reframe dies.
 
+**PROBE 3 RESULTS (2026-07-30, A40 neutral_maroon_gibbon, 64/64 greedy revisions,
+~$0.15):** **PASS on both frozen bars** — face ACK 12/16 (at bar), DIRECTION 11/14
+parseable pairs (79% ≥ 75%). Parseability itself jumped: 14/16 pairs vs 6/16 in the
+blind probe — when asked, the face emits digits.
+
+**Post-hoc caveat (honest, from the anchor reference arm):** keep100 also scored
+ACK 11/16 and DIRECTION 8/8 — by inflating nearly every revision to 82-100%
+regardless of its old number (10→78, 15→82). The one-sided bar (boost always
+strengthens) cannot distinguish derivation from indiscriminate "things improved"
+uplift. The FACE shows discrimination the anchor lacks — 3 holds (40→40,
+47.5→47.5, 50→50) and moderated moves vs the anchor's uniform ceiling — so the
+pass is evidence of capability, not proof. **Run-11 eval requirement (binding):
+bidirectional twins — half boosts, half NERFS (resource removed / friction added)
+— so an always-up policy fails half the pairs. The delta-derivation face trains
+and is judged on both directions.**
+
 ## Isolation & naming
 
 `data/run10/`, `out/run10/`, adapter `wrk_faceV_10_qwen`, threads `*_10_q*`,
