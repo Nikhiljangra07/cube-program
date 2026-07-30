@@ -104,7 +104,7 @@ threads on the 16 eval base problems; revisions on all 32 twins × 3 arms
 ## Isolation & naming
 
 `data/run11/`, `out/run11/`, adapter `wrk_faceVD_11_qwen`, scripts `run11_*`,
-nerf twins `data/run11/nerf_twins.jsonl` (md5-frozen at build), bundle
+nerf twins `data/run11/nerf_twins.jsonl` (16/16, md5 8cd693cf3d15183fcb0d5ce46c30e0e5, determinism byte-checked), bundle
 `density_run11/run11_bundle.tgz`. Judge sessions: M (Sonnet sample-audit),
 N (Eval A regression). No collisions with runs 7-10 namespaces (verified).
 
