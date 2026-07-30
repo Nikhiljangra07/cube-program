@@ -121,13 +121,38 @@ async def main():
     # AMENDMENT (2026-07-30, after pilots 1-3): audit ALL admitted sequences and DROP
     # junk from the diet (per-sequence filter), instead of sample-and-stop. Global
     # sanity line: junk > 35% overall -> stop anyway. Diet floor: 180 sound sequences.
+    # AMENDMENT 2: per-sequence audit CACHE keyed by (pid, direction, md5(revision)) —
+    # re-runs only pay for new/changed sequences; verdicts never lost again.
+    cache_path = OUTD / "audit_cache.jsonl"
+    cache = {}
+    if cache_path.exists():
+        for l in cache_path.open():
+            c = json.loads(l)
+            cache[(c["pid"], c["direction"], c["rev_md5"])] = c
+        print(f"audit cache: {len(cache)} verdicts loaded")
+
+    def key(r):
+        return (r["pid"], r["direction"], hashlib.md5(r["revision"].encode()).hexdigest()[:12])
+
+    todo = [r for r in admitted if key(r) not in cache]
+    print(f"auditing {len(todo)} uncached (of {len(admitted)} admitted)")
     async with httpx.AsyncClient() as client:
-        audits = await asyncio.gather(*[audit_one(client, r) for r in admitted])
-    pairs = [(r, a) for r, a in zip(admitted, audits) if a is not None]
+        fresh = await asyncio.gather(*[audit_one(client, r) for r in todo])
+    with cache_path.open("a") as cf:
+        for r, a in zip(todo, fresh):
+            if a is not None:
+                pd, dn, h = key(r)
+                row = {"pid": pd, "direction": dn, "rev_md5": h,
+                       "sound": a["sound"], "issue": a.get("issue", "")}
+                cache[(pd, dn, h)] = row
+                cf.write(json.dumps(row) + "\n")
+    pairs = [(r, cache[key(r)]) for r in admitted if key(r) in cache]
     if len(pairs) < len(admitted) - 10:
         sys.exit(f"AUDIT COVERAGE FAIL: {len(pairs)}/{len(admitted)} scored — rerun")
     sound = [r for r, a in pairs if a["sound"]]
     junk = [(r, a) for r, a in pairs if not a["sound"]]
+    (OUTD / "junk_keys.json").write_text(json.dumps(
+        [{"pid": r["pid"], "direction": r["direction"]} for r, _ in junk], indent=0))
     print(f"Sonnet audit-all (session M): {len(pairs)} scored, junk {len(junk)} "
           f"({100*len(junk)/len(pairs):.0f}%) dropped; {len(sound)} sound")
     (OUTD / "gate_report.json").write_text(json.dumps(
