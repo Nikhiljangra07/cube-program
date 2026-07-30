@@ -51,6 +51,21 @@ Run-11 plan fits one top-up: OpenRouter ~$4.0 · Anthropic ~$3 · pod ~$0.5.
   (viability voice retained, $0) → ~1,200-1,250 rows, keep-0.6 band, 1.25 epochs.
   Adapter: **wrk_faceVD_11_qwen** (D for delta; no collision with any prior name).
 
+**AMENDMENT (2026-07-30, corpus-quality battle, pilots 1-3):** v1 corpus (temp
+0.75) audited 47% junk — invention class ("promotion panel", "steward's
+understudy") — the frozen 20% stop line fired BEFORE training; v1 archived. Fix 1:
+CLOSED WORLD hard rule → pilot-2 junk 44%, class shifted to coherence
+(contradicted counts, unexplained arithmetic, ignored refusals). Fix 2: temp
+0.75→0.45 + arithmetic-coherence/consistency/estimate-justification rules →
+pilot-3 junk 20% (at the line, code gate 30/30). Gate promoted from
+sample-and-stop to **audit-ALL-as-filter**: every code-admitted sequence is
+Sonnet-audited; junk is DROPPED from the diet, not trained. Global sanity stop
+at >35% junk; diet floor 180 sound sequences. Cost delta: ~+$4.5 Anthropic
+(session M becomes full-corpus), justified — the diet enters training certified
+sound by the strict instrument. Lesson recorded: re-derivation is harder for the
+teacher than static threads; audit at pilot stage ALWAYS (v1's junk was caught
+only at full-corpus audit).
+
 ## EVAL D — the motion bench (strict, refactored, frozen BEFORE any output)
 
 - **Held-out problems:** the 16 frozen twin base problems (Eval C, never trained)

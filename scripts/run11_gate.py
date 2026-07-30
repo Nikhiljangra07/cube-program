@@ -118,19 +118,29 @@ async def main():
     if len(admitted) < 220:
         sys.exit(f"ADMISSION SHORTFALL: {len(admitted)} < 220 — STOP, report to Nikhil")
 
-    sample = random.Random(11).sample(admitted, min(AUDIT_N, len(admitted)))
+    # AMENDMENT (2026-07-30, after pilots 1-3): audit ALL admitted sequences and DROP
+    # junk from the diet (per-sequence filter), instead of sample-and-stop. Global
+    # sanity line: junk > 35% overall -> stop anyway. Diet floor: 180 sound sequences.
     async with httpx.AsyncClient() as client:
-        audits = await asyncio.gather(*[audit_one(client, r) for r in sample])
-    audits = [a for a in audits if a]
-    junk = [a for a in audits if not a["sound"]]
-    print(f"Sonnet audit (session M): {len(audits)}/{len(sample)} scored, junk {len(junk)} "
-          f"({100*len(junk)/max(1,len(audits)):.0f}%): {[a['issue'] for a in junk][:6]}")
+        audits = await asyncio.gather(*[audit_one(client, r) for r in admitted])
+    pairs = [(r, a) for r, a in zip(admitted, audits) if a is not None]
+    if len(pairs) < len(admitted) - 10:
+        sys.exit(f"AUDIT COVERAGE FAIL: {len(pairs)}/{len(admitted)} scored — rerun")
+    sound = [r for r, a in pairs if a["sound"]]
+    junk = [(r, a) for r, a in pairs if not a["sound"]]
+    print(f"Sonnet audit-all (session M): {len(pairs)} scored, junk {len(junk)} "
+          f"({100*len(junk)/len(pairs):.0f}%) dropped; {len(sound)} sound")
     (OUTD / "gate_report.json").write_text(json.dumps(
-        {"total": len(rows), "admitted": len(admitted), "boost": n_b, "nerf": n_n,
-         "rejections": rejected, "audit_n": len(audits), "audit_junk": len(junk),
-         "junk_issues": [a["issue"] for a in junk]}, indent=1))
-    if len(audits) and len(junk) / len(audits) > JUNK_MAX:
-        sys.exit(f"AUDIT FAIL: {len(junk)}/{len(audits)} junk > 20% — STOP before training")
+        {"total": len(rows), "code_admitted": len(admitted), "boost": n_b, "nerf": n_n,
+         "rejections": rejected, "audited": len(pairs), "junk_dropped": len(junk),
+         "sound": len(sound), "junk_issues": [a["issue"] for _, a in junk][:20]}, indent=1))
+    if len(junk) / len(pairs) > 0.35:
+        sys.exit(f"AUDIT FAIL: junk {100*len(junk)/len(pairs):.0f}% > 35% — STOP before training")
+    if len(sound) < 180:
+        sys.exit(f"DIET FLOOR FAIL: {len(sound)} sound < 180 — STOP, report to Nikhil")
+    admitted = sound
+    n_b = sum(1 for r in admitted if r["direction"] == "boost")
+    n_n = len(admitted) - n_b
 
     # ---- diet build: delta revision rows + static faceV_10 diet ----
     face_dir = D11 / "faceVD_11"
