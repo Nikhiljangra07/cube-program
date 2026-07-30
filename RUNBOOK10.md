@@ -306,6 +306,37 @@ a continuation of run 10. wrk_faceV_10_qwen is NOT a specialist.
 **Cost (run 10 actuals):** OpenRouter $4.43 (Eval C $1.14 + corpus $3.29; retry
 round unused) · Anthropic ≈$6-7 (gate + K + L; K2 skipped) · pod ≈$1.2 · probe $0.
 
+## PROBE 3 — elicited derivation (Nikhil's reframe, frozen 2026-07-30 pre-run)
+
+**Hypothesis under test:** run-10's blind probe showed no SPONTANEOUS shift-tracking.
+Nikhil's reframe: derivation may be a capability the face holds but was never
+triggered — variables are not stagnant; put the shift in front of the model and ask
+it to re-derive. If elicited derivation works, delta-derivation TRAINING (teach the
+trigger as structure) is licensed as run 11; if even explicit elicitation fails,
+the reframe is falsified for ~$1.
+
+**Design (no OpenRouter, no training, judge-free scoring):**
+- Inputs: the 16 frozen twin pairs + each arm's OWN base-problem threads from the
+  run-10 bundle (up to 2 threads per pair, preferring threads with parseable
+  estimates; old estimate recorded at selection).
+- Revision prompt (elicitation is the point; NOT the frozen v5 eval): problem +
+  the arm's own prior thread + "UPDATE: {boost}" + instruction to state what the
+  update changes, revise the plan, and give a revised estimate in digits derived
+  from the update. Greedy decoding (do_sample=False), max_new 384 — reproducible.
+- Arms: faceV_10 (the subject) + keep100 anchor (reference only, no bar).
+- Pod: any cheap card (A40), ~15 min. Outputs probe3_raw.jsonl.
+
+**Frozen bars (face arm):**
+1. ACKNOWLEDGMENT ≥ 12/16 pairs: at least one revision cites boost-signature
+   content (same signature computation as probe2 — boost words minus base-problem
+   words).
+2. DIRECTION ≥ 75% of pairs with parseable old+new estimates: revised ≥ old
+   (boost strictly strengthens by construction).
+Read: both pass → capability present, trigger missing → run-11 delta-derivation
+face licensed. Ack passes but direction fails → model narrates updates without
+deriving → numbers decorative even when prompted; reframe dies. Ack fails →
+elicitation itself beyond 4B-SFT reach here; reframe dies.
+
 ## Isolation & naming
 
 `data/run10/`, `out/run10/`, adapter `wrk_faceV_10_qwen`, threads `*_10_q*`,
