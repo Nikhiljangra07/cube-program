@@ -98,3 +98,46 @@ Anthropic · OpenRouter $0 (all problems exist, frozen, reused). Total ≈ **$8.
 `density_run12/run12_bundle.tgz`.
 
 *Frozen 2026-07-31 pre-spend.*
+
+## RESULTS — Stage 0 + Stage 1 (2026-07-31)
+
+**Stage 0 PASS:** dispatcher v1 94/104 (bar 94) on marker-stripped problems after
+3 tuning rounds. Fingerprints: V = enumerated money figures (med 7 vs 0/0.5);
+F = timeline + observed-behavior verbs; G = no timeline (max 0 dates on dev).
+All residual errors route toward a competent seat.
+
+**Stage 1 — mechanics PASS, semantics FAIL the frozen seam gate (3 iterations):**
+- Mechanics (every iteration): swap median 11.8ms (bar 50), hot-swap outputs
+  byte-identical to fresh loads, all relays structurally complete, tagged
+  estimates throughout, segments visibly consuming predecessors. **The relay
+  machine works.**
+- Seam reads (Session O, strict Sonnet, 3/3-clean required): INCOHERENT ×3.
+  - iter 1: fusion upgraded the read's hypotheticals into facts (all 3 problems).
+  - iter 2 (fact-discipline prompts): upgrade-disease cured (F relay SEAM OK);
+    new flaws — one invented metric, one stale pre-update fact.
+  - iter 3 (rigid-coach assembly — motion text + estimate carried verbatim by
+    code, only a digit-free 2-sentence bridge generated): flaws moved into the
+    remaining free-prose: bridge revived a superseded hypothetical (V), motion
+    itself misattributed the update (G), fusion reassigned an actor (F).
+- **The measured law (converges with run 10's structure-vs-fidelity):** at 4B,
+  every FREE-PROSE step that must faithfully integrate multiple prior texts
+  commits ~1 fidelity error per ~3 attempts, regardless of prompt engineering.
+  Three iterations narrowed the free surface (whole fusion → bridge only) and
+  the error rate per surface stayed. The cube's floor is integration fidelity,
+  not mechanics, routing, or specialist quality (specialist segments were clean
+  in nearly all reads).
+- **Stage 2 NOT run** — the frozen gate ("proceed unless incoherent") binds; the
+  program does not override frozen gates after seeing data. $8 of stage-2 budget
+  unspent. Stage-1 total cost ≈ $0.85 (pod 3 iterations + 3 seam reads).
+
+**Fork (Nikhil's, recorded honestly):**
+(a) Amend the gate to a RELATIVE bar (seam errors priced by stage-2's hard-cap
+    rubrics against the generalist baseline — which run 10 showed is equally
+    invention-prone, resource_grounding 2.03). This is a post-hoc gate change —
+    the first the program would ever make — and must be labeled as such if taken.
+(b) Train the fusion/dispatcher adapter (doc §9.4) on audit-certified integration
+    examples (~$10-15, run-11-style corpus discipline; uncertain — run 11 showed
+    delta-training added nothing over elicitation, though fusion ≠ elicitation).
+(c) Stop and write up: mechanics + routing + motion loop + specialists proven;
+    the honest wall = free-prose integration fidelity at 4B. A coherent,
+    publishable arc (runs 7-12).
