@@ -52,13 +52,18 @@ SEG = {
     "motion": ("PROBLEM: {problem}\n\nYOUR PREVIOUS PLAN: {plan}\n\nUPDATE: {update}\n\n"
                "The situation has changed as described in UPDATE. Revise in 2-3 sentences: "
                "what the update changes, the revised plan, and how the estimate responds "
-               "and why. Final line, exactly: ESTIMATE: NN%"),
-    "fusion": ("PROBLEM: {problem}\n\nTHE AUDIT (what is held): {audit}\n\nTHE READ (what "
-               "they will do): {read}\n\nTHE CURRENT PLAN (after one update): {motion}\n\n"
-               "Write the FINAL ANSWER as 3-4 cold, decisive sentences that fuse all three: "
-               "the committed move, why it survives the read, what it spends, and close "
-               "with the success percentage derived from the whole chain — name what earns "
-               "it and what caps it. Final line, exactly: ESTIMATE: NN%"),
+               "and why. FACT DISCIPLINE: only the PROBLEM and the UPDATE have happened; "
+               "every predicted reaction remains unconfirmed — never state one as an "
+               "event. Final line, exactly: ESTIMATE: NN%"),
+    # iteration 3 (rigid-coach assembly): the model writes ONLY a short bridge; the
+    # coach carries the motion plan + estimate into the final answer verbatim by code.
+    "bridge": ("THE READ (a PREDICTION of what the other side may do — none of it has "
+               "happened): {read}\n\nTHE CURRENT PLAN: {motion}\n\n"
+               "Write EXACTLY ONE or TWO sentences, cold and analytical, stating how this "
+               "plan is positioned IF the predicted reaction comes — contingent language "
+               "only ('if they', 'should they'). HARD RULES: no numbers or figures of any "
+               "kind; no new facts, actors, or events; do not restate the plan; do not "
+               "mention the estimate."),
 }
 
 PROBLEMS = [json.loads(l) for l in (WD / "baton_problems.jsonl").open()]
@@ -100,7 +105,16 @@ def main():
         model.set_adapter("F"); read = gen(model, tok, SEG["read"].format(problem=p, audit=audit))
         model.set_adapter("V"); plan = gen(model, tok, SEG["plan"].format(problem=p, audit=audit, read=read))
         model.set_adapter("V"); motion = gen(model, tok, SEG["motion"].format(problem=p, plan=plan, update=pr["update"]))
-        model.set_adapter("G"); fusion = gen(model, tok, SEG["fusion"].format(problem=p, audit=audit, read=read, motion=motion))
+        # rigid-coach fusion (iteration 3): bridge is the only free text; digit-checked
+        import re as _re
+        model.set_adapter("G")
+        bridge = gen(model, tok, SEG["bridge"].format(read=read, motion=motion))
+        if _re.search(r"\d", bridge):
+            bridge = gen(model, tok, SEG["bridge"].format(read=read, motion=motion)
+                         + "\n(Your previous attempt contained a number — remove ALL digits.)")
+        m_est = _re.search(r"ESTIMATE:\s*\d{1,3}\s*%", motion)
+        body = _re.sub(r"\s*ESTIMATE:\s*\d{1,3}\s*%\s*$", "", motion.strip())
+        fusion = f"{body} {bridge.strip()} {m_est.group(0) if m_est else ''}".strip()
         runs.append({"type": pr["type"], "problem": p, "update": pr["update"],
                      "audit": audit, "read": read, "plan": plan, "motion": motion,
                      "fusion": fusion})
