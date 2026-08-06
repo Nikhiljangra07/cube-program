@@ -109,3 +109,50 @@ run13_checker.py, staged_problems.jsonl (md5-checked), adapters wrk_faceF_9b_qwe
 wrk_faceV_10_qwen + wrk_keep100_qwen (run-9/10 bundle copies, md5-known).
 
 *Frozen 2026-08-06 pre-spend. Awaiting local verification pass + Nikhil's GPU.*
+
+## RESULTS (2026-08-06, pod live_lime_stork RTX 6000 Ada, 28 min, ≈$0.45 + Session Q ≈$0.5)
+
+**BAR 1 INSTRUMENT: FAILURE — by the frozen rule, NO ARM CLAIMS.**
+Agreement 12/20 (60%, needed ≥80%); miss 8/10 (needed ≤2); false-alarm 0/10.
+The checker's PRECISION is perfect (every flag it raised, the judge confirmed)
+but its RECALL is poor: the judge found flaws in 8 of 10 checker-clean speeches.
+
+**What the checker cannot see (the expanded sin taxonomy, from the 8 misses +
+3 incoherent D-finals):**
+1. **Concept revival** — the dead option revived by PARAPHRASE, never by token:
+   "exclusivity beyond July 9" after exclusivity is barred; "the deposit
+   scenario" after the deposit track died. Regex sees the codename; the model
+   revives the concept.
+2. **Self-contradiction** — states X is eliminated, then plans with X in the
+   next sentence.
+3. **Prediction leakage at the concept level** — READ-only figures/mechanisms
+   ($1,500 contingency, the addendum, the 48-hour falsifier) used as live
+   decision branches; the counterparty+verb heuristic only catches the
+   sentence-level version.
+All three are SEMANTIC, not lexical — the exact class regex cannot reach.
+
+**Unofficial observations (no bar standing, recorded for design honesty):**
+- Arm A checker-clean 16/24 (67%) — but of the 10 checker-cleans the judge
+  sampled, 8 were incoherent → the judge-strict wall is far WORSE than run-12's
+  1-in-3 (point estimate of true clean rate ≈ 13% on the sampled stratum).
+- Arm B (few-shot): checker-clean 12/24, WORSE than baseline — 18 revival
+  flags; the exemplars taught "mention the dead option" more than "negate it."
+- Arm C (14B): checker-clean 21/24 — but ZERO C speeches entered the
+  calibration sample (deterministic sorted selection filled the clean stratum
+  with arm A), so C carries NO judge evidence either way.
+- Arm D (detect-and-repair): 19/24 checker-clean within 3, and 3/6 D-finals
+  judged incoherent — repair converges only on what the checker can see.
+- Delivery means 4.0-4.5 across arms: the speeches READ excellently while
+  being subtly unfaithful. Fluency is not fidelity — the wall is invisible to
+  surface quality.
+
+**The run's real finding:** code is a valid PRE-FILTER (100% precision, $0)
+but cannot CERTIFY faithfulness; certification requires semantic reading. Any
+future fusion instrument must be hybrid: code filter first (free, kills the
+lexical third of errors), judge certification second. A run-13b would need:
+stratified calibration quotas per arm (fix the sorted-selection bias), and
+either a judge-in-the-loop repair arm or a semantic checker (NLI/entailment).
+
+**Cost actuals:** pod ≈$0.45 (28 min) · Anthropic Session Q ≈$0.5 · OpenRouter
+$0. Bundle run13_bundle.tgz md5 a669c8b9 pulled + verified; pod safe to
+terminate. Transcript, checker results, calibration all local in out/run13/.
