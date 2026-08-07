@@ -99,3 +99,57 @@ same staged problems. No training. Pod uploads: run13b_pod.py,
 staged_problems.jsonl, adapters (as run 13).
 
 *Frozen 2026-08-07 pre-spend. Awaiting build verification + Nikhil's GPU.*
+
+## RESULTS (2026-08-07, pod lonely_pink_toucan A40, relay 33 min; total ≈$1.6)
+
+**Bar 1 (spot-audit): FAILED — 4/6 code flags confirmed → shortcut revoked,
+judge-everything fallback executed as frozen** (26 rows re-read, 20 billed;
+cleanliness decided by the judge alone, code flags demoted to advisory). Run-13's
+"code precision 100%" did not replicate on fresh speeches: 2/6 audited flags were
+judge-dismissed. Code is a useful pre-screen, not even a trustworthy dirty-verdict.
+
+**Official judge-only verdicts (n=24 per arm):**
+- **Bar 2 — THE WALL (arm A, 4B baseline): 6/24 clean = 25% (CI 12–45%).** The
+  program's official wall number. Fluent throughout (delivery 4.42) — the flaws
+  are invisible to surface reading.
+- **Bar 3 — size (Qwen3-14B spokesman): 13/24 (54%). FAIL** (needed ≥18 and
+  ≥A+8=14; missed both, the relative leg by one). Size HELPS (+29 points) but
+  does not dissolve the wall — 3.5× the parameters halves the error rate,
+  nothing more.
+- **Bar 4 — judge-in-loop repair (D'): 19/24 within ≤3 attempts. FAIL by ONE
+  problem** (bar 20). Trajectory: 6 clean at attempt 1, +11 at attempt 2, +2 at
+  attempt 3, 5 never clean. Repair fixed 13/18 dirty speeches (72%) once the
+  detector could see semantically — vs run-13's code-guided repair which fixed
+  only what regex saw. Diminishing returns are sharp (11 → 2), and a 5-problem
+  hard core resisted three semantically-informed rewrites.
+- Delivery RISES with repair (4.79) and with size (4.75) — quality and
+  fidelity remain uncorrelated.
+
+**Per the frozen grid: no dissolution bar passed → the run-12 seam gate stays
+blocked; no stage-1 rerun is proposed from this run.** The near-miss is recorded
+as a near-miss, not promoted — the program does not bend bars after seeing data.
+
+**What 13B settles (the knowledge layer):**
+1. The wall is now measured properly: 25% clean at 4B, 54% at 14B — deep, real,
+   and only weakly size-dependent. Not a prompting artifact, not a 4B quirk.
+2. Semantic detection + retry is the strongest known lever (72% repair rate) but
+   plateaus by attempt 3; the residue is a hard core, not noise.
+3. Deterministic lexical checking does not transfer across speech distributions
+   (100% precision on run-13 speeches → 67% on 13B speeches). Any production
+   gate needs the judge, full stop.
+4. Delivery/fluency carries zero signal about fidelity (4.4–4.9 across all arms).
+
+**Fork (Nikhil's, recorded):**
+(a) 13C micro-iteration: raise repair cap to 5 attempts + fresh-rewrite-on-
+    attempt-3 (new frozen bar, ~$1.5) — justified by the 19/20 near-miss ONLY
+    if he judges the trajectory evidence worth one more cheap shot;
+(b) fork (b) proper — train the fusion adapter (~$10–15, now with the option of
+    mining integration exemplars from open data + judge-certifying them);
+(c) accept the wall as measured and write up runs 7–13B (the arc is complete
+    and publishable: mechanics + routing + motion + specialists + a
+    properly-instrumented wall).
+
+**Cost actuals:** pod ≈$0.35 (42 min A40) · Anthropic ≈$1.2 (51 judge reads
+across session R incl. judge-everything) · OpenRouter $0. Observability:
+out/run13b/report.html (147KB, self-contained), events.jsonl (full trace),
+judge_cache.jsonl (51 verdicts, rerun-free). Pod safe to terminate.

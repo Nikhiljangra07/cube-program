@@ -79,7 +79,10 @@ def main():
             traj[r["pid"]].append(r)
 
     def clean(r):
-        return not r["code_flags"] and r.get("judge") and r["judge"]["coherent"]
+        # judge decides when present (judge-everything fallback); code advisory
+        if r.get("judge") is not None:
+            return r["judge"]["coherent"]
+        return not r["code_flags"]
 
     # sin histogram: lexical classes from code, semantic = judged flaw counts
     lex = {}
