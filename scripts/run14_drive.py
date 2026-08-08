@@ -191,8 +191,16 @@ def main():
             OUT.mkdir(parents=True, exist_ok=True)
             _mock_relay(list(probs.values()))
         else:
-            ssh_cmd(args.pod, "cd /workspace/div && (setsid nohup python run14_pod.py "
-                              "--phase relay > out/relay14.log 2>&1 < /dev/null &)", 60)
+            # idempotent relaunch: if a relay already ran (laptop slept, driver
+            # restarted), never start a second one — resume polling or pull.
+            rc, o = ssh_cmd(args.pod, "tail -1 /workspace/div/out/relay14.log 2>/dev/null",
+                            60)
+            already = "RUN14" in o or "done" in o
+            if not already:
+                ssh_cmd(args.pod, "cd /workspace/div && (setsid nohup python run14_pod.py "
+                                  "--phase relay > out/relay14.log 2>&1 < /dev/null &)", 60)
+            else:
+                emit(stage="pod", action="relay_already_running_or_done")
             t0 = time.time()
             while True:
                 time.sleep(60)
