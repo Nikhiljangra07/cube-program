@@ -73,3 +73,23 @@ Certifier prompt byte-reused (Session-Q lineage). Eval problems: the frozen 24
 (md5 b4c23eb357c9a6d9691f6c1fd50388d1). No training. No bench contamination.
 
 *Frozen 2026-08-10 pre-spend. Stage 1 authorized; stage 2 requires its own go.*
+
+## STAGE 0-1 RESULTS (2026-08-10, pod blonde_olive_shrimp A40; stage-1 cost ≈$1)
+
+**Stage 0 PASS:** template assembly over all 184 stored run-14 relays — ZERO
+flags added by the assembled text (183/183 with tagged estimates; the 1
+estimate-less motion is the retry case), verbosity 100%.
+
+**Stage 1 PASS — decisively:** frozen 24, fresh segments, judge-everything
+(session U, 48 reads, cap 60):
+- **COACH 21/24 clean (87.5%) · delivery 4.83**
+- **BASELINE 5/24 clean (21%) · delivery 4.04**
+- Bars (≥ base+4 AND ≥ 15/24): both cleared. Delivery IMPROVED under
+  templating — the stiffness fear was backwards.
+- Residual 3 failures: flaws inside the motion segment that passed the
+  advisory code screen — the predicted residual surface.
+
+**Conclusion: fusion is a coach function, not a model skill — measured.** The
+wall (~21-42% free-prose clean across runs) is bypassed by construction at
+87.5%. Completes the weights/harness symmetry with the run-11 motion-loop
+discovery. **Stage 2 (the match) is UNLOCKED; awaiting Nikhil's separate go.**
