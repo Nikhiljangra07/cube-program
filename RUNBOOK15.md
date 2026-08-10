@@ -144,3 +144,38 @@ scorer, 240-item judge batch under cap, all six bars, scoreboard, refs table);
 rerun hit 240/240 cache, re-billed zero. Pod pure functions unit-tested
 (assembly last-estimate law, digit-free bridge, decomp parse, thinking-strip,
 router reachability).
+
+## STAGE 2 RESULTS — THE MATCH (2026-08-10/11, pod ordinary_pink_wolf A100;
+## 240 judge reads ≈ $5; night job ran laptop-free, zero incidents)
+
+**Scoreboard (2/6 legs):**
+- **dossier: LOST** — cube 2.67 vs gen 2.59 (+0.08, bar +0.20). faceF's edge is
+  real but under the bar on single answers.
+- **inventory: LOST OUTRIGHT** — core_C cube 2.51 vs gen 2.73 (−0.22);
+  resource_grounding 2.00 vs 2.09.
+- **motion: LOST BY A HAIR** — parse 29/32 (bar 30), ack 22/32 (bar 24);
+  boost 93.3%, nerf 100% (bars 75%). Direction handling remains excellent;
+  the misses are estimate-line/citation mechanics. Gen arm nearly identical
+  (31/32, ack 21/32) — ack is hard for both.
+- **general: HELD** — cube 3.70 vs gen 3.71 (floor −0.15). Routing costs
+  nothing on neutral ground.
+- **fidelity (amended leg): WON on a tie** — coherent 0.054 vs 0.054. NOTE:
+  the folded criterion (any unsupported specific = incoherent) is far stricter
+  than Session-Q's certifier; spot-read of flaws confirms REAL inventions in
+  both arms ("12-person engineering team", "$12,400 balance", dossier
+  contradictions). The coach guarantees its ADDED text; the segments still
+  invent. Same 4B disease as runs 10/12/13, same rate both arms.
+- **attribution: FAILED — V SEAT SWAPS TO KEEP100** — cube−ablate core_C gap
+  −0.10: keep100 in the V seat BEAT faceV_10. The provisional specialist is a
+  net negative on its own home leg (consistent with run 10's failed bars).
+
+**Honest verdict:** the composed cube with the current specialists does NOT
+beat the naked generalist on specialist single-answer legs at 4B. What
+survived, measured: relay/routing mechanics (general leg no-regression),
+motion direction handling (93/100%), the coach fidelity function (stage 1),
+faceF's small positive dossier edge. What failed: faceV_10 (actionable —
+frozen spec executes the swap), the +0.20 specialist bars, ack/parse by 1-2.
+Absolute B/C scores are NOT comparable to run-9b/10 set-level history
+(single-answer judging is mechanically harsher); all comparisons here are
+same-run relative, as designed. Reference-ladder transcripts generated at
+night; judging them (~$3.5, 168 reads) is a separate decision.
