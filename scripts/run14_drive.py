@@ -72,8 +72,13 @@ def mark(phase):
 
 
 def sh(cmd, timeout=900):
-    r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
-    return r.returncode, r.stdout + r.stderr
+    try:
+        r = subprocess.run(cmd, shell=True, capture_output=True, text=True,
+                           timeout=timeout)
+        return r.returncode, r.stdout + r.stderr
+    except subprocess.TimeoutExpired:
+        # transient network stall — report failure, let poll loops retry
+        return 255, "SSH_TIMEOUT"
 
 
 def ssh_cmd(pod, remote, timeout=900):
