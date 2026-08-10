@@ -324,9 +324,13 @@ def phase_refs():
             print(f"[refs {tag}] already complete", flush=True)
             continue
         print(f"[refs] loading {mid}", flush=True)
-        tok = AutoTokenizer.from_pretrained(mid)
-        model = AutoModelForCausalLM.from_pretrained(mid, torch_dtype="auto",
-                                                     device_map="cuda")
+        try:
+            tok = AutoTokenizer.from_pretrained(mid)
+            model = AutoModelForCausalLM.from_pretrained(mid, torch_dtype="auto",
+                                                         device_map="cuda")
+        except Exception as e:
+            print(f"[refs {tag}] LOAD FAILED ({e}) — skipping model", flush=True)
+            continue
         f = out.open("a")
         idx_by_leg = {"dossier": 0, "inventory": 0}
         for leg, p in probs:
