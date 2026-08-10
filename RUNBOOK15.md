@@ -93,3 +93,54 @@ estimate-less motion is the retry case), verbosity 100%.
 wall (~21-42% free-prose clean across runs) is bypassed by construction at
 87.5%. Completes the weights/harness symmetry with the run-11 motion-loop
 discovery. **Stage 2 (the match) is UNLOCKED; awaiting Nikhil's separate go.**
+
+## STAGE 2 OPERATIONAL SPEC (frozen 2026-08-10, pre-spend — go given by pod
+## deployment; pod ordinary_pink_wolf, A100 SXM 80GB, 154.54.102.36:13412)
+
+Scripts: `run15_match_pod.py` (ONE detached night job, laptop-free, resume-safe
+JSONL; phases dossier → inventory → motion → general → refs) +
+`run15_match.py` (local conductor: --setup/--launch/--status/--judge/
+--judge-refs/--mock; keys never leave the laptop).
+
+Frozen operational choices (all fixed before any output existed):
+1. **Relay seats per RUNBOOK12:** audit(V) → read(F) → plan(V); ABLATE = same
+   relay with keep100 in the V seat (read stays F); prompts byte-reused from
+   run13b_pod SEG. Read-target string for unmanifested problems: "the other
+   parties in this problem".
+2. **Coach assembly (single-answer legs), zero free prose:** AUDIT + READ +
+   PLAN-minus-estimate + fixed digit-free BRIDGE ("If the other side responds
+   as the read anticipates…") + last tagged ESTIMATE verbatim. Missing estimate
+   after one nudge retry → "ESTIMATE: 50%" injected + flagged, judged as-is.
+3. **Generalist arm:** GEN_SINGLE prompt = the union of the three segment
+   demands in ONE pass (same model, same information, same asks, no machine).
+   Motion leg generalist = run-11 protocol byte-reused (PLAN_USER prior +
+   REVISE_USER revision, keep100).
+4. **Cube motion leg:** prior = its own inventory-phase PLAN segment; V-seat
+   SEG["motion"] revision; scored by run11_score logic (code, $0).
+5. **General leg:** dec_qwen decomposes ONCE per problem; the SAME
+   facets/angles feed both arms; cube routes each angle via run12_router.route
+   (problem + " " + angle); worker prompt = dav_eval_v5 WRK_USER byte-copied;
+   both arms judged same-session with H.JUDGE_PROMPT (set-level).
+6. **Single-answer rubrics:** B (run-9b) and C (run-10, hard caps kept) adapted
+   set→single with the SAME dimension wording, plus the FOLDED coherence read
+   ("coherent" bool + "flaws" list in the same JSON) — one read carries both
+   the rubric leg and the amended relative-fidelity leg. Frozen in
+   run15_match.py before any transcript existed.
+7. **Judge discipline:** claude-sonnet-5, max_tokens 12000, no temperature,
+   retry-on-empty, depth-walking JSON parse, cache keyed leg|arm|idx|md5 with
+   mock/real wall, all-or-discard coverage per leg+arm. SPEND CAPS: thesis
+   ≤ 260 billed reads, refs ≤ 180; driver aborts BEFORE billing when over.
+8. **Reference ladder (reported, never gated, droppable):** generated at night
+   ($0 marginal); judging is a separate morning decision against remaining
+   Anthropic credits.
+
+Read budget: dossier 24×2 + inventory 32×3 + general ≤48×2 = ≤240 thesis reads
+(~$5); refs ≤56/model. Bench files deterministic from frozen sources
+(md5s printed at --launch: dossier 5ddfae37c6be, inventory d7af325e4752,
+twins 0ffccb899acc, general 9b6d00638993).
+
+Dry run 2026-08-10: --mock exercised the ENTIRE path (bench build, motion
+scorer, 240-item judge batch under cap, all six bars, scoreboard, refs table);
+rerun hit 240/240 cache, re-billed zero. Pod pure functions unit-tested
+(assembly last-estimate law, digit-free bridge, decomp parse, thinking-strip,
+router reachability).
