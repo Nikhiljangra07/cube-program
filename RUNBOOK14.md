@@ -73,3 +73,43 @@ loss_band_gate.py, build_masked_dataset.py, train_masked.py. No bench problems
 touched; eval set never enters training.
 
 *Frozen 2026-08-08 pre-spend. Awaiting build verification + Nikhil's GPU.*
+
+## RESULTS (2026-08-10, pod modest_fuchsia_narwhal A100 SXM, ~4.2h; ≈$10.5 total)
+
+**Harvest: 126/160 certified pairs (79% yield, floor 100 cleared; diet md5
+3abb5bf4).** Corpus attempt-1 clean ≈30% (consistent with the wall), repair
+rounds lifted certification to 126 — the self-distillation corpus built exactly
+as designed. Train: clean convergence (loss 0.14, 1.25 epochs, adapter
+wrk_fusion_14_qwen saved). Two ops incidents, both recovered without loss:
+driver crash on uncaught ssh-poll timeout (patched: sh() tolerates transient
+stalls), and missing `datasets` package on the pod template (installed;
+train rerun; judge cache made the resume free).
+
+**EVAL (frozen 24 held-out, single attempt, judge-everything, n=24/arm):**
+- **F14 (trained fusion adapter): 12/24 clean (50%) · delivery 4.29 ·
+  estimate retention 24/24.**
+- **A (keep100 baseline): 10/24 clean (42%) · delivery 4.62.**
+- **Δ = +2 — under the +5 partial-signal line. BAR 3: NULL.**
+
+**Verdict per the frozen grid: NULL — training is falsified in-distribution.**
+The wall now stands against all four mechanisms: prompting (run 12),
+size (13B: 14B halves it, nothing more), semantically-guided repair (13B:
+19/24, plateaus), and self-distillation training (this run: +2, noise-range).
+Note the baseline measured 42% this run vs 25% in 13B on the same problems
+(fresh segments, judge variance) — the same-run contrast F14-vs-A is the valid
+comparison and it is null. Format retention was perfect, so training DID bite
+(the adapter learned the speech format) — it just didn't buy fidelity, exactly
+as runs 10 and 11 foreshadowed. The three-run convergence (10, 11, 14) is now
+a program-level law: **fidelity is not buyable by SFT at 4B — not from a
+foreign teacher, not from the model's own certified successes.**
+
+**Recommendation per the frozen grid: fork (c) — write up runs 7–14.** One
+honest nuance recorded for Nikhil's decision: F14 (50%) ≥ baseline (42%) means
+the trained cube speaks AT LEAST as cleanly as the generalist it would replace
+— the run-15 match under a relative-fidelity bar (fork-a framing) remains
+scientifically coherent; what died today is the hope of a fusion seat that
+CLEARS the wall, not the match itself. That choice is his alone.
+
+**Cost actuals:** pod ≈$6.8 (A100 SXM ~4.2h) · Anthropic ≈$3.7 (379 judge
+reads, sessions S+T, all cached) · OpenRouter $0. Anthropic remaining ≈$15.
+Pod safe to terminate — adapter + transcripts + diet all pulled/local.
