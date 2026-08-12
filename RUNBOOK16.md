@@ -110,6 +110,32 @@ training — v16B trains fresh from base, so nothing it trains on enters eval).
 (20 clean / 122 flawed; md5 95dc5c91f6d4e19945d7920def378521). Bars unchanged;
 recall_clean now measured on 20 rows (>= 14/20).**
 
+## 16B RESULTS (2026-08-12, pod happy_emerald_gibbon A40, ~$0.4)
+
+Single-ruler gold, bars unchanged: **recall_flawed 0.967 (118/122) — up from
+0.907. recall_clean 0.40 (8/20) — FAIL AGAIN, and this time against clean
+gold.** Malformed 0.
+
+**Autopsy: all 12 clean false-positives are ONE mistake** — the verifier flags
+LEGAL mentions of eliminated options ("mention only to note it is gone", which
+the fusion discipline REQUIRES) and LEGAL conditional read references ("if
+they respond as anticipated") as revival/leak sins. Shortcut learning traced
+to the synthetic corpus: revival corruptions made the dead token's PRESENCE
+the discriminative feature; the corpus contained zero counter-examples
+teaching presence-vs-liveness. A data bug, not (yet) a capacity verdict.
+
+## 16C — COUNTER-CLASS REBUILD (frozen 2026-08-12, $0 data + ~$0.4 pod)
+
+Add LEGAL-MENTION synthetic GROUNDED rows (208): the SAME dead tokens and the
+SAME counterparties as the corruptions carry, in their legal forms (gone-and-
+unused; conditional positioning) — the only difference between a flagged and a
+grounded twin is the liveness phrasing itself. Classes balanced 522:585 via
+x2 reps (oversample formula now includes the counter-class). Eval gold
+UNTOUCHED (md5 95dc5c91… identical). **BARS UNCHANGED.** If 16C also fails
+recall_clean, the verdict is recorded as a 4B capacity limit on the
+mention-vs-liveness discrimination and the run stops.
+train_v3 md5 402b1e9ae83e890fc83f04cdd24e5871.
+
 ## Budget & isolation
 
 Stage 0 $0 (done) · stage 1 pod ~$2-3, API $0 · stage 2 pod ~$1 + ~30 judge

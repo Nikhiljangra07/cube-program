@@ -155,6 +155,41 @@ async def relabel():
           f"{flipped} flipped to FLAGGED, {len(cleans)-flipped} survive as GROUNDED")
 
 
+# 16C counter-class: LEGAL mentions of the dead option / the read, labeled
+# GROUNDED — same tokens as the revival/leak corruptions, opposite liveness.
+# Kills the presence->flag shortcut the 16B autopsy exposed (12/12 FPs).
+LEGAL_TEMPLATES = [
+    ("dead", "{dt} is gone; the plan proceeds without it and nothing below "
+             "depends on it."),
+    ("dead", "With {dt} eliminated by the update, the committed path uses only "
+             "what remains."),
+    ("read", "If {cp} responds as the read anticipates, the plan is already "
+             "positioned for it; if not, nothing in the commitment depends on "
+             "that prediction."),
+    ("read", "Should {cp} counter as the read expects, the sequencing already "
+             "absorbs it."),
+]
+
+
+def legal_mentions(r):
+    man = r.get("manifest") or {}
+    out = []
+    import re as _re
+    m = _re.search(r"ESTIMATE:\s*\d{1,3}\s*%", r["answer"])
+    for kind, tpl in LEGAL_TEMPLATES:
+        if kind == "dead" and not man.get("dead_token"):
+            continue
+        if kind == "read" and not man.get("counterparty"):
+            continue
+        s = tpl.format(dt=man.get("dead_token", ""), cp=man.get("counterparty", ""))
+        txt = (r["answer"][:m.start()].rstrip() + " " + s + " " + r["answer"][m.start():]
+               if m else r["answer"].rstrip() + " " + s)
+        out.append({"problem": r["problem"], "answer": txt, "coherent": True,
+                    "flaws": [], "source": "synthetic:legal_" + kind,
+                    "split_key": r["split_key"]})
+    return out
+
+
 def rebuild():
     from run16_corpus import sft_row
     rows = [json.loads(l) for l in (D16 / "verifier_real.jsonl").open()]
@@ -193,28 +228,34 @@ def rebuild():
     # synthetics: regenerate ONLY from still-clean train rows (a corruption of a
     # text that is itself flawed would carry a dirty GROUNDED-side twin premise)
     from run16_corpus import corrupt
-    syn = []
+    syn, legal = [], []
     for r in tr:
         if r["coherent"]:
             syn.extend(corrupt(r))
+            legal.extend(legal_mentions(r))   # 16C counter-class (GROUNDED)
+    grounded_n = n_clean_tr + len(legal)
     flawed_n = sum(1 for r in tr if not r["coherent"]) + len(syn)
-    reps = max(1, round(flawed_n / max(1, n_clean_tr) * 0.6))
+    reps = max(1, round(flawed_n / max(1, grounded_n)))
     train_sft = []
     for r in tr:
         k = reps if r["coherent"] else 1
         train_sft.extend([sft_row(r["problem"], r["answer"], r["coherent"],
                                   r["flaws"])] * k)
     train_sft += [sft_row(r["problem"], r["answer"], False, r["flaws"]) for r in syn]
+    train_sft += [sft_row(r["problem"], r["answer"], True, []) for r in legal] * reps
+    print(f"16C legal-mention counter-class: {len(legal)} grounded rows "
+          f"(x{reps} reps), grounded:flagged = {grounded_n*reps}:{flawed_n}")
     random.Random(162).shuffle(train_sft)
-    (D16 / "verifier_train_v2.jsonl").write_text(
+    suffix = "_v3" if legal else "_v2"
+    (D16 / f"verifier_train{suffix}.jsonl").write_text(
         "".join(json.dumps(x) + "\n" for x in train_sft))
-    (D16 / "verifier_eval_v2.jsonl").write_text(
+    (D16 / f"verifier_eval{suffix}.jsonl").write_text(
         "".join(json.dumps(sft_row(r["problem"], r["answer"], r["coherent"],
                                    r["flaws"])) + "\n" for r in ev))
     print(f"v2 train: {len(train_sft)} rows (clean train {n_clean_tr} x{reps}, "
           f"flawed real {sum(1 for r in tr if not r['coherent'])}, syn {len(syn)})")
     print(f"v2 eval : {len(ev)} rows ({n_clean_ev} clean / {len(ev)-n_clean_ev} flawed)")
-    for f in ("verifier_train_v2.jsonl", "verifier_eval_v2.jsonl"):
+    for f in (f"verifier_train{suffix}.jsonl", f"verifier_eval{suffix}.jsonl"):
         print(f"  {f}: md5 {hashlib.md5((D16/f).read_bytes()).hexdigest()}")
 
 
