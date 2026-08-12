@@ -136,6 +136,43 @@ recall_clean, the verdict is recorded as a 4B capacity limit on the
 mention-vs-liveness discrimination and the run stops.
 train_v3 md5 402b1e9ae83e890fc83f04cdd24e5871.
 
+## 16C RESULTS + RUN 16 CLOSE-OUT (2026-08-12 — the frozen stop clause binds)
+
+**16C: recall_flawed 0.992 (121/122) · recall_clean 0.25 (5/20) — FAIL.**
+The counter-class did not teach the discrimination; clean-trust FELL (0.40 →
+0.25) while flaw-recall rose again. Trajectory across three variants (v1 →
+16B → 16C): flawed 0.907 → 0.967 → 0.992; clean 0.382 → 0.40 → 0.25. The
+model slides monotonically toward all-flag.
+
+**RECORDED VERDICT (per the frozen clause): at 4B with ~500 real labels,
+discourse-level grounded/flagged discrimination on long strategic prose does
+NOT reach gate quality. Detection trains small; CERTIFICATION does not.**
+Stage 2 is permanently blocked for this run.
+
+**The deeper reading (three-sided wall, now closed):** under the strict ruler,
+only ~5% of 4B generations are clean at all (the match measured 5.4% on both
+arms; the relabel found 35% of even lenient-certified texts survive). "Clean"
+is a tiny island in the model's output distribution — so (a) a student
+verifier sees almost no natural positives to learn from, and (b) even a
+PERFECT gate with <=2 regenerations would rarely land on a clean draw. The
+run-13B repair ceiling (19/24) was measured under the LENIENT ruler and does
+not transfer. The invention disease at 4B is a generation-capacity property,
+not a gateable one, at this strictness.
+
+**What run 16 banked (total spend ≈ $3.3 Anthropic + ~$2 pod):**
+1. Verification-as-detection trains small: 0.99 flaw recall from ~500 mined
+   labels — a working hallucination DETECTOR (usable for triage/monitoring,
+   just not as a binary certify-gate).
+2. The corpus asset: 621 real pairs now carry single-ruler strict labels
+   (permanent, reusable).
+3. The two-ruler discovery: 65% of historical "clean" certifications were
+   lenient-ruler artifacts.
+4. Paths recorded, not taken: claim-level decomposition (MiniCheck's actual
+   granularity — verify sentence-by-sentence instead of whole-discourse; the
+   most promising next shape), logprob-threshold calibration, 9B verifier
+   base, verify-and-PATCH (surgical rewrite of the flagged claim) instead of
+   verify-and-regenerate.
+
 ## Budget & isolation
 
 Stage 0 $0 (done) · stage 1 pod ~$2-3, API $0 · stage 2 pod ~$1 + ~30 judge
