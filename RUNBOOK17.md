@@ -59,3 +59,47 @@ Wallets at start: Anthropic ≈ $6.5 · RunPod ≈ $31 · OpenRouter $3 (untouch
 
 *Frozen 2026-08-13 pre-spend. Generator, prompts, bars, and caps set before
 any pod or judge dollar.*
+
+## RESULTS (2026-08-13, pod opposite_gray_alpaca A40, ~$1.4 total)
+
+**Capacity curve: FLAT ZERO. 0/8 strict-clean at EVERY level — L1 (2 facts)
+through L5 (10 facts). ENVELOPE-70 and ENVELOPE-50: none. The state-load
+hypothesis is FALSIFIED: there is no fact-count below which the 4B stops
+inventing.** Sanity guard: L3 0.0 vs match 0.054 — no style confound; the
+ladder reproduces the match floor.
+
+**The flaw autopsy is the run's real finding.** Classifying every judge flaw
+as ADDITION (a specific absent from the problem) vs DISTORTION (a given fact
+mis-stated):
+- L1: 59 flaws — 59 additions, 0 distortions (and the MOST flaws of any level)
+- L3: 26 flaws — 18 additions, 8 distortions
+- L5: 32 flaws — 30 additions, 2 distortions
+
+Three readings, all decisive:
+1. **Tracking is NOT the disease.** Distortions of given facts are rare at
+   every load (2-8 per level). The model keeps what it is given.
+2. **Invention is gap-filling, anti-correlated with supplied information at
+   the sparse end:** the 2-fact problems produced 2.3x the inventions of the
+   6-fact problems. Recurring STOCK decorations ("$45,000", "14-day window",
+   "48-hour window") appear across unrelated problems — a generation policy,
+   not a memory failure.
+3. **The mechanism reframed: invention pressure = demanded specificity −
+   supplied specificity.** The prompt demands a concrete plan (who/what/when);
+   any plan inherently needs specifics (times, amounts, windows) the problem
+   never supplies; the model fabricates them AS FACTS rather than marking
+   them as choices. Under the strict ruler, a fully-grounded concrete plan is
+   therefore STRUCTURALLY near-impossible — at any capacity. This reframes
+   the entire wall: it is a task-demand x criterion interaction plus the
+   model's policy of asserting rather than proposing.
+
+**Verifier tracking:** flags 100% everywhere; with gold 100% flawed this is
+recall 40/40 and an unmeasurable FP rate — the gate-viability question is
+UNANSWERABLE on this data (no clean answers exist to trust). Not
+rehabilitated, not condemned.
+
+**The testable next question (17B, ~$0.5, recorded not yet run):** the strict
+ruler explicitly ALLOWS conditional/proposed content. If the prompt instructs
+"never state a specific absent from the problem as fact — where the plan
+needs one, propose it explicitly as your chosen parameter," does clean-rate
+move off zero? A pass would locate the entire wall in ASSERTION POLICY —
+fixable by prompt/harness — rather than capacity.
