@@ -1,13 +1,15 @@
 # The Cube Program: Composed LoRA Specialists, the Fidelity Wall, and the Weights/Harness Symmetry
-## (A Pre-Registered Ten-Run Study at 4B — runs 7–16)
+## (A Pre-Registered Eleven-Run Study at 4B — runs 7–17B)
 
-> **STATUS: UNOFFICIAL WORKING DRAFT — 2026-08-12.** Complete factual record of the
-> cube program, runs 7–16, companion volume to DRAFT.md (runs 1–6 + probe study,
+> **STATUS: UNOFFICIAL WORKING DRAFT — 2026-08-15** (first issued 2026-08-12 for
+> runs 7–16; §§15–17 added 2026-08-15). Complete factual record of the cube
+> program, runs 7–17B, companion volume to DRAFT.md (runs 1–6 + probe study,
 > the density/storage era). All numbers below are traceable to frozen runbooks
-> (RUNBOOK7.md–RUNBOOK16.md), git history, and md5-pinned artifacts (Appendix A).
-> Every success criterion was frozen before its run; the single post-hoc gate
-> amendment in program history is labeled where it occurs (§13).
-> Author: Nikhil Jangra. Drafting assistant: Claude (Anthropic).
+> (RUNBOOK7.md–RUNBOOK17B.md), git history, and md5-pinned artifacts (Appendix A).
+> Every success criterion was frozen before its run; the two labeled post-hoc
+> events in program history — one gate amendment (§13) and one criterion
+> reanalysis that overturns no frozen verdict (§17) — are labeled where they
+> occur. Author: Nikhil Jangra. Drafting assistant: Claude (Anthropic).
 
 ---
 
@@ -29,15 +31,31 @@ training (specialist SFT, delta-format SFT, and self-distillation of the model's
 certified successes all fail to buy fidelity), harness repair (judge-in-loop feedback
 plateaus at 19/24), and verification gating (a trained 4B verifier reaches 0.99 flaw
 *detection* recall but only 0.25 clean *certification* recall, sliding monotonically
-toward all-flag across three corpus designs); and (4) lost the pre-registered match:
+toward all-flag across three corpus designs); (4) lost the pre-registered match:
 the composed cube with current specialists takes 2 of 6 legs against the naked
 generalist, with the ablation showing the provisional viability specialist is a net
-negative in its own seat. The unifying mechanism: under a strict grounding criterion,
-only ~5% of 4B generations are fully clean, so specialist edges (real but ≤ +0.12)
-drown beneath a shared invention noise floor that neither training, repair, nor
-gating can lift at this scale. Reasoning structure trains; faithfulness does not —
-faithfulness must be *constructed* in the harness, and at 4B the constructible
-surface stops at the assembly layer. The wall is a generation-capacity property.
+negative in its own seat; and (5) closed the wall's etiology in three final
+experiments — a capacity ladder falsifying the state-load hypothesis (0/8
+strict-clean at every load from 2 to 10 facts; invention is a gap-filling
+*assertion policy*, anti-correlated with supplied information), a grounding-
+discipline prompt that 4B models demonstrably cannot execute (marked their
+specifics in 4–13 of 40 answers despite explicit instruction), and a weight-class
+match in which the reasoning-trained sibling of the program base
+(Qwen3-4B-Thinking-2507) *also* scores 0/40 strict-clean — the strict island is
+empty for the entire weight class, and the harness was never the bottleneck.
+A final $0 severity-stratified reanalysis (RULER-T: fatal flaws — contradiction,
+distortion, constraint violation — separated from tolerable advisory decoration)
+opens the island to 20–38%, gives the match an honest winner (the reasoning
+sibling at 2× baseline), and confirms the trained verifier false-flags 96% of
+realistically-clean answers. The unifying mechanism: under a strict grounding
+criterion, only ~0–5% of 4B generations are fully clean, so specialist edges
+(real but ≤ +0.12) drown beneath a shared invention noise floor that neither
+training, repair, prompting, nor gating can lift at this scale. Reasoning
+structure trains; faithfulness does not — faithfulness must be *constructed* in
+the harness, and at 4B the constructible surface stops at the assembly layer.
+The strict wall is a weight-class property; the *fatal-flaw* wall beneath it
+(the RULER-T reading) is real, smaller, and — for the first time — arithmetically
+gateable.
 
 ---
 
@@ -78,8 +96,9 @@ match (15), and the verification gate (16).
   No Anthropic models as contestants; no DeepSeek contestants (authored bench
   problems).
 - **Pre-registration:** every bar frozen in its RUNBOOK before spend. One labeled
-  post-hoc amendment in ten runs (§13). Frozen stop clauses are executed as written,
-  including against the program's own hopes (§10, §16).
+  post-hoc gate amendment (§13) and one labeled post-hoc reanalysis (§17) in
+  eleven runs. Frozen stop clauses are executed as written, including against the
+  program's own hopes (§10, §14).
 - **Ops pattern (matured over the arc):** local driver orchestrates; pods generate;
   API keys never touch a pod; long jobs run detached (`setsid nohup`) and
   laptop-free; resumable state + append-only JSONL; spend caps abort before billing.
@@ -313,7 +332,134 @@ Training (§11), repair (§10), and gating (§14) all fail against the same obje
 **the invention disease at 4B is a generation-capacity property, not a gateable
 one, at this strictness.**
 
-## 15. Program-level synthesis
+## 15. Run 17 — The capacity ladder (2026-08-13)
+
+**Question (Nikhil's hypothesis):** is the wall a STATE-LOAD property? If invention
+is what happens when the facts to track exceed working capacity, clean-rate should
+climb steeply as problems shrink, and an operating envelope should exist inside
+which the 4B is honest.
+
+**Design (frozen pre-spend, ~$1.4):** 40 deterministic problems (seed 17,
+md5 95a293bba2d2583d10edb0f45fed1605), five state-load levels × 8 problems with
+NESTED fact types (L1 = 2 facts … L5 = 10 facts; load is the only variable;
+archetype mix, prompt, and greedy decoding constant), keep100 single-pass, gold =
+STRICT_ONE byte-reused (the same criterion as the match and run 16). Entity pools
+fresh and disjoint from every pool the verifier ever saw in a training label.
+ver_16 rendered verdicts on all 40 as a $0 rider.
+
+**Result: FLAT ZERO — 0/8 strict-clean at EVERY level. No envelope exists; the
+load hypothesis is falsified.** Sanity guard: L3 (match-like load) 0.0 vs the
+match's 0.054 — the ladder reproduces the match floor, no style confound.
+
+**The flaw autopsy is the run's real finding.** Classifying all 176 flaws as
+ADDITIONS (specifics absent from the problem) vs DISTORTIONS (given facts
+mis-stated): L1 = 59 additions / 0 distortions (and the MOST flaws of any level);
+L3 = 18/8; L5 = 30/2. Three decisive readings: (1) **tracking is not the
+disease** — distortions are rare at every load; the model keeps what it is given.
+(2) **Invention is gap-filling, anti-correlated with supplied information at the
+sparse end** — the 2-fact problems produced 2.3× the inventions of the 6-fact
+problems, and stock decorations ("$45,000", "14-day window", "48-hour window")
+recur across unrelated problems: a generation *policy*, not a memory failure.
+(3) **The reframe: invention pressure = demanded specificity − supplied
+specificity.** The prompt demands a concrete plan; concreteness requires
+specifics no problem supplies; the model asserts them as facts rather than
+proposing them as choices. Under the strict ruler, a fully-grounded concrete
+plan is therefore structurally near-impossible at ANY capacity — the wall is a
+task-demand × criterion interaction plus an assertion policy, not working
+memory. Verifier rider: 40/40 recall on flawed; FP unmeasurable (zero clean
+gold existed).
+
+## 16. The stagnant-judge audit and run 17B — marking, and the weight-class match (2026-08-15)
+
+**The $0 audit (Nikhil's moving-data thesis).** Hypothesis: the pipeline now
+*derives* (the motion loop), so a static grounding criterion might be
+false-flagging legitimately derived values — "the layer is stagnant, but our
+questions are moving." All 176 cached run-17 flaws were read against their
+problems' planted tokens. Two-level verdict: **the gold judge is NOT stagnant** —
+it performed date arithmetic itself (flagging a claimed "10-day buffer between
+July 8 and July 23" as actually 15 days) and 0/176 flaws were correct
+derivations mis-flagged. The model's rare derivation attempts were themselves
+wrong (unit errors, arithmetic errors) or built on invented premises. The
+verifier level of the thesis stayed open — unmeasurable without clean answers
+(resolved in §17).
+
+**Run 17B (frozen pre-spend, ~$3.3 = pod ~$1.5 RTX Pro 6000 Blackwell + judge
+~$1.8):** three arms on the run-17 ladder, same STRICT_ONE gold, full
+observability (every flaw dumped beside its problem's planted tokens).
+- **B — baseline:** run 17's cached answers and verdicts ($0).
+- **M — keep100 + GROUND:** a grounding discipline appended to the prompt —
+  every specific must be (a) QUOTED from the problem, (b) DERIVED with its basis
+  shown inline, or (c) PROPOSED and explicitly marked as a chosen parameter.
+  The direct test of the §15 assertion-policy reframe.
+- **R — Qwen3-4B-Thinking-2507 + GROUND:** the reasoning-trained sibling of the
+  program base, same system + user prompt, vendor-recommended decoding (its
+  model card warns greedy decoding loops), per-item seeds. Identical base
+  lineage isolates "reasoning training" vs "our harness" at fixed capacity.
+
+Ops event (labeled amendment, run-15 refs-fix precedent): 24/40 rival answers
+hit max_new 4096 mid-thinking and never emitted `</think>` — raw deliberation
+stored as the answer. run17b_fix.py regenerated exactly those rows at 9k/13k
+budgets (same seed law): zero residual leaks; verifier verdicts re-rendered.
+The judged match is fair.
+
+**Strict scoreboard: 0/40 clean in ALL THREE ARMS** (total flaws: B 176, M 170,
+R 124 — the rival ~30% fewer, monotone across levels, at ~25× the tokens per
+answer). The marking bar (≥ 4/40) FAILED, and the compliance analysis names the
+mechanism precisely: **the models did not execute the discipline** — M marked
+proposals in 4/40 answers and showed a derivation basis in 2/40; R managed
+13/40 and 5/40, and even dressed inventions as derivations ("15-day window
+(August 10–25)" with no August 10 anywhere in the problem). The assertion-policy
+wall is real but **not prompt-fixable at 4B**: the discipline does not fit the
+weight class. And the match settles the exoneration question: **the strict
+island is empty for the entire 4B weight class, reasoning training included —
+the harness was never the bottleneck.** Verifier: 79/80 new answers flagged
+(99% recall on flawed); FP still undefined under the strict ruler — strict-clean
+4B answers may simply not exist to be falsely flagged.
+
+## 17. The RULER-T reanalysis — matching the criterion to the weight class (2026-08-15, $0)
+
+**⚠ THE PROGRAM'S SECOND LABELED POST-HOC EVENT (Nikhil's directive, 2026-08-15).
+A stratified REANALYSIS of cached verdicts — the strict results above stand
+unchanged and remain the comparability spine.** Rationale: the strict ruler
+kills answers for behavior every competent human advisor performs (proposing an
+opening number, naming a check-in date). The guardrail: stratify severity, never
+lower the bar until the model passes.
+
+**Method:** all 470 cached judge flaws across the three arms classified from the
+judge's own prose — **T1 FATAL** (96: self-contradiction, given-fact distortion,
+stated-constraint violation, temporal error, miscalculation, misattribution),
+**PRED** (35: a likely reaction asserted as settled fact), **ADD, tolerated**
+(325: invented-but-consistent specifics — the decoration class), and 14
+unclassifiable flaws conservatively treated as fatal. Regex classifier plus
+spot-read verification; no new judge spend.
+
+| arm | strict | RULER-T (no fatal, no PRED) | T-loose (PRED tolerated) |
+|---|---|---|---|
+| B baseline | 0/40 | 8/40 (20%) | 14/40 (35%) |
+| M ours + GROUND | 0/40 | 5/40 (13%) | 8/40 (20%) |
+| R Thinking + GROUND | 0/40 | **15/40 (38%)** | 19/40 (48%) |
+
+**Four findings.** (1) **The island opens at the matched wavelength**:
+realistically-clean 4B strategic answers exist at 20–38%; what remains below
+them is a real *fatal-flaw* rate, now cleanly separated from decoration.
+(2) **The match has an honest winner — the reasoning sibling, at 2× baseline.**
+Reasoning training buys realistic cleanliness, not merely fewer flaws
+(spot-check: its clean answers budget within given numbers and predict
+conditionally with falsifiable signals). (3) **GROUND actively hurt** (5/40 vs
+the baseline's 8/40): in-prompt fidelity discipline adds instruction load
+without compliance and is dead at 4B. (4) **The stagnant-verifier thesis is
+CONFIRMED at the layer it was aimed at: ver_16 false-flags 96% of RULER-T-clean
+answers (27/28; 98% on T-loose)** — the trained layer is tuned to the strict
+wavelength (near-all-flag) and is useless as a gate for realistic quality. This
+is the program's first measured verifier FP rate.
+
+**The arithmetic consequence, recorded as run-18's candidate design:** a
+fatal-flaw-only detector (detection DID train small — run 16's 0.99 recall)
+retrained on RULER-T labels (derivable from existing caches at $0), sitting
+over a 20–38% base clean-rate, makes gated regeneration viable for the first
+time: ~3–5 expected attempts to a certified-clean answer.
+
+## 18. Program-level synthesis
 
 **The two laws (positive, replicated, cheap to exploit):**
 1. **Motion law (run 11, reconfirmed in the match at 93–100%):** directional
@@ -324,51 +470,81 @@ one, at this strictness.**
    tissue — not by generation. Together: **reasoning lives in the weights;
    faithfulness lives in the harness.**
 
-**The wall (negative, measured from three sides):** free-prose grounding fidelity at
-4B is ~21–42% clean (lenient) and ~5% clean (strict); ~1 integration error per ~3
-attempts per free-prose step (run 12); not buyable by SFT in any of three forms
-(the three-run law); repairable only to 19/24 with a frontier judge in the loop;
-not certifiable by a trained 4B gate (16). A 14B halves the lenient wall (54%).
+**The wall (negative, measured from FIVE sides, etiology closed):** free-prose
+grounding fidelity at 4B is ~21–42% clean (lenient), ~5% clean (strict, match
+load), and 0% clean (strict, ladder — both models, all loads); ~1 integration
+error per ~3 attempts per free-prose step (run 12); not buyable by SFT in any of
+three forms (the three-run law); repairable only to 19/24 with a frontier judge
+in the loop; not certifiable by a trained 4B gate (§14); **not a state-load
+property (§15 — flat zero from 2 to 10 facts); not prompt-fixable (§16 — the
+grounding discipline goes unexecuted); and not specific to our weights (§16 —
+the reasoning-trained sibling also scores 0/40 strict).** A 14B halves the
+lenient wall (54%). The final decomposition (§17): the strict wall = a real
+fatal-flaw rate (contradiction/distortion/constraint violation) PLUS an
+assertion policy that decorates every plan with unmarked invented specifics;
+under a severity-matched criterion the first component leaves 20–38% of answers
+clean, and reasoning training doubles that rate.
 
 **On the thesis itself:** composition is not refuted in principle — the machine
 works, routing is free, one specialist is certified at set-level, and the coach
 closes the seam it was built for. What is refuted at 4B is composition *as a
 winning strategy while fidelity is unsolved*: the noise floor is wider than any
 specialist edge we can train. The cube lost to the wall, not to the generalist.
+The RULER-T reading sharpens this: at the matched criterion the naked base is
+realistically clean 20% of the time, and the binding contest for any successor
+is the fatal-flaw rate, not the decoration rate.
 
 **What is dead:** carved faces (7); deep-chain corpora on any base (8–9); the
 viability face as trained (10, executed by the match's ablation); delta diets (11);
 fusion SFT including self-distillation (14); whole-discourse 4B certify-gates (16);
-perfection seam gates as thesis instruments (12→15 amendment).
+perfection seam gates as thesis instruments (12→15 amendment); **the state-load
+hypothesis (17); in-prompt grounding discipline at 4B (17B); the strict ruler as
+a stand-alone quality criterion for this weight class (17B + RULER-T — retained
+as the comparability spine, demoted as the deployment target).**
 
-**What survives for any successor:** the frozen bench suite + staged problems; the
-certified faceF; dec_qwen + router (94/104); the relay/coach machinery; 621
-strict-labeled grounding pairs; a 0.99-recall hallucination detector (usable for
-triage/monitoring, not gating); the laptop-free driver/pod ops pattern; and the
-judge discipline that let ten runs contradict their own hopes without a single
-unlabeled post-hoc change.
+**What survives for any successor:** the frozen bench suite + staged problems +
+the 40-problem capacity ladder (md5-pinned); the certified faceF; dec_qwen +
+router (94/104); the relay/coach machinery; 621 strict-labeled grounding pairs
+plus 120 severity-stratified ladder verdicts and the RULER-T taxonomy; a
+0.99-recall hallucination detector (usable for triage/monitoring, not gating —
+measured 96% FP against realistic-clean); the measured reasoning-training gap
+(2× realistic-clean at ~25× tokens); the laptop-free driver/pod ops pattern; and
+the judge discipline that let eleven runs contradict their own hopes with every
+post-hoc event labeled.
 
-## 16. Instruments: validated, invalidated, lessons
+## 19. Instruments: validated, invalidated, lessons
 
 **Validated:** single-session cached judging with all-or-discard coverage; the
 staged-problem generator (deterministic, md5-frozen, unique entity names); the
 ablation arm (sharpest causal instrument in the match); the two-ruler audit (§14);
 spend caps that abort before billing (fired twice, run 16B); detached-pod overnight
-ops (two full nights, zero incidents).
+ops (two full nights, zero incidents); **the $0 cached-verdict reanalysis pattern
+(the stagnant-judge audit and RULER-T both ran entirely on already-paid reads);
+the flaw-autopsy dump (every flaw beside its problem's planted tokens) as the
+program's cheapest diagnostic; free third arms from cached baselines (17B's arm
+B cost nothing).**
 
 **Invalidated:** regex/code checkers as fidelity RECALL instruments (precision
 perfect, recall 20% — semantic sins unreachable); delivery/fluency as any proxy for
 fidelity (orthogonal, 13B); same-problem batching assumptions for relabeling (141/174
-singletons); lenient-vs-strict criterion mixing in gold labels (65% flip rate).
+singletons); lenient-vs-strict criterion mixing in gold labels (65% flip rate);
+**in-prompt fidelity discipline as an instrument or a fix (GROUND: 4–13/40
+compliance, negative net effect); word-count-only sanity on thinking-model
+outputs (24/40 leaked deliberations initially passed as "answers").**
 
 **Ops lessons (costed):** TRL 1.9 fp32-logit loss OOMs a 48GB card at bs 8 on a
 151k vocab (fix: bs2/accum4 + checkpointing); `transformers<5` breaks on
 `qwen3_5`-class checkpoints (refs recovery required an upgrade after the thesis
 phases completed); harmony-format channel markers are special tokens — decode with
 specials or the final channel is unrecoverable; thinking-model reference arms need
-explicit `enable_thinking=False` or they burn their budget on plain-prose thinking.
+explicit `enable_thinking=False` or they burn their budget on plain-prose thinking;
+**always-thinking models need generation budgets larger than their deliberation
+length or `</think>` never arrives and the stored answer is raw monologue —
+detect by word-count outliers, repair by regenerating at 2–3× budget (24/40
+leaked at 4096 → 0 residual at 9k/13k); vendor decoding specs are part of match
+fairness (running a thinking model greedy against its own card sandbags it).**
 
-## 17. Threats to validity
+## 20. Threats to validity
 
 1. **LLM-as-judge throughout**; single judge family (Sonnet 5); the strict
    coherence criterion is itself judge-operationalized. Mitigations: single-session
@@ -384,8 +560,19 @@ explicit `enable_thinking=False` or they burn their budget on plain-prose thinki
    pre-output, but new instruments with no history).
 5. **The generalist's match prompt** packs all three segment demands into one pass —
    a fair-information design choice, but other operationalizations exist.
+6. **The RULER-T taxonomy is post-hoc and machine-classified**: a regex over the
+   judge's own flaw prose (spot-read verified; 14 unclassifiable flaws treated
+   conservatively as fatal), designed after the strict verdicts were seen. It is
+   anchored in run 17's pre-frozen addition/distortion split and overturns no
+   frozen verdict, but its clean-rates are a reanalysis, not a pre-registered
+   result — any successor should freeze a severity-tiered rubric *before* its
+   next run and have the judge classify directly.
+7. **The 17B rival arm ran with sampling** (vendor decoding, fixed per-item
+   seeds) while our arms ran greedy — required for a fair match per the model
+   card, but it means the rival's numbers carry sampling variance the other arms
+   do not.
 
-## 18. Cost ledger (actuals, runs 7–16)
+## 21. Cost ledger (actuals, runs 7–17B)
 
 | run | what | cost |
 |---|---|---|
@@ -400,29 +587,44 @@ explicit `enable_thinking=False` or they burn their budget on plain-prose thinki
 | 14 | self-distillation null | ~$10.5 |
 | 15 | coach + THE MATCH (incl. pod nights) | ~$15 |
 | 16 | verifier (3 variants + relabel) | ~$5.3 |
-| **program total** | 10 runs, 2 laws, 1 certified face, 1 lost match, 1 closed wall | **~$83 + part-I $110 ≈ $193 all-era** |
+| 17 | capacity ladder | ~$1.4 |
+| 17B | marking + weight-class match (incl. rival repair) | ~$3.3 |
+| audits | stagnant-judge audit + RULER-T reanalysis | $0 (cached verdicts) |
+| **program total** | 11 runs, 2 laws, 1 certified face, 1 lost match, 1 closed wall, 1 opened island | **~$88 + part-I $110 ≈ $198 all-era** |
 
-Remaining wallets at close: Anthropic ≈ $6.5 · RunPod ≈ $31 · OpenRouter $3.
+Remaining wallets at close: Anthropic ≈ $3.7 · RunPod ≈ $28 · OpenRouter $3.
 
-## 19. Open forks (recorded, not committed)
+## 22. Open forks (recorded, not committed)
 
-1. **Claim-level verification (the most promising unspent idea):** decompose
-   answers into atomic claims and verify each against the problem — MiniCheck's
-   actual granularity. Whole-discourse certification failed; sentence-level was
-   never tested. Pairs naturally with **verify-and-PATCH** (surgically rewrite the
-   flagged claim by template, coach-style) instead of regenerate-and-pray.
-2. **The capacity pivot:** same architecture, 14B-class base (wall measured at 54%
-   lenient-clean vs 21–42%); the efficiency recipe transfers.
-3. **faceV rebuild** with aligned-gate + GPU-side or open-data corpora ($0 API) —
-   only meaningful after (1) or (2) lifts the floor that drowned it.
-4. **Reference-ladder judging** (~$3.5): three reasoning models' transcripts sit
-   archived; answers whether the strict rubric flattens 9B/20B reasoners to the
-   cube's ~2.6 (wall-is-universal) or not (wall-is-ours).
-5. **The write-up→paper conversion** of both volumes.
+1. **Run 18 — the fatal-flaw gate (the top fork after §17):** retrain the
+   verifier as a T1-only detector on RULER-T labels (derivable from existing
+   caches at $0; train ~$1–2). Run 16 proved detection trains small (0.99
+   recall); the failed certification target may simply have been the wrong
+   wavelength. A working T1 gate over the 20–38% base clean-rate makes gated
+   regeneration arithmetically viable for the first time (~3–5 expected
+   attempts to a certified answer) — the cube's recorded redemption path.
+2. **Claim-level verification:** decompose answers into atomic claims and verify
+   each against the problem — MiniCheck's actual granularity. Whole-discourse
+   certification failed; sentence-level was never tested. Pairs naturally with
+   **verify-and-PATCH** (surgically rewrite the flagged claim by template,
+   coach-style) instead of regenerate-and-pray.
+3. **The capacity/reasoning pivot:** same architecture on a 14B-class base (wall
+   measured at 54% lenient-clean vs 21–42%), OR on a thinking-class 4B base —
+   §17 measured reasoning training alone doubling realistic-clean (38% vs 20%)
+   at ~25× tokens; a thinking base + the coach + a T1 gate is an unexplored
+   stack. The efficiency recipe transfers.
+4. **faceV rebuild** with aligned-gate + GPU-side or open-data corpora ($0 API) —
+   only meaningful after (1)–(3) lift the floor that drowned it.
+5. **Reference-ladder judging** (~$3.5): three reasoning models' match-bench
+   transcripts sit archived unjudged. Partially pre-answered by 17B (the
+   thinking twin flattens to 0/40 on the ladder under strict), but the 9B/20B
+   rungs would calibrate how far above the weight class the strict wall extends.
+6. **The write-up→paper conversion** of both volumes (the RULER-T
+   strict-vs-matched contrast is the natural framing device).
 
 ---
 
-## Appendix A — Artifact registry (runs 7–16)
+## Appendix A — Artifact registry (runs 7–17B)
 
 | bundle / artifact | contents | note |
 |---|---|---|
@@ -434,8 +636,11 @@ Remaining wallets at close: Anthropic ≈ $6.5 · RunPod ≈ $31 · OpenRouter $
 | out/run15/match/ | full match + refs transcripts, judged verdicts, logs | local |
 | data/run16/ | 621 strict-labeled grounding pairs, v1–v3 corpora | md5s in RUNBOOK16 |
 | adapters (staged) | dec_qwen + 3 workers, 2.1GB upload set | .r11_stage + scratchpad |
+| data/run17/ladder_problems.jsonl | 40-problem capacity ladder, 5 levels × 8 | md5 95a293bba2d2583d10edb0f45fed1605 |
+| out/run17/ | ladder transcripts + verifier verdicts + judge cache (40 strict reads) | local |
+| out/run17b/ | 3-arm match transcripts (incl. repaired rival + .pre_fix), verifier verdicts, judge cache (80 strict reads), match_results.json | local |
 
-## Appendix B — Frozen-criteria scoreboard (runs 7–16)
+## Appendix B — Frozen-criteria scoreboard (runs 7–17B)
 
 | run | headline bar | outcome |
 |---|---|---|
@@ -452,3 +657,6 @@ Remaining wallets at close: Anthropic ≈ $6.5 · RunPod ≈ $31 · OpenRouter $
 | 15 s1 | coach ≥ base+4 ∧ ≥15/24 | **PASS (21 vs 5)** — coach law |
 | 15 s2 | the match, 6 legs | **2/6** — V seat revoked; noise floor named |
 | 16 | verifier 0.75/0.70 | FAIL ×3 (0.99 detection / 0.25 certification) — wall closed |
+| 17 | envelope: clean ≥50% at some load | FAIL — flat zero 2→10 facts; assertion-policy reframe |
+| 17B | marking ≥4/40 strict-clean | FAIL (0/40 all arms) — discipline unexecutable; rival also 0/40 strict |
+| 17B-T | (labeled reanalysis, no frozen bar) | island 20–38%; rival 2× baseline; verifier FP 96% — thesis confirmed |
