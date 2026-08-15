@@ -120,3 +120,45 @@ gating (run 16), prompting (17B), and even for a reasoning-trained sibling
 not of our data, harness, or adapters. Next forks: raise the weight class,
 relax the criterion to lenient+marked, or move verification to claim-level
 external checking (DRAFT2 fork e).
+
+## RULER-T REANALYSIS (2026-08-15, $0, labeled post-hoc reanalysis — strict verdicts above stand unchanged)
+
+**Nikhil's directive: match the ruler to the weight class.** Guardrail applied:
+stratify, don't lower — flaws classified by severity from the cached judge
+prose (taxonomy anchored in RUNBOOK17's frozen addition/distortion split):
+- **T1 FATAL** (96 flaws): self-contradiction, given-fact distortion, stated-
+  constraint violation, temporal error, miscalculation, misattribution.
+- **PRED** (35): likely-reaction asserted as settled fact.
+- **ADD tolerated** (325): invented-but-consistent specifics — the class every
+  human advisor produces ("open at $45,000"). 14 OTHER flaws treated as fatal
+  (conservative). Regex classifier + spot-read verification.
+
+**Scoreboard under the matched ruler (RULER-T = no fatal, no PRED, no OTHER):**
+
+| arm | strict | RULER-T | T-loose (PRED tolerated) |
+|---|---|---|---|
+| B baseline | 0/40 | 8/40 (20%) | 14/40 (35%) |
+| M ours + GROUND | 0/40 | 5/40 (13%) | 8/40 (20%) |
+| R Thinking + GROUND | 0/40 | **15/40 (38%)** | 19/40 (48%) |
+
+1. **The island opens at the matched wavelength.** 4B models CAN produce
+   realistically-clean strategic answers 20-38% of the time. The strict-empty
+   island was a criterion artifact plus a real fatal-flaw rate — now separable.
+2. **The match has a winner under RULER-T: the reasoning rival, ~2x baseline**
+   (38% vs 20%). Reasoning training buys realistic cleanliness, not just fewer
+   decorations. Honest and useful: at matched criterion the rival IS better.
+3. **GROUND hurt our model** (5/40 vs baseline 8/40) — the marking prompt adds
+   instruction load without compliance. Drop it from our arm going forward.
+4. **STAGNANT-VERIFIER THESIS CONFIRMED (Nikhil, 2026-08-15): ver_16 false-
+   flags 96% of RULER-T-clean answers (27/28; 98% on T-loose).** The layer is
+   tuned to the strict wavelength (near-all-flag); against realistically-clean
+   moving answers it is useless as a gate. First measurable FP rate in the
+   program — his "layer is stagnant, our questions are moving" was right at
+   the verifier level (gold level had been refuted separately).
+
+**Recorded fork (run 18 candidate, ~$1-2): retrain the verifier as a FATAL-
+FLAW detector on RULER-T labels (T1-only). Run 16 proved detection trains
+small (0.99); the failed certification target may simply have been the wrong
+wavelength. Labels derivable $0 from existing caches. A working T1-gate +
+20-38% base clean-rate makes gated-regeneration arithmetic viable for the
+first time (E[attempts to clean] ~ 3-5).**
