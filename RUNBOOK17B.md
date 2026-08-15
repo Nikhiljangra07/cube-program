@@ -69,3 +69,54 @@ before any pod or judge dollar. Decoding note recorded at freeze: arm M keeps
 the program's greedy law; arm R uses its vendor's published operating spec —
 running a thinking model greedy against its own card would sandbag the rival
 and invalidate the match.*
+
+## RESULTS (2026-08-15, pod confused_moccasin_orca RTX Pro 6000 Blackwell, ~$1.5 pod + ~$1.8 judge)
+
+**Rival-arm repair (amendment, run-15 refs-fix precedent):** 24/40 rival
+answers hit max_new 4096 mid-thinking and never closed `</think>` — the stored
+"answer" was raw deliberation. run17b_fix.py regenerated them (max_new 9000,
+retry 13000, same seed law), 0 residual leaks, verifier re-rendered. Judged
+transcripts are all clean finals.
+
+**Scoreboard (STRICT_ONE, 120 judged answers):**
+
+| arm | model | clean | flaws | L1..L5 flaws |
+|---|---|---|---|---|
+| B | keep100 baseline (run 17, cached) | 0/40 | 176 | 59/34/26/25/32 |
+| M | keep100 + GROUND discipline | 0/40 | 170 | 46/45/27/23/29 |
+| R | Qwen3-4B-Thinking-2507 + GROUND | 0/40 | 124 | 33/28/22/22/19 |
+
+- **PRIMARY: FAIL.** Arm M 0/40 (bar was >= 4/40). But the mechanism is
+  decisive: compliance analysis shows the models DID NOT EXECUTE the
+  discipline — M used proposal-marking in 4/40 answers, showed a derivation
+  basis in 2/40; R: 13/40 and 5/40. R even dressed inventions AS derivations
+  ("15-day window (August 10–25)" — August 10 appears nowhere). The
+  assertion-policy wall is real, but it is NOT prompt-fixable at 4B: the
+  models cannot hold the grounding discipline while planning. Same shape as
+  run 16's lesson (detection trains small; certification doesn't): the
+  DISCIPLINE does not fit in the weight class.
+- **THE MATCH: the wall is weight-class-wide.** The reasoning-trained sibling,
+  on vendor decoding, with the same grounding prompt, also scores 0/40
+  strict-clean. Reasoning training buys ~30% fewer flaws (124 vs 170-176,
+  monotone across levels) — better, never clean. Our harness is not the
+  bottleneck; the 4B class is. (Also: thinking cost ~25x the tokens per
+  answer for that 30%.)
+- **VERIFIER RIDER: unmeasurable AGAIN — now for a deeper reason.** Zero
+  gold-clean answers exist anywhere in the 4B weight class (120/120 flawed
+  across three arms). Verifier recall on flawed: 99% (M 39/40 + R 40/40
+  flagged). Its false-positive rate remains undefined — not because the run
+  was unlucky, but because strict-clean 4B answers may effectively not exist
+  to be falsely flagged. The stagnant-verifier thesis stays open and may be
+  untestable inside this weight class.
+- **Observability delivered:** full autopsy dump (every flaw beside its
+  problem's planted tokens) in out/run17b/ and the scorer output. Flaw texture
+  identical across arms: unmarked invented specifics (dates, dollar figures,
+  windows, actors) — the rival's are fewer but the same species.
+
+**Program consequence:** three walls now triangulate the same point — the
+strict-fidelity island at 4B is empty-to-negligible for training (runs 7-15),
+gating (run 16), prompting (17B), and even for a reasoning-trained sibling
+(the match). The wall is a property of the weight class under this criterion,
+not of our data, harness, or adapters. Next forks: raise the weight class,
+relax the criterion to lenient+marked, or move verification to claim-level
+external checking (DRAFT2 fork e).
