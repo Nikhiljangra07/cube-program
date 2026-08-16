@@ -53,3 +53,34 @@ $0 (all labels cached). Wallets at freeze: Anthropic ≈ $3.7 · RunPod ≈ $28
 
 *Frozen 2026-08-15 pre-spend: label trust rules, corpus md5s, prompt, recipe,
 and both bars set before any pod dollar.*
+
+## RESULTS (2026-08-15, pod swift_amaranth_lizard A40, ~$0.6)
+
+**FAIL, both legs (single frozen variant, no rescue): recall_fatal 0.733
+(74/101, bar 0.75 — missed by 2) · fp_on_sound 0.542 (13/24, bar 0.30).**
+Unparseable 0/125 — the format trained perfectly; the discrimination did not.
+
+**Honest reading, three parts:**
+1. **The matched wavelength DID move the needle:** false-flags on sound answers
+   fell 96% → 54%, and the gate genuinely certified 11 sound answers — the
+   all-flag attractor is broken. The sound class was learnable in a way run 16
+   never achieved (it had almost no real positives; this run had 151).
+2. **But 4B certification fails at every wavelength tested.** Strict (run 16:
+   0.25 clean recall) and matched (run 18: 0.46 sound recall as 1−FP) both land
+   far from gate grade. And forcing discrimination exposed run 16's 0.99
+   "detection" as partly trivial: asked to separate rather than flag-everything,
+   fatal recall is 0.73, not 0.99.
+3. **Caveat for the record:** the sound eval class is thin (24 rows; 13 FP), so
+   fp_on_sound carries a wide interval — but no reasonable read of 13/24
+   reaches the 0.30 bar. The verdict does not depend on granularity.
+
+**Program consequence: verification-as-certification is now TWICE-failed at 4B
+(strict and matched criteria) — the capacity-bound conclusion strengthens.
+Gated regeneration remains blocked at this weight class.** Recorded 18B/19
+candidates (not run, each needs its own frozen amendment): (a) grow the SOUND
+label pool (151 train positives is the binding constraint — more ladder-style
+strict reads at ~$0.9/40), (b) a 9–14B gate over the 4B generator (asymmetric
+cube: small mind, bigger conscience), (c) claim-level decomposition (DRAFT2
+fork 2, still the most promising unspent idea). Failed adapter not backed up
+(run-16 precedent for failed instruments; reproducible from committed scripts +
+md5-pinned corpus).
