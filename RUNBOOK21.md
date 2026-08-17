@@ -153,3 +153,18 @@ day-count; flag ALL other foreign numbers including 1-2 digit ones; (b)
 extend the barred-branch clause to the PREDICTION prompt ("do not narrate the
 [code] track occurring"). Targets the 5 single-decoration failures + 2-3
 relocated contradictions -> projected 10-13/16. Wallet after 21B: ~$5.5.
+
+## 21C AMENDMENT (labeled, frozen 2026-08-15, built pre-pod — NOT YET RUN)
+
+Two changes vs 21B, both fully specified by the 21B autopsy; bars carried
+over VERBATIM (STRICT-D CUBE >= 10/16 AND >= GEN+4):
+1. **Screen fix:** foreign-number detector exempts ONLY (a) a trailing
+   ESTIMATE percent and (b) the code-computed day-count for that problem.
+   ALL other numbers absent from the problem text — including 1-2 digit ones
+   ("48 hours", "24 hours") — trigger one no-numbers regeneration. Screen now
+   also covers the CHOICE piece (same rule), not just the prediction.
+2. **Prediction-side bar:** the VERIFIED CONSEQUENCE clause is appended to
+   the prediction prompt too, with "do not narrate the {code} track being
+   signed, paid, or executed" — closing the relocation channel the guard
+   opened.
+Cost when run: ~16 gens (pod pennies) + 32 reads (~$0.8, cap 40).
