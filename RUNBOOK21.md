@@ -56,3 +56,44 @@ RunPod ≈ $20 · OpenRouter $3 (untouched).
 
 *Frozen 2026-08-15 pre-spend: problems md5, pipeline prompts, assembly
 template, both rulers, bars, and caps set before any pod or judge dollar.*
+
+## RESULTS (2026-08-15, pod famous_turquoise_herring A40, ~$1.8 total)
+
+| arm | strict | STRICT-D | RULER-T |
+|---|---|---|---|
+| **CUBE-v2 (staged)** | 3/16 | **6/16 (38%)** | 6/16 |
+| GENERALIST (naked) | 0/16 | 0/16 | 1/16 |
+
+**PRIMARY: FAIL — leg 1 (absolute >= 10/16) missed; leg 2 (relative >= GEN+4)
+passed 6–0.** Recorded as written.
+
+**What the scoreboard actually says:**
+1. **THE CUBE BEATS THE GENERALIST FOR THE FIRST TIME IN PROGRAM HISTORY —
+   6-0 on certified-clean full answers.** The naked 4B produced ZERO clean
+   full-demand answers on fresh problems (consistent with every prior run);
+   the same weights inside the staged harness produced six. The run-15 match
+   was 2/6 legs on rubric points; this is the first head-to-head on the
+   fidelity criterion itself, and it is not close.
+2. **Pipeline integrity was perfect:** 16/16 atomics passed code-check, zero
+   estimate injections, assembly added no flagged content (coach law holds on
+   a fresh problem set).
+3. **The 10 failures decompose into exactly the two predicted residues:**
+   (a) **choice-commitment contradiction, ~5-6/16** — the model names the
+   option non-executable (correctly, from the anchor) and then RECOMMENDS it
+   anyway (pid 12 chose an option it called 'impossible' and estimated 0%);
+   run 20 measured this deficit at 1-2/8, and at full pipeline length it
+   binds. (b) **prediction-piece decorations, ~4/16** — the conditional-
+   reaction piece invents '48 hours' / 'term sheet' / 'competitor' texture.
+4. **STRICT-D behaved as designed:** symmetric on both arms, lifted the cube
+   3->6 by exempting only correct shown-basis derivations (hand-pattern
+   consistent with runs 19-20), left the generalist at 0 (its flaws are real
+   inventions, not derivations).
+
+**Recorded 21B candidate (needs its own frozen amendment, ~$1):** two
+harness-side fixes aimed at the measured residues — (a) CONSTRAINT GUARD on
+the choice: code already knows which branch the anchor disqualifies; check
+the choice text, and if it commits to the barred branch, regenerate once with
+the branch explicitly excluded (constraint propagation, not new modeling);
+(b) tightened prediction prompt (name the reaction + signal in the problem's
+OWN vocabulary only). Wallet note at close: Anthropic ≈ $1.1 — a 21B judge
+pass (~$0.75, C-arm only) fits; anything larger needs a top-up.
