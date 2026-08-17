@@ -69,12 +69,14 @@ chain — decompose → answer atomically → anchor upward → coach-assemble �
 the **cube-v2 beats the naked generalist 6–0 on certified-clean full answers**
 (same weights, fresh problems, dual rulers; the generalist scores zero, as it
 has in every run of the program). The absolute bar (10/16) is not yet met:
-the residues are a choice/prediction contradiction channel that relocates as
-each surface is closed, and a decoration class a fixed screen provably
-catches (21C, built and unit-tested, unrun). The strict wall is a
-weight-class property; beneath it, a demand-matched harness turns the same
-weights from 0% to 38% certified-clean — an existence proof that the
-architecture, not the model, was the missing ingredient.
+iterating the guards (21B, 21C) widens the win to **8–0 (50% vs 0%)** and
+then asymptotes: each closed surface relocates the contradiction one level
+deeper, ending at a precisely named residue — modal inconsistency, the true
+4B reasoning limit. The strict wall is a weight-class property; beneath it,
+a demand-matched harness turns the same weights from 0% to 50%
+certified-clean — an existence proof that the architecture, not the model,
+was the missing ingredient — and the remaining half is a judgment deficit
+sized for the asymmetric-cube fork.
 
 ---
 
@@ -575,12 +577,19 @@ screen missed its target through an implementation bug (a 1–3-digit
 exemption that exempted exactly the "48 hours" class it was built to catch;
 five of the ten failures are single-flaw answers in that class).
 
-**21C (labeled amendment, built, unit-tested, UNRUN at this draft):** the
-fixed screen (exempts only estimate-percents and the code-computed
-day-count; comma-normalized after a unit test caught a second matching bug
-pre-spend) and the barred-branch clause extended to the prediction prompt.
-Projected from the autopsy: 10–13/16, which would clear the frozen absolute
-bar. Recorded, awaiting a pod.
+**21C (labeled amendment, run same day):** the fixed screen (unit-tested;
+two matching bugs caught pre-spend) + the barred-branch clause on the
+prediction prompt. **Result: 8/16 STRICT-D — the relative win widens to 8–0,
+the absolute bar (10/16) still FAILS.** The screen eliminated its target
+class completely (zero 48/24-hour flaws remain); the +2 fell short of the
+10–13 projection because closing the decoration surface exposed the next
+stratum: **modal inconsistency** — the model treats the barred option as a
+live hypothetical in the same answer that declares it infeasible. **The
+series was closed at three iterations (6 → 6 → 8; the run-16 three-variant
+precedent): each guard eliminates its class and the contradiction relocates
+one level deeper. The residue is the true 4B reasoning limit — a judgment
+failure, the exact class the asymmetric-cube fork targets. What stands:
+cube-v2 at 50% certified-clean vs 0% naked, same weights.**
 
 ## 22. Program-level synthesis
 
@@ -738,40 +747,36 @@ fairness (running a thinking model greedy against its own card sandbags it).**
 | 19 | demand ladder | ~$1 |
 | 20 | staged decomposer | ~$0.5 |
 | 21 + 21B | THE REMATCH + guard iteration | ~$2.6 |
-| 21C | built + unit-tested, unrun | $0 so far |
+| 21C | fixed-screen iteration | ~$0.9 |
 | **program total** | 15 runs, 4 laws, 1 certified face, 1 lost match, 1 closed wall, 1 opened island, 1 won rematch | **~$93 + part-I $110 ≈ $203 all-era** |
 
 Remaining wallets at close: Anthropic ≈ $4.7 · RunPod ≈ $20 · OpenRouter $3.
 
 ## 26. Open forks (recorded, not committed)
 
-1. **Run 21C (built, unit-tested, unrun; ~$0.8):** the fixed digit screen +
-   prediction-side bar. Five of run 21B's ten failures are single-flaw answers
-   in exactly the class the fixed screen provably catches (unit test in repo);
-   projected 10–13/16, which would clear the frozen absolute bar.
-2. **Replication wave (~$1.8):** one more 16-problem seed of the rematch —
+1. **Replication wave (~$1.8):** one more 16-problem seed of the rematch —
    turns the 6–0 existence proof into a citable rate.
-3. **The asymmetric cube:** 4B answers every piece; a 9–14B makes ONLY the
+2. **The asymmetric cube:** 4B answers every piece; a 9–14B makes ONLY the
    choice call (the one remaining true deficit — commitment logic). Every
    capacity measurement in the program says judgment scales faster than
    generation.
-4. **Claim-level verification:** decompose answers into atomic claims and verify
+3. **Claim-level verification:** decompose answers into atomic claims and verify
    each against the problem — MiniCheck's actual granularity. Whole-discourse
    certification failed; sentence-level was never tested. Pairs naturally with
    **verify-and-PATCH** (surgically rewrite the flagged claim by template,
    coach-style) instead of regenerate-and-pray.
-5. **The capacity/reasoning pivot:** same architecture on a 14B-class base (wall
+4. **The capacity/reasoning pivot:** same architecture on a 14B-class base (wall
    measured at 54% lenient-clean vs 21–42%), OR on a thinking-class 4B base —
    §17 measured reasoning training alone doubling realistic-clean (38% vs 20%)
    at ~25× tokens; a thinking base + the coach + a T1 gate is an unexplored
    stack. The efficiency recipe transfers.
-6. **faceV rebuild** with aligned-gate + GPU-side or open-data corpora ($0 API) —
+5. **faceV rebuild** with aligned-gate + GPU-side or open-data corpora ($0 API) —
    only meaningful after the floor-lifting forks above.
-7. **Reference-ladder judging** (~$3.5): three reasoning models' match-bench
+6. **Reference-ladder judging** (~$3.5): three reasoning models' match-bench
    transcripts sit archived unjudged. Partially pre-answered by 17B (the
    thinking twin flattens to 0/40 on the ladder under strict), but the 9B/20B
    rungs would calibrate how far above the weight class the strict wall extends.
-8. **The write-up→paper conversion** of both volumes (the natural framing:
+7. **The write-up→paper conversion** of both volumes (the natural framing:
    fifteen pre-registered runs from 'the wall is unbeatable' to 'the harness
    beats the weights 6–0' — demand-matching as the missing variable).
 
@@ -824,4 +829,4 @@ Remaining wallets at close: Anthropic ≈ $4.7 · RunPod ≈ $20 · OpenRouter $
 | 20 | staged D2 ∧ D3 ≥ 6/8 strict | FAIL (D3 leg = criterion artifact, hand-verified) — **D2 8/8 perfect; staging law** |
 | 21 | STRICT-D: cube ≥ 10/16 ∧ ≥ gen+4 | FAIL leg 1; **relative leg 6–0 — first fidelity win** |
 | 21B | bars carried | FAIL flat 6/16 (RULER-T 6→8); guard worked, screen bug named |
-| 21C | bars carried | built + unit-tested, UNRUN |
+| 21C | bars carried | FAIL 8/16 (8–0 relative) — screen class eliminated; modal-inconsistency residue; series closed |
