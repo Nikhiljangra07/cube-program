@@ -97,3 +97,26 @@ the branch explicitly excluded (constraint propagation, not new modeling);
 (b) tightened prediction prompt (name the reaction + signal in the problem's
 OWN vocabulary only). Wallet note at close: Anthropic ≈ $1.1 — a 21B judge
 pass (~$0.75, C-arm only) fits; anything larger needs a top-up.
+
+## 21B AMENDMENT (labeled, frozen 2026-08-15 pre-spend): the constraint guard + digit screen
+
+Two harness fixes aimed at the two measured residues; nothing else changes.
+Arm G is NOT regenerated — its run-21 answers and cached verdicts stand.
+
+1. **CONSTRAINT GUARD (choice step).** By construction in every problem the
+   option track's price exceeds the sign-off cap, so committing it before the
+   deadline is non-executable — code KNOWS this. The anchor gains a VERIFIED
+   CONSEQUENCE clause: the {code} track is barred; select the alternative
+   path. If the generated choice still commits to the barred track (regex on
+   commit-verbs + code token), ONE retry with a harder reminder; retries
+   counted. Division-of-labor rationale: code propagates constraints, the
+   model reasons within them — same law as the coach carrying the estimate.
+2. **DIGIT SCREEN (prediction step).** Any digit-bearing token in the
+   prediction that does not appear in the problem text -> ONE regeneration
+   with "use NO numbers at all"; residuals counted (run-15 advisory-screen
+   precedent).
+
+**Bars carried over VERBATIM from run 21 (STRICT-D: CUBE >= 10/16 AND
+>= GEN + 4).** Judge: only the 16 new C answers x 2 rulers = 32 reads
+(~$0.75, cap 40); G verdicts are cache hits. Pod: same warm pod, pennies.
+Wallet at freeze: Anthropic $6.29 (corrected from console).
