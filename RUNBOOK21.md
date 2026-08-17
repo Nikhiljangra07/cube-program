@@ -120,3 +120,36 @@ Arm G is NOT regenerated — its run-21 answers and cached verdicts stand.
 >= GEN + 4).** Judge: only the 16 new C answers x 2 rulers = 32 reads
 (~$0.75, cap 40); G verdicts are cache hits. Pod: same warm pod, pennies.
 Wallet at freeze: Anthropic $6.29 (corrected from console).
+
+## 21B RESULTS (2026-08-15, same pod, ~$0.8)
+
+| arm | strict | STRICT-D | RULER-T |
+|---|---|---|---|
+| CUBE + guard/screen | 2/16 | 6/16 | **8/16** |
+| GENERALIST (cached) | 0/16 | 0/16 | 1/16 |
+
+**PRIMARY: FAIL — STRICT-D flat at 6/16 (needle: strict 3->2 noise, RULER-T
+6->8 up).** Honest decomposition of what each fix did:
+
+1. **The constraint guard WORKED at the layer it addressed:** retries 2,
+   residual commit-to-barred-choice 0. Direct "chose the impossible option"
+   failures are gone. But the contradiction RELOCATED to the prediction piece
+   (predicts the counterparty "will sign the [barred] track anyway"; pid 15's
+   prediction narrates the barred $13,000 payment happening) and into choice
+   reasons referencing the rejected option's dates (pid 04). Run-12's law
+   again, at piece scale: narrowing one free surface relocates the error to
+   the next free surface.
+2. **The digit screen MISSED ITS TARGET — implementation bug (Claude's):**
+   the foreign-digit detector exempted all 1-3-digit numbers (meant for
+   percents/day-counts), which is EXACTLY the class the target flaws live in
+   ("48 hours", "24 hours") — so the screen churned on harmless anchor echoes
+   (15 retries) while never catching the real offenders. **5 of the 10
+   STRICT-D failures are single-flaw answers whose ONLY flaw is a 48/24-hour
+   decoration** — the recoverable class if the screen worked as designed.
+
+**Recorded 21C candidate (one fix, one extension, ~$0.8):** (a) FIX the
+screen — exempt only trailing ESTIMATE percents and the code-computed
+day-count; flag ALL other foreign numbers including 1-2 digit ones; (b)
+extend the barred-branch clause to the PREDICTION prompt ("do not narrate the
+[code] track occurring"). Targets the 5 single-decoration failures + 2-3
+relocated contradictions -> projected 10-13/16. Wallet after 21B: ~$5.5.
