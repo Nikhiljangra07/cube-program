@@ -29,11 +29,14 @@ PRED_BAR = (" Do not narrate the {code} track being signed, paid, chosen, or "
 
 def foreign_numbers(problem, text, n_days):
     """21C screen: exempt ONLY a trailing ESTIMATE percent and the
-    code-computed day-count; flag every other number absent from problem."""
+    code-computed day-count; flag every other number absent from problem.
+    Numbers normalized with rstrip(',') — problem text carries figures like
+    '$15,000,' whose trailing comma otherwise breaks the match (run-19 lesson)."""
     body = EST.sub(" ", text)
-    probnums = set(re.findall(r"[\d][\d,]*", problem))
+    norm = lambda n: n.rstrip(",")
+    probnums = {norm(n) for n in re.findall(r"[\d][\d,]*", problem)}
     allowed = probnums | {str(n_days), f"{n_days:,}"}
-    return [n for n in re.findall(r"[\d][\d,]*", body) if n not in allowed]
+    return [norm(n) for n in re.findall(r"[\d][\d,]*", body) if norm(n) not in allowed]
 
 
 def screened_gen(model, tok, user, problem, n_days, max_new):
