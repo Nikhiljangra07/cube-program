@@ -168,3 +168,39 @@ over VERBATIM (STRICT-D CUBE >= 10/16 AND >= GEN+4):
    signed, paid, or executed" — closing the relocation channel the guard
    opened.
 Cost when run: ~16 gens (pod pennies) + 32 reads (~$0.8, cap 40).
+
+## 21C RESULTS (2026-08-15, pod straightforward_maroon_unicorn A40, ~$0.9)
+
+| arm | strict | STRICT-D | RULER-T |
+|---|---|---|---|
+| CUBE + fixed screen | 1/16 | **8/16 (50%)** | 6/16 |
+| GENERALIST (cached) | 0/16 | 0/16 | 1/16 |
+
+**PRIMARY: FAIL (8/16 vs bar 10/16; relative leg 8–0, widened from 6–0).**
+The fixed screen ELIMINATED its target class completely — zero "48/24-hour"
+decoration flaws remain (screen retries 4, residual 2, neither judged fatal)
+— and the guard again held (commit-to-barred 0). The +2 net gain is real but
+below the 10–13 projection, because closing the decoration surface exposed
+the next stratum: **modal inconsistency.** The dominant remaining failure
+(~6/8) is the model treating the BARRED track as a live hypothetical in the
+same answer that declares it infeasible ("if Draventi commits to Marrowgate
+...", "Frostpane's $13,000 terms as the live retention offer") — it holds
+"barred" as a fact but not across its own conditional clauses. Two secondary:
+no-basis derivations (quotes the day-count without the required inline
+basis) and scattered invented events.
+
+**SERIES CLOSED at three iterations (21 -> 21B -> 21C: 6 -> 6 -> 8), per the
+run-16 three-variant precedent.** The trajectory is asymptotic: each guard
+eliminates its class and the contradiction relocates one level deeper — from
+the choice, to the prediction, to hypothetical clauses inside every piece.
+The residue is now precisely named: **modal consistency across a multi-
+sentence answer is the true 4B reasoning limit** — not fixable by more
+surface guards without whack-a-mole, exactly what the program's own caution
+predicted. What stands: **cube-v2 8–0 over the naked generalist at 50%
+certified-clean (STRICT-D), from a baseline of 0% — banked.**
+
+**Next forks (unchanged priority, each needs its own runbook):**
+(a) replication wave (~$1.8) to make 50% vs 0% citable; (b) THE ASYMMETRIC
+CUBE — the modal-consistency residue is a judgment failure, the exact class
+a 9–14B choice/prediction seat should fix; (c) scale-up. Wallet after 21C:
+Anthropic ≈ $3.9 · RunPod ≈ $20.
