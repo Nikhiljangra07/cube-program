@@ -80,4 +80,53 @@ experiment.*
   below.
 
 ### Crash-fix log (post-contact)
-- (none)
+- (none — zero edits, zero crashes; pod ran end-to-end on the frozen code)
+
+## RESULTS (2026-08-18 — pod favourable_sapphire_quelea, A40, ~15 min; judge 96 reads ~$2.2)
+
+| arm | strict | STRICT-D | RULER-T | cf / pq / aq / cal |
+|---|---|---|---|---|
+| C cube-v2 generalized | 0/16 | **0/16** | **5/16** | **2.31** / 2.31 / **2.44** / 1.69 |
+| G generalist naked | 0/16 | 0/16 | 1/16 | 2.06 / **2.38** / 2.25 / **2.06** |
+
+**PRIMARY: FAIL** (needed cube >= 6/16 and >= GEN+4; got 0 vs 0).
+**Registered prediction (cube >= gen on constraint_fidelity): HELD** (2.31 vs 2.06).
+**Template-solver clause: NOT triggered** — extraction did not collapse
+(10.4 verified facts/problem avg, 0.0 dropped, compare 12/16, span 13/16,
+options 2.1/problem, no estimate injections either arm). The harness
+generalized mechanically; the strict-band result did not.
+
+### Honest reading
+1. **The run-21 STRICT-D result does not transfer to independently authored
+   problems.** Cube fell 6/16 -> 0/16; the generalist stayed 0 -> 0. GPT
+   audit finding #3 (template circularity) is CONFIRMED at the strict band:
+   the locked 6/16 depended on generator-shaped problems.
+2. **Confound, recorded:** the holdout is also intrinsically harder (10+
+   facts, ~3 options, deliberate distractors and fact-tension pairs vs the
+   generator's sparser frames), so distribution shift and difficulty rise
+   are entangled. The G-arm floor (0 on both distributions) cannot separate
+   them. No design change can fix this post-hoc; noted for any replication.
+3. **The surviving signal:** at RULER-T (realistic severity) cube 5/16 vs
+   gen 1/16, and the blind constraint-fidelity rubric held (2.31 vs 2.06),
+   plus action_quality 2.44 vs 2.25. The architecture still buys measurable
+   fidelity on natural problems — but the edge lives at the tolerant band,
+   not the strict one. Calibration went the other way (1.69 vs 2.06): the
+   anchored ESTIMATE stage is worse than the naked model's on free prose.
+4. **Failure anatomy (autopsy):** C's fatal flaws on natural problems are
+   dominated by CROSS-STAGE CONTRADICTIONS — judgment names a binding
+   constraint, choice then violates or reverses it (pids 01, 02, 04, 05,
+   15); plus small-arithmetic slips (six days called five, 30-day window
+   misdated). On dense multi-option problems the independently generated
+   stages diverge, and assembly stitches the divergence into visible
+   self-contradiction. This is the run-21 modal-inconsistency residue
+   generalized: the pipeline verifies FACTS but nothing verifies AGREEMENT
+   BETWEEN STAGES. G's flaws are the familiar class: invented actors,
+   figures, and events (every G answer that failed).
+5. **Echo of run 17B:** on natural-prose problems the strict island is
+   closed for the whole 4B weight class (17B: 0/40 all arms; 22: 0/32 both
+   arms). Run 21's island was real but generator-local.
+
+**Verdict for the record: cube-v2 is an architecture, not a template
+parser (integrity clause), and it retains a tolerant-band fidelity edge on
+held-out problems (5x RULER-T, cf rubric held) — but the headline
+strict-band win does NOT generalize. Resume/claims must say so.**
