@@ -64,3 +64,20 @@ Arm G: the full problem, one pass (GEN_SINGLE verbatim), with_estimate law.
 
 *Frozen 2026-08-18 pre-problems, pre-spend. The zero-edit rule is the
 experiment.*
+
+## PROBLEMS RECEIVED & FROZEN (2026-08-18)
+- Authored by GPT via Nikhil from the issued prompt; pasted verbatim, zero
+  edits by us. `data/run22/holdout_problems.jsonl`
+  **md5 7620cd1646a7466388b1811219ed2219** — 16 problems, pids 0–15,
+  154–199 words each, all natural prose, varied domains (restaurant lease,
+  nonprofit grant, freelance scope, lab procurement, family succession,
+  touring, clinic, construction, health-tech pilot, grain co-op, festival
+  sponsorship, translation rights, school buses, game publishing, museum
+  loan, apparel import). Every problem contains month-day dates and dollar
+  amounts (2–8 dates, 3–7 amounts). No harness file touched after receipt.
+- **THE ZERO-EDIT CLOCK IS RUNNING.** Any change to run22_pod.py /
+  run22_score.py from this point is crash-only and must be logged verbatim
+  below.
+
+### Crash-fix log (post-contact)
+- (none)
