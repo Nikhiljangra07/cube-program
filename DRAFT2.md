@@ -1,25 +1,34 @@
 # The Cube Program: Composed LoRA Specialists, the Fidelity Wall, and the Weights/Harness Symmetry
-## (A Pre-Registered Fifteen-Run Study at 4B — runs 7–21)
+## (A Pre-Registered Seventeen-Run Study at 4B — runs 7–23, externally audited)
 
-> **STATUS: UNOFFICIAL WORKING DRAFT — 2026-08-15** (first issued 2026-08-12 for
-> runs 7–16; §§15–17 added and §§18–21 added 2026-08-15). Complete factual
-> record of the cube program, runs 7–21, companion volume to DRAFT.md (runs
-> 1–6 + probe study, the density/storage era). All numbers below are traceable
-> to frozen runbooks (RUNBOOK7.md–RUNBOOK21.md), git history, and md5-pinned
-> artifacts (Appendix A). Every success criterion was frozen before its run;
-> the labeled post-hoc events in program history — one gate amendment (§13),
+> **STATUS: UNOFFICIAL WORKING DRAFT — 2026-08-19** (first issued 2026-08-12 for
+> runs 7–16; §§15–17 added and §§18–21 added 2026-08-15; the external audit
+> (§22), the locked holdout (§23), and the reasoning-model match (§24) added
+> 2026-08-19). Complete factual record of the cube program, runs 7–23,
+> companion volume to DRAFT.md (runs 1–6 + probe study, the density/storage
+> era). All numbers below are traceable to frozen runbooks
+> (RUNBOOK7.md–RUNBOOK23.md), git history, and md5-pinned artifacts
+> (Appendix A). Every success criterion was frozen before its run; the
+> labeled post-hoc events in program history — one gate amendment (§13),
 > one criterion reanalysis that overturns no frozen verdict (§17), and one
 > prospective ruler variant (STRICT-D, §21) — are labeled where they occur.
+> Runs 22–23 additionally ran under a zero-post-contact-edit rule (harness
+> frozen and committed before the problems/opponent generated a token) and
+> completed with zero code edits. The program was adversarially audited by
+> an external model (GPT) on 2026-08-18; the full disposition is §22 and
+> AUDIT_GPT_2026-08-18.md.
 > Author: Nikhil Jangra. Drafting assistant: Claude (Anthropic).
 
 ---
 
 ## Abstract
 
-We report a fifteen-run, pre-registered empirical study of a composed-specialist
-architecture ("the cube") on a 4B-parameter base model: cheap LoRA lane-specialists +
-a generalist + a deterministic dispatcher + a segment relay, evaluated head-to-head
-against the same base model running naked. Across ~$120 of compute the program (1)
+We report a seventeen-run, pre-registered, externally audited empirical study of a
+composed-specialist architecture ("the cube") on a 4B-parameter base model: cheap
+LoRA lane-specialists + a generalist + a deterministic dispatcher + a segment relay,
+evaluated head-to-head against the same base model running naked — and, in the
+final act, against independently authored held-out problems and against the
+reasoning-trained sibling of its own base. Across ~$97 of compute the program (1)
 falsified carved and deep-chain specialist recipes and validated one aligned-gate
 foresight specialist (+1.06 on its facet bench, the program's first face-bar pass);
 (2) discovered two **harness laws** — directional re-derivation under a changed world
@@ -78,6 +87,32 @@ certified-clean — an existence proof that the architecture, not the model,
 was the missing ingredient — and the remaining half is a judgment deficit
 sized for the asymmetric-cube fork.
 
+The epilogue (§§22–24) stress-tests that claim and re-scopes it honestly.
+An external adversarial audit (GPT, 2026-08-18) named template circularity —
+every rematch problem came from our own generator — as the record's deepest
+threat. Run 22 answered it with a **locked holdout**: the harness was
+generalized to free text and frozen by commit *before* 16 natural-prose
+problems were independently authored by a third model, then run with zero
+post-contact edits. **The strict-band win did not transfer** (STRICT-D 0/16
+vs 0/16; the run-21 6/16 was generator-local), while the harness itself
+generalized mechanically (10.4 machine-verified facts extracted per problem,
+zero dropped — the pre-frozen template-solver clause did NOT fire) and a
+**5× realistic-band fidelity edge survived** (RULER-T 5/16 vs 1/16) along
+with the pre-registered blind constraint-fidelity prediction. The surviving
+failure mode is precisely named: **cross-stage contradiction** — facts are
+verified, but nothing verifies agreement between stages. Run 23 then put the
+holdout to its sharpest use: against the reasoning-trained sibling of the
+program base (Qwen3-4B-Thinking-2507, naked), with the cube's verdicts
+cached before the comparison existed, **the cube wins the realistic band
+5–2 at a comparable token budget** (1,360-token stage ceiling vs the
+Thinking model's measured 1,525/answer) — with the dual-reported caveat
+that the Thinking model is the only 4B-class arm ever to place answers on
+the strict band of the holdout (3/16 STRICT-D). Final standing: reasoning
+training buys occasional strict coherence; the harness buys consistent
+realistic-band fidelity; both are additive candidates, neither reaches the
+strict island, and the residue that separates them from it is judgment
+coherence — a weights property, sized for the 14B asymmetric seat.
+
 ---
 
 ## 1. Motivation and thesis
@@ -118,8 +153,13 @@ match (15), and the verification gate (16).
   problems).
 - **Pre-registration:** every bar frozen in its RUNBOOK before spend. One labeled
   post-hoc gate amendment (§13), one labeled post-hoc reanalysis (§17), and
-  one labeled prospective ruler variant (STRICT-D, §21) in fifteen runs. Frozen stop clauses are executed as written, including against the
-  program's own hopes (§10, §14).
+  one labeled prospective ruler variant (STRICT-D, §21) in seventeen runs.
+  Frozen stop clauses are executed as written, including against the
+  program's own hopes (§10, §14, §23). Runs 22–23 add a stronger discipline:
+  the harness is committed before first contact with the evaluation material
+  (zero-post-contact-edit rule; crash-only fixes logged verbatim — the only
+  such event across both runs was an environment-level missing dependency,
+  §24).
 - **Ops pattern (matured over the arc):** local driver orchestrates; pods generate;
   API keys never touch a pod; long jobs run detached (`setsid nohup`) and
   laptop-free; resumable state + append-only JSONL; spend caps abort before billing.
@@ -591,7 +631,174 @@ one level deeper. The residue is the true 4B reasoning limit — a judgment
 failure, the exact class the asymmetric-cube fork targets. What stands:
 cube-v2 at 50% certified-clean vs 0% naked, same weights.**
 
-## 22. Program-level synthesis
+## 22. The external audit (2026-08-18, $0)
+
+Before any replication spend, the full methodology and record were handed to
+an external adversarial reviewer — GPT, chosen because it is neither the
+program's judge (Sonnet) nor its contestant (Qwen) — with an instruction to
+attack rather than summarize. Eight findings came back; seven were accepted,
+one was factually corrected. Full disposition: AUDIT_GPT_2026-08-18.md
+(commit caeb09b). The material ones:
+
+1. **Fidelity ≠ reasoning quality (accepted, all claims re-scoped).** The
+   rematch measured certified *grounding fidelity* — every 6–0/8–0 claim in
+   this document is a fidelity claim, not a claim about strategic-reasoning
+   quality. Consequence: run 22/23 added a blind 4-dimension quality rubric
+   (constraint fidelity / prediction quality / action quality / calibration)
+   so both properties are measured from then on.
+2. **6/16 locked vs 8/16 adapted (accepted).** 21B/21C iterated on the same
+   16 problems; the honest locked headline is run 21's 6/16 (paired
+   p ≈ 0.008), with 8/16 labeled exploratory-adapted. Adopted everywhere,
+   including resume wording.
+3. **Template circularity is the deepest threat (accepted — and testable).**
+   Every rematch problem came from our own generator; parsers, anchors, and
+   guards had co-evolved with its shape. The audit could not distinguish "an
+   architecture" from "a template solver." This became run 22's frozen
+   question.
+4. **Bundle-level causality only (accepted).** The cube differs from the
+   baseline in several coordinated ways (5 calls, anchoring, assembly);
+   compute is unmatched. A matched-compute ablation (best-of-5 baseline +
+   corrupted-anchor arm) is the recorded control, still unrun.
+5. **Single-judge validity untested (accepted, still open).** All verdicts
+   are one Sonnet session family; a second-family agreement study (~24
+   verdicts, OpenRouter) is the recorded mitigation, still unrun.
+6. **"Final strict result missing" (corrected).** The strict counts were in
+   fact reported at every iteration (3 → 2 → 1 across 21/21B/21C). The
+   correction stands — but the *direction* (strict declined while STRICT-D
+   rose) confirms the audit's underlying ruler-optimization concern, and is
+   recorded as such.
+7. **Wide intervals (accepted).** At n=16, 6/16 carries a CI of roughly
+   24.7–75.3%; every rate in the rematch series is an existence proof, not a
+   precision estimate.
+
+The audit re-ranked the fork queue: locked holdout first, matched-compute
+ablation second, judge study third, template replication demoted. Runs 22–23
+execute the first item and its sharpest corollary.
+
+## 23. Run 22 — The locked non-template holdout (2026-08-18)
+
+**The question (from §22, finding 3): is cube-v2 an architecture, or a
+solver of its own generator's shape?** The design separates three parties
+completely: the **author** (GPT — writes the problems; neither judge nor
+contestant), the **contestant** (Qwen3-4B-Instruct-2507 + wrk_keep100, both
+arms, same weights), and the **judge** (Sonnet 5, frozen rulers byte-reused,
+plus the new blind quality rubric). Order of operations, enforced by git:
+the harness was generalized to free text, mock-tested, and **committed
+before the problems existed** (commit 4093a26); the 16 problems were then
+authored independently, pasted verbatim, and frozen by md5 (7620cd16); from
+that moment the zero-edit rule bound — no harness change of any kind
+(outcome: zero edits, zero crashes).
+
+**The generalized pipeline (no template parsers anywhere):** the model
+EXTRACTS candidate facts and options as verbatim-copy lines; **code verifies
+each fact against the problem text** (every number verbatim-present, ≥60% of
+content words present — unverified lines are dropped and counted); the model
+*proposes* the decision-relevant numeric comparison and date span, and
+**code does the arithmetic**; the verified block plus computed lines form
+the anchor; the run-21 demand-matched stage prompts (judgment / conditional
+prediction / choice / estimate, digit screen, modal guard) run on top;
+coach assembly is unchanged. The holdout problems themselves: 16 domains
+with no two alike (restaurant lease, nonprofit grant, museum loan, grain
+co-op, game publishing, …), 154–199 words of natural prose each, with
+embedded distractors and deliberate fact-tension pairs.
+
+**Frozen bars:** PRIMARY = STRICT-D cube ≥ 6/16 AND ≥ generalist + 4
+(calibrated to the *locked* run-21 baseline, not the adapted 8/16);
+registered prediction = cube ≥ generalist on blind constraint fidelity;
+template-solver clause = if <50% of problems yield a usable anchor, that is
+the verdict.
+
+| arm | strict | STRICT-D | RULER-T | cf / pq / aq / cal (blind, 1–5) |
+|---|---|---|---|---|
+| CUBE-v2 generalized | 0/16 | **0/16** | **5/16** | **2.31** / 2.31 / **2.44** / 1.69 |
+| GENERALIST naked | 0/16 | 0/16 | 1/16 | 2.06 / **2.38** / 2.25 / **2.06** |
+
+**PRIMARY: FAIL — the strict-band win does not transfer.** The cube fell
+6/16 → 0/16; the generalist stayed 0 → 0. The audit's template-circularity
+finding is **confirmed at the strict band**: run 21's island was real but
+generator-local. One confound is recorded and cannot be removed post-hoc:
+the holdout is also intrinsically harder (10+ facts, ~3 options, deliberate
+distractors vs the generator's sparser frames), so distribution shift and
+difficulty rise are entangled; the generalist's floor (0 on both
+distributions) cannot separate them.
+
+**What did NOT fail:** the template-solver clause never fired — extraction
+generalized mechanically (10.4 verified facts/problem, **0.0 dropped**,
+comparison parsed 12/16, span 13/16, no estimate injections in either arm).
+And the realistic-band edge survived third-party authorship: **RULER-T 5/16
+vs 1/16 (5×)**, with the registered constraint-fidelity prediction **HELD**
+(2.31 vs 2.06) and action quality up (2.44 vs 2.25). Calibration inverted
+(1.69 vs 2.06): the anchored estimate stage is *worse* than the naked model
+on free prose.
+
+**Failure anatomy (the run's real finding):** the cube's fatal flaws on
+natural problems are dominated by **cross-stage contradictions** — the
+judgment stage correctly names the binding constraint, and the choice stage
+then violates or reverses it (five clear cases), plus small-arithmetic slips.
+On dense multi-option problems the independently generated stages diverge,
+and assembly stitches the divergence into visible self-contradiction. This
+is run 21's modal-inconsistency residue, generalized: **the pipeline
+verifies facts, but nothing verifies agreement between stages.** The
+generalist's failures remain the familiar species (invented actors, figures,
+events in every flagged answer). Echo of §16: on natural prose the strict
+island is closed for the whole weight class (17B: 0/40 all arms; here: 0/32
+both arms).
+
+**Verdict for the record:** cube-v2 is an architecture, not a template
+parser — and it retains a measurable tolerant-band fidelity edge on held-out
+problems — but the strict-band headline was generator-local, and all claims
+in this document now carry that scope. Cost ~$2.5 (pod ~15 min A40 + 96
+judge reads, cap 105).
+
+## 24. Run 23 — Cube vs reasoning model, same weight class (2026-08-19)
+
+**The question: does the cube methodology on a BASE instruct model beat a
+REASONING-TRAINED model of the same weight class on fidelity?** Prior
+evidence made this genuinely risky: §17's reanalysis had the Thinking
+sibling as the best 4B measured (38% realistic-clean on the ladder, 2× the
+baseline). Design: arm R = Qwen3-4B-Thinking-2507, naked, one pass, same
+user prompt as the baseline arm, vendor decoding, 9k-token budget with one
+13k retry on unclosed thinking (the §16 leak fix — zero leaks occurred);
+arm C = the cube's run-22 answers **and verdicts, immutable from cache**
+(judged 2026-08-18, before this comparison existed — one-directionally
+blind: the cube could not have been tuned toward this opponent). Frozen
+bars: PRIMARY = RULER-T clean count, WIN/TIE/LOSS; registered prediction =
+cube ≥ Thinking on blind constraint fidelity; efficiency rider reported
+regardless. Crash-fix log: one environment-only event (missing `peft` at
+import; installed, relaunched, zero code edits).
+
+| arm | strict | STRICT-D | RULER-T | cf / pq / aq / cal |
+|---|---|---|---|---|
+| CUBE-v2 (instruct + harness) | 0/16 | 0/16 | **5/16** | **2.31** / 2.31 / **2.44** / 1.69 |
+| THINKING naked | **1/16** | **3/16** | 2/16 | 2.19 / 2.19 / 2.19 / **1.88** |
+| instruct naked (context row) | 0/16 | 0/16 | 1/16 | 2.06 / 2.38 / 2.25 / 2.06 |
+
+**PRIMARY: WIN — cube 5 vs Thinking 2 on the realistic band**, registered
+constraint-fidelity prediction **HELD** (2.31 vs 2.19). The efficiency rider
+came back *honest rather than flattering*: the Thinking model averaged 1,525
+generated tokens/answer (min 675, max 7,458) against the cube's 1,360-token
+stage-budget ceiling — **comparable budgets**. The §16-era "25× tokens"
+figure did not recur on these problems and is not licensed for any claim.
+
+**The dual-reported caveat (as important as the win):** the Thinking model
+is the only 4B-class arm in program history to place answers on the strict
+band of the holdout — 1/16 strict, 3/16 STRICT-D, where cube and naked
+instruct both hold 0. Its failure autopsy shows the same disease as the
+naked instruct (invented dates, actors, and mechanisms; arithmetic
+self-contradictions) — deliberation reduces the rate but does not change
+the species. **Reasoning training buys occasional strict-band coherence
+that the harness does not; the harness buys consistent realistic-band
+fidelity that reasoning training does not. Complementary, not dominating.**
+The natural composed probe — the cube harness ON the Thinking seat — is
+recorded, unrun (~$2).
+
+Combined holdout scoreboard after seventeen runs, RULER-T: **cube 5 ·
+Thinking 2 · instruct naked 1** — at this weight class, on this criterion,
+the harness is worth more than reasoning training, both are far from the
+strict island, and the gap that separates all three from it is judgment
+coherence. Cost ~$1.4 (pod + 48 judge reads, cap 55).
+
+## 25. Program-level synthesis
 
 **The four laws (positive, replicated, cheap to exploit):**
 1. **Motion law (run 11, reconfirmed in the match at 93–100%):** directional
@@ -665,7 +872,41 @@ measured 96% FP against realistic-clean); the measured reasoning-training gap
 judge discipline that let fifteen runs contradict their own hopes with every
 post-hoc event labeled.
 
-## 23. Instruments: validated, invalidated, lessons
+**Holdout epilogue (added 2026-08-19, after §§22–24 — how this synthesis is
+re-scoped).** The paragraphs above were written at the close of run 21 and
+stand as the pre-holdout record. The audit and runs 22–23 narrow their scope
+as follows; nothing here overturns a frozen verdict.
+1. **The headline claim is re-scoped.** "Architecture converts 0% into
+   38–50% certified-clean" is **generator-local** (§23): on independently
+   authored problems the strict/STRICT-D conversion is 0% → 0%. The honest
+   general claim is the realistic-band one: **same weights, the harness
+   converts 1/16 into 5/16 (5×) on a third-party holdout**, with the blind
+   constraint-fidelity prediction held in both pre-registrations (vs naked,
+   §23; vs the reasoning sibling, §24).
+2. **The four laws stand unmodified** — each was measured on its own
+   instrument and none is contradicted by the holdout. What the holdout adds
+   is their composition limit: verified facts do not compose into verified
+   agreement. The missing fifth mechanism is named — **cross-stage
+   coherence** — and it is a weights property (§24: even reasoning training
+   reaches only 3/16 STRICT-D on the same problems).
+3. **The generalization verdict is two-sided and precise:** the *machinery*
+   generalizes (extraction/verification/anchoring worked unmodified on free
+   prose — the template-solver clause did not fire); the *strict-band result*
+   does not. An architecture, then — but one whose strict ceiling is set by
+   the weights under it.
+4. **The weight-class path is now evidence-ranked:** the one direct size
+   measurement (§10: 25% → 54% clean at 3.5× parameters) plus the judgment
+   character of the residue point to a **14B asymmetric judgment seat** as
+   the cheapest decisive rung (a 14B + 4B pair fits a single A40); the
+   30B-A3B MoE class is the funded-chapter endpoint. Composition candidates
+   are additive, not redundant: harness (realistic band) + reasoning-trained
+   seat (occasional strict band) target different failure strata (§24).
+5. **The blindness discipline strengthened monotonically across the arc:**
+   frozen bars (7–21) → third-party authorship + zero-post-contact edits
+   (22) → a one-directionally blind opponent comparison (23). This ordering
+   is itself a transferable method result.
+
+## 26. Instruments: validated, invalidated, lessons
 
 **Validated:** single-session cached judging with all-or-discard coverage; the
 staged-problem generator (deterministic, md5-frozen, unique entity names); the
@@ -697,7 +938,7 @@ detect by word-count outliers, repair by regenerating at 2–3× budget (24/40
 leaked at 4096 → 0 residual at 9k/13k); vendor decoding specs are part of match
 fairness (running a thinking model greedy against its own card sandbags it).**
 
-## 24. Threats to validity
+## 27. Threats to validity
 
 1. **LLM-as-judge throughout**; single judge family (Sonnet 5); the strict
    coherence criterion is itself judge-operationalized. Mitigations: single-session
@@ -723,9 +964,24 @@ fairness (running a thinking model greedy against its own card sandbags it).**
 7. **The 17B rival arm ran with sampling** (vendor decoding, fixed per-item
    seeds) while our arms ran greedy — required for a fair match per the model
    card, but it means the rival's numbers carry sampling variance the other arms
-   do not.
+   do not. The run-23 Thinking arm shares this property (vendor decoding vs
+   the cube's greedy stages).
+8. **The holdout confounds distribution shift with difficulty (§23,
+   recorded at verdict time):** the third-party problems are denser (10+
+   facts, ~3 options, deliberate distractors and fact-tension pairs) than
+   the generator's frames, so the 6/16 → 0/16 strict-band drop mixes
+   "different shape" with "harder problems." The generalist's floor (0 on
+   both distributions) cannot separate them; a difficulty-matched second
+   holdout would.
+9. **All holdout rates are n=16 single-run reads** (Wilson 95% CI on 5/16 ≈ 14–56%);
+   the audit's interval caution (§22, finding 7) applies to runs 22–23 in
+   full. The 5× RULER-T edge and the 5–2 win are existence-grade results;
+   the replication wave that would make them rates is recorded, unrun.
+   The single-judge threat (item 1) also remains open after the audit named
+   it — the second-family agreement study is still the cheapest unrun
+   mitigation.
 
-## 25. Cost ledger (actuals, runs 7–21)
+## 28. Cost ledger (actuals, runs 7–23)
 
 | run | what | cost |
 |---|---|---|
@@ -748,41 +1004,57 @@ fairness (running a thinking model greedy against its own card sandbags it).**
 | 20 | staged decomposer | ~$0.5 |
 | 21 + 21B | THE REMATCH + guard iteration | ~$2.6 |
 | 21C | fixed-screen iteration | ~$0.9 |
-| **program total** | 15 runs, 4 laws, 1 certified face, 1 lost match, 1 closed wall, 1 opened island, 1 won rematch | **~$93 + part-I $110 ≈ $203 all-era** |
+| audit | external adversarial review (GPT) + disposition | $0 |
+| 22 | locked non-template holdout (96 reads + pod) | ~$2.5 |
+| 23 | cube vs reasoning model (48 reads + pod; C verdicts cached) | ~$1.4 |
+| **program total** | 17 runs, 4 laws + 1 named residue, 1 certified face, 1 lost match, 1 closed wall, 1 opened island, 1 won rematch (re-scoped), 1 external audit, 1 holdout, 1 reasoning-model win | **~$97 + part-I $110 ≈ $207 all-era** |
 
-Remaining wallets at close: Anthropic ≈ $4.7 · RunPod ≈ $20 · OpenRouter $3.
+Remaining wallets at close: Anthropic ≈ $0.6 · RunPod ≈ $19 · OpenRouter $3.
 
-## 26. Open forks (recorded, not committed)
+## 29. Open forks (recorded, not committed — re-ranked after the audit and runs 22–23)
 
-1. **Replication wave (~$1.8):** one more 16-problem seed of the rematch —
-   turns the 6–0 existence proof into a citable rate.
-2. **The asymmetric cube:** 4B answers every piece; a 9–14B makes ONLY the
-   choice call (the one remaining true deficit — commitment logic). Every
-   capacity measurement in the program says judgment scales faster than
-   generation.
-3. **Claim-level verification:** decompose answers into atomic claims and verify
-   each against the problem — MiniCheck's actual granularity. Whole-discourse
-   certification failed; sentence-level was never tested. Pairs naturally with
-   **verify-and-PATCH** (surgically rewrite the flagged claim by template,
-   coach-style) instead of regenerate-and-pray.
-4. **The capacity/reasoning pivot:** same architecture on a 14B-class base (wall
-   measured at 54% lenient-clean vs 21–42%), OR on a thinking-class 4B base —
-   §17 measured reasoning training alone doubling realistic-clean (38% vs 20%)
-   at ~25× tokens; a thinking base + the coach + a T1 gate is an unexplored
-   stack. The efficiency recipe transfers.
-5. **faceV rebuild** with aligned-gate + GPU-side or open-data corpora ($0 API) —
-   only meaningful after the floor-lifting forks above.
-6. **Reference-ladder judging** (~$3.5): three reasoning models' match-bench
-   transcripts sit archived unjudged. Partially pre-answered by 17B (the
-   thinking twin flattens to 0/40 on the ladder under strict), but the 9B/20B
-   rungs would calibrate how far above the weight class the strict wall extends.
-7. **The write-up→paper conversion** of both volumes (the natural framing:
-   fifteen pre-registered runs from 'the wall is unbeatable' to 'the harness
-   beats the weights 6–0' — demand-matching as the missing variable).
+1. **Matched-compute ablation (audit finding 4; the last validity hole in the
+   surviving claim):** give the naked generalist five attempts per holdout
+   problem (best-of-N at matched token budget) plus a corrupted-anchor cube
+   arm (causal test of the anchor). If the cube's 5× RULER-T edge survives
+   matched compute, the claim upgrades from "5 calls beat 1" to
+   "architecture beats brute repetition." ~$2.5–3 (needs an Anthropic
+   top-up).
+2. **Judge-validity mini-study (audit finding 5):** re-read ~24 cached
+   verdicts with a second judge family via OpenRouter (~$2, current balance
+   covers it); report agreement. High agreement retroactively strengthens
+   every verdict in both volumes.
+3. **The asymmetric cube, now precisely targeted:** a 14B seat for ONLY the
+   judgment/choice stages (the cross-stage-coherence residue, §23), 4B
+   everywhere else; both models fit one A40 (~28 GB + ~8 GB). The one direct
+   size measurement (§10: 25% → 54% at 3.5× params) is the prior. Cheapest
+   preview (~$2): the existing cube harness ON the Thinking seat — §24
+   showed the two mechanisms target different failure strata, so the
+   composition is additive by construction.
+4. **Stage-agreement verification:** the holdout's named residue is
+   agreement BETWEEN stages, not facts. A code-level contradiction check is
+   pre-answered (§§10–11: semantic sins are unreachable by regex); a
+   judge-free entailment check or the 14B seat itself are the live options.
+5. **Difficulty-matched second holdout** (threat 8): a new third-party set
+   authored to the generator's density, separating distribution shift from
+   difficulty in the 6/16 → 0/16 drop.
+6. **Replication wave on the template bench (~$1.8):** demoted by the audit
+   (finding 3) — replicating a generator-local result no longer changes any
+   conclusion; superseded by forks 1 and 5.
+7. **Claim-level verification / verify-and-PATCH:** unchanged from the
+   pre-holdout queue; now naturally scoped to the cross-stage residue.
+8. **faceV rebuild; reference-ladder judging (~$3.5):** unchanged, still
+   parked behind the floor-lifting forks.
+9. **The write-up→paper conversion** of both volumes — the framing sharpened
+   by the epilogue: seventeen pre-registered runs from "the wall is
+   unbeatable" through "the harness beats the weights 6–0" to "the win was
+   generator-local; the 5× realistic edge and the named judgment residue
+   survive an external audit, a locked holdout, and a reasoning-trained
+   opponent." Pre-registration-to-falsification as the method contribution.
 
 ---
 
-## Appendix A — Artifact registry (runs 7–21)
+## Appendix A — Artifact registry (runs 7–23)
 
 | bundle / artifact | contents | note |
 |---|---|---|
@@ -803,8 +1075,15 @@ Remaining wallets at close: Anthropic ≈ $4.7 · RunPod ≈ $20 · OpenRouter $
 | data/run21/ + out/run21/ | rematch bench (seed 21, md5 aea3d98b) + 21/21B transcripts, dual-ruler cache | local |
 | divergent-model-backups/density_run17_21/ | era 17–21 bundle | md5 6378979b |
 | scripts/ruler_t.py | frozen RULER-T taxonomy (the §17 classifier, verbatim) | committed |
+| AUDIT_GPT_2026-08-18.md | external audit: 8 findings, disposition, fork re-ranking | commit caeb09b |
+| data/run22/holdout_problems.jsonl | 16 third-party natural-prose problems (the locked holdout) | md5 7620cd1646a7466388b1811219ed2219 |
+| scripts/run22_pod.py + run22_score.py | generalized pipeline + dual-ruler/blind-QUAL scorer, frozen pre-problems | commit 4093a26 |
+| out/run22/ | both-arm holdout transcripts, judge cache (96 reads), results | local |
+| scripts/run23_pod.py + run23_score.py | Thinking arm + immutable-cache scorer, frozen pre-generation | commit 235e4fa |
+| out/run23/ | Thinking transcripts (token counts, 0 leaks), judge cache (48 reads), results | local |
+| divergent-model-backups/density_run22/ | run22_bundle.tgz + run23_bundle.tgz | md5 a948cc97 / 86d9beb6 |
 
-## Appendix B — Frozen-criteria scoreboard (runs 7–21)
+## Appendix B — Frozen-criteria scoreboard (runs 7–23)
 
 | run | headline bar | outcome |
 |---|---|---|
@@ -830,3 +1109,5 @@ Remaining wallets at close: Anthropic ≈ $4.7 · RunPod ≈ $20 · OpenRouter $
 | 21 | STRICT-D: cube ≥ 10/16 ∧ ≥ gen+4 | FAIL leg 1; **relative leg 6–0 — first fidelity win** |
 | 21B | bars carried | FAIL flat 6/16 (RULER-T 6→8); guard worked, screen bug named |
 | 21C | bars carried | FAIL 8/16 (8–0 relative) — screen class eliminated; modal-inconsistency residue; series closed |
+| 22 | STRICT-D: cube ≥ 6/16 ∧ ≥ gen+4 (locked holdout) | FAIL 0/16 vs 0/16 — strict win generator-local; **template-solver clause NOT fired; RULER-T 5×; cf prediction HELD; cross-stage residue named** |
+| 23 | RULER-T: cube vs Thinking (W/T/L) | **WIN 5–2** — cf prediction HELD; caveat: Thinking alone on strict band (3/16 STRICT-D); budgets comparable (1,525 vs ≤1,360 tok) |
