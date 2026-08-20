@@ -4,3 +4,5 @@ data/
 out/
 *.tgz
 .DS_Store
+.r11_stage/
+.r12_stage/
