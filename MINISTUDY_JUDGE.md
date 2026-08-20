@@ -36,3 +36,55 @@ HARD CAP: 60 requests. Wallets at freeze: OpenRouter $3.46 · Anthropic
 ≈ $0.6 (untouched by this study) · no GPU involved.
 
 *Frozen 2026-08-19 before the first OpenRouter read.*
+
+## RESULTS (2026-08-19 — 48 Gemini reads ≈ $0.5, cap held)
+
+| label | agreement | kappa |
+|---|---|---|
+| strict-coherent | **97.9%** (47/48) | 0.00 (base-rate degenerate) |
+| RULER-T-clean | **70.8%** (34/48) | 0.13 |
+
+**Frozen band: PARTIAL (60–79%).** Per-arm RULER-T-clean counts:
+
+| arm | Sonnet | Gemini |
+|---|---|---|
+| C cube | 5/16 | 1/16 |
+| R Thinking | 2/16 | 7/16 |
+| G instruct naked | 1/16 | 4/16 |
+
+### Honest reading
+1. **What is judge-robust:** flaw DETECTION and the strict island. Both
+   judges agree at 97.9% that these answers contain flaws (the one
+   disagreement is R pid 14, Sonnet's lone strict-clean, which Gemini
+   flags). Every strict-band conclusion in runs 22–23 — the island is
+   empty for the whole weight class — survives the second judge intact.
+2. **What is NOT judge-robust: the realistic-band ORDERING.** Under
+   Gemini's readings as classified by our regex, the per-arm ordering
+   INVERTS (C 1 · R 7 · G 4 vs Sonnet's C 5 · R 2 · G 1) — the 5–2
+   reasoning-model win and the 5× naked edge do not survive as stated.
+   Until disambiguated, those claims carry a mandatory single-judge
+   qualifier.
+3. **The mechanism is visibly (at least partly) an instrument artifact,
+   and it confirms DRAFT2 threat 6 empirically.** RULER-T-clean is derived
+   by a regex (ruler_t.py) tuned on SONNET's flaw phrasing. The
+   disagreement autopsy shows the two judges describing the SAME defects in
+   different house styles: Gemini frequently phrases what Sonnet calls
+   states-as-fact/contradiction as "Invented event/number" (→ classified
+   ADD → clean), and phrases what Sonnet passes as decoration as
+   "Self-contradiction" (→ T1 → dirty). Detection agrees; severity
+   PHRASING routes through the regex differently per judge. This is
+   exactly the failure mode threat 6 predicted ("any successor should
+   freeze a severity-tiered rubric and have the judge classify directly").
+4. **Recorded disambiguation (labeled amendment candidate, NOT run —
+   awaiting authorization):** re-read the same 48 answers asking EACH judge
+   to classify its own flaws fatal-vs-decoration directly (judge-native
+   severity, no regex). ~48 Gemini reads ≈ $0.5–1 within the remaining
+   OpenRouter balance (Sonnet's side derivable from cached prose or ~$1
+   Anthropic re-read). If judge-native severity agrees, the ordering
+   claims are restored; if it disagrees, the realistic-band ordering is
+   permanently single-judge-scoped.
+
+**Program consequence as it stands: strict conclusions (walls, island,
+laws) are two-judge robust; the holdout's realistic-band ordering claims
+(5–2, 5×) are single-judge results pending disambiguation, and resume
+wording must say so.**
