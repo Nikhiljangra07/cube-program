@@ -1035,6 +1035,18 @@ Remaining wallets at close: Anthropic ≈ $0.6 · RunPod ≈ $19 · OpenRouter $
    agreement BETWEEN stages, not facts. A code-level contradiction check is
    pre-answered (§§10–11: semantic sins are unreachable by regex); a
    judge-free entailment check or the 14B seat itself are the live options.
+   **Typed-ledger variant (community-suggested, r/LLMDevs thread on the
+   public release, 2026-08-21):** have each stage EMIT machine-readable
+   commitments (`BARRED: opt_2`, `BINDING: <fact id>`) into a compact
+   ledger, and force the choice stage to answer against the enumeration
+   (`CHOICE: opt_1` + fact IDs) so final-choice validation is ID-match —
+   deterministic and paraphrase-proof for everything the ledger can type.
+   This differs from our failed prose-side checks (runs 13/13B) in
+   validating typed commitments rather than free text. Known limit going
+   in: the terminal residue is modal narration (legal choice, barred
+   option narrated as live hypothetical) — a ledger validates the
+   commitment, not the narration. The relocate-vs-reduce measurement the
+   commenter asks for already exists (21B/21C: relocates).
 5. **Difficulty-matched second holdout** (threat 8): a new third-party set
    authored to the generator's density, separating distribution shift from
    difficulty in the 6/16 → 0/16 drop.
