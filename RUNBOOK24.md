@@ -49,3 +49,45 @@ Anthropic $3.66 · RunPod ≈ $19 · OpenRouter ≈ $2.9. **ONE run. No iteratio
 series. Then back to the bootcamp.**
 
 *Frozen 2026-08-22 before any R14 token is generated.*
+
+## RESULTS (2026-08-28 — pod A100-SXM4-80GB, 16 generations ≈ 18 min; judge 48 reads, cap 55 held)
+
+| arm | strict | STRICT-D | RULER-T | QUAL cf/pq/aq/cal | note |
+|---|---|---|---|---|---|
+| C cube-v2 (4B instruct + harness) | 0/16 | 0/16 | **5/16** | 2.31/2.31/2.44/1.69 | cached run-22 verdicts |
+| R14 Qwen3-14B thinking naked | 1/16 | 1/16 | **4/16** | 2.56/2.88/2.44/2.19 | new (this run) |
+| R Qwen3-4B-Thinking naked | 1/16 | 3/16 | 2/16 | 2.19/2.19/2.19/1.88 | cached run-23 |
+| G 4B instruct naked | 0/16 | 0/16 | 1/16 | 2.06/2.38/2.25/2.06 | cached run-22 |
+
+**PRIMARY (RULER-T, cube vs R14): 5 vs 4 → WIN (margin +1).**
+Stated prior was LOSS (R14 expected 5–8 clean, ≥3/16 STRICT-D). Prior FALSIFIED
+in the cube's favour: R14 placed only 1/16 on the strict band and 4/16 on
+RULER-T. Margin +1 at n=16 is existence-grade, not a separation — read this
+as MATCHED, not "beat".
+
+**Efficiency rider:** R14 measured 1,191 generated tokens/answer (min 761,
+max 2,812, 0 leaks). Compute proxy R14 = 14.8B × 1,191 = 1.76e13 vs cube
+ceiling 5.44e12 → **3.2× less inference compute for the cube.** (Cube's
+actual token use is ≤ the ceiling, so 3.2× is a floor on the ratio.)
+
+**Pre-committed wording (WIN/TIE branch):** "a 4B instruct model with the cube
+harness — no reasoning training — matched a 14B reasoning model on grounded
+decision fidelity at ~3× less inference compute." Carries the run-23
+single-judge qualifier on the realistic band (MINISTUDY_JUDGE: ordering is
+single-judge until a judge-native severity read).
+
+Honest reading:
+1. The 14B leads the blind QUAL rubric on every dimension except action
+   quality (tie 2.44) — it is the better *reasoner*; the cube is the better
+   *grounder*. Same complementarity pattern as run 23.
+2. R14's flaws are dominated by invented dates/actors (ADD) and cross-stage
+   contradictions (T1) — the same residue class the cube's machinery removes
+   at extraction time. Reasoning training at 3.5× weights did not close it.
+3. Strict island stays empty at 14B naked (1/16). Weight-class ceiling claim
+   now extends one rung.
+4. n=16, single judge family, one generation seed. Existence-grade.
+
+Artifacts: out/run24/thinking24_out.jsonl md5 b7d780fec16e45a243447925a374c7df ·
+judge_cache.jsonl md5 1d249202e5ee7ec6641af8408488f054 · run24_results.json.
+Backup: ~/Desktop/divergent-model-backups/density_run22/run24_bundle.tgz.
+Cost: pod ≈ $0.55 · judge ≈ $1.1. ONE run, as frozen. Program returns to bootcamp.
