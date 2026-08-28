@@ -91,3 +91,29 @@ Artifacts: out/run24/thinking24_out.jsonl md5 b7d780fec16e45a243447925a374c7df �
 judge_cache.jsonl md5 1d249202e5ee7ec6641af8408488f054 · run24_results.json.
 Backup: ~/Desktop/divergent-model-backups/density_run22/run24_bundle.tgz.
 Cost: pod ≈ $0.55 · judge ≈ $1.1. ONE run, as frozen. Program returns to bootcamp.
+
+## LABELED AMENDMENTS (2026-08-28, post-audit #2 — see AUDIT_GPT_2026-08-28.md)
+- **A1 (correction of premise):** the cube arm is NOT "no reasoning training of
+  any kind." It runs the 4B instruct base + LoRA `wrk_keep100_qwen` (trained on
+  1,828 strategic reasoning threads, RUNBOOK9) + harness. Correct contrast: a
+  LoRA-adapted 4B pipeline vs a reasoning-trained 14B. The frozen question's
+  phrasing was wrong; results are unaffected, the claim is.
+- **A2 (wording retracted):** "matched a 14B reasoning model … at ~3× less
+  inference compute" and "prior LOSS falsified" are withdrawn. Paired RULER-T:
+  both 1, cube-only 4, R14-only 3 → exact McNemar p = 1.00. Replacement, the
+  only sentence permitted: *"Run 24 observed 5 cube and 4 naked-Qwen3-14B
+  RULER-T-clean answers on one 16-item holdout under noncontemporaneous Sonnet
+  judgments; STRICT-D was 0 vs 1 and blind QUAL favored R14 on three of four
+  dimensions."* The 3.2× figure is a generated-token proxy — unmeasured, omits
+  prompt/prefill across the cube's six calls and any retries — and is not a
+  compute claim.
+- **A3 (record corrections):** freeze commit ee498bf is dated 2026-08-28 04:59
+  PDT, not 2026-08-22 (typo). Pod was A100-SXM4-80GB, not A40 (unlogged
+  substitution, made for wall-clock). Pod log not retained in repo →
+  "frozen before any R14 token" is supported by commit time < output mtime
+  but UNVERIFIED by artifact.
+- Program-level sentence going forward (auditor's, adopted): a LoRA-adapted 4B
+  pipeline with verification and staged assembly can change a single judge's
+  grounding-compliance score on narrow synthetic decision tasks; it does not
+  establish that architecture substitutes for scale, reasoning training, or
+  compute.

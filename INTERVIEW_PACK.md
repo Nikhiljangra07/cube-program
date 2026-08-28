@@ -1,5 +1,5 @@
 # THE CUBE PROGRAM — Interview & Resume Pack
-*(canonical version, 2026-08-20; every number traceable to DRAFT.md / DRAFT2.md,
+*(canonical version, 2026-08-28; every number traceable to DRAFT.md / DRAFT2.md,
 frozen runbooks, and md5-pinned artifacts)*
 
 ---
@@ -8,8 +8,8 @@ frozen runbooks, and md5-pinned artifacts)*
 
 **Project title:** The Cube Program — pre-registered small-LLM reasoning research (solo)
 
-- Designed and executed a **23-run pre-registered research program** (~$207
-  total compute, 31 days, solo) testing whether composed LoRA specialists +
+- Designed and executed a **24-run pre-registered research program** (~$209
+  total compute, 40 days, solo) testing whether composed LoRA specialists +
   a verification harness can beat same-weight baselines on grounded
   strategic reasoning at 4B scale — every success bar frozen in writing
   before spend; every failure published alongside the wins.
@@ -32,7 +32,7 @@ frozen runbooks, and md5-pinned artifacts)*
   failure mode (cross-stage judgment coherence) and pricing the scaling
   path to the next weight class.
 
-*(Shorter one-liner if space is tight:)* Ran a 23-run pre-registered study
+*(Shorter one-liner if space is tight:)* Ran a 24-run pre-registered study
 (~$207, solo) showing a verification harness beats both a naked same-weight
 baseline (6–0, p≈0.008) and a reasoning-trained sibling model (5–2,
 third-party holdout) on grounded-reasoning fidelity at 4B — externally
@@ -87,7 +87,14 @@ harness frozen before the problems existed, and published the claim that
    criterion, at comparable token budgets. Caveat I volunteer: the Thinking
    model is the only arm that ever placed answers on the *strict* band
    (3/16) — the two mechanisms are complementary, not substitutes.
-7. **The last check.** A second judge family re-read all 48 holdout
+7. **The 14B probe (run 24).** Same holdout, the same cube (LoRA-adapted
+   4B + harness) against a naked Qwen3-14B in thinking mode. Observed 5 vs 4
+   RULER-T-clean (paired: 4 cube-only, 3 R14-only, McNemar p=1.0) — a
+   non-result at n=16, and the 14B led the blind quality rubric on three of
+   four dimensions. I pre-committed a "matched" wording, a second hostile
+   audit killed it, and I retracted it the same day. What it *does* show:
+   the strict-grounding island is still empty one weight class up (1/16).
+8. **The last check.** A second judge family re-read all 48 holdout
    verdicts: 97.9% agreement on flaw detection (the walls are two-judge
    robust), but the severity *ordering* is single-judge until a
    judge-native severity read disambiguates my regex classifier from real
@@ -124,6 +131,9 @@ harness frozen before the problems existed, and published the claim that
   calibration.
 
 **Never say:**
+- "Matched a 14B reasoning model" or "3× less compute" (run 24: p=1.0,
+  proxy unmeasured — retracted, see AUDIT_GPT_2026-08-28). "No reasoning
+  training" (the worker is a LoRA on reasoning threads).
 - "Beats reasoning models" unqualified. "50% clean" as a general property
   (generator-local). "25× cheaper than reasoning" (measured comparable on
   the holdout: 1,525 vs ≤1,360 tokens/answer). "Production-ready." Any
@@ -198,8 +208,8 @@ second holdout; then the 30B-A3B MoE class — judgment-class capacity at
 
 | Figure | Value | Source |
 |---|---|---|
-| Program size | 23 runs, 2 phases, 31 days (Jul 20 – Aug 19, 2026), solo | DRAFT.md + DRAFT2.md |
-| Total spend | ~$207 (~$97 cube era) | DRAFT2 §28 |
+| Program size | 24 runs, 2 phases, 40 days (Jul 20 – Aug 28, 2026), solo | DRAFT.md + DRAFT2.md |
+| Total spend | ~$209 (~$99 cube era) | DRAFT2 §28 |
 | The locked rematch | cube 6/16 vs naked 0/16 STRICT-D, paired p≈0.008 | RUNBOOK21 |
 | Iterated (exploratory) | 8/16 vs 0/16 | RUNBOOK21 (21C) |
 | Holdout (strict) | 0/16 vs 0/16 — did not transfer | RUNBOOK22 |
@@ -207,6 +217,7 @@ second holdout; then the 30B-A3B MoE class — judgment-class capacity at
 | vs reasoning model | cube 5 vs Thinking 2 (naked 1); Thinking alone on strict band (3/16 STRICT-D) | RUNBOOK23 |
 | Token budgets | Thinking 1,525/answer measured vs cube ≤1,360 ceiling | RUNBOOK23 |
 | Blind constraint fidelity | cube 2.31 vs Thinking 2.19 vs naked 2.06 (both predictions registered + held) | RUNBOOK22/23 |
+| vs 14B reasoning (run 24) | cube 5 vs Qwen3-14B-thinking 4 RULER-T; paired 4/3, McNemar p=1.0; STRICT-D 0 vs 1; 14B leads QUAL 3/4 dims — observed counts only | RUNBOOK24 |
 | Judge agreement | 97.9% strict (two-judge robust); 70.8% severity (single-judge qualifier) | MINISTUDY_JUDGE |
 | Extraction on free prose | 10.4 verified facts/problem, 0.0 dropped | RUNBOOK22 |
 | Demand ladder | 0% → 88% strict, monotone in question size | RUNBOOK19 |
@@ -218,8 +229,9 @@ second holdout; then the 30B-A3B MoE class — judgment-class capacity at
 
 - **DRAFT.md + DRAFT2.md** — the two-volume record (runs 1–6, 7–23), every
   bar and outcome, threats to validity, cost ledger.
-- **AUDIT_GPT_2026-08-18.md** — the external audit, all 8 findings +
-  dispositions.
+- **AUDIT_GPT_2026-08-18.md, AUDIT_GPT_2026-08-28.md** — two external hostile
+  audits (8 + 10 findings) with dispositions; the second retracted run 24's
+  pre-committed wording.
 - **RUNBOOK7–23 + MINISTUDY_JUDGE.md** — frozen pre-spend protocols with
   results appended, never edited in place.
 - **Holdout problems** md5 `7620cd1646a7466388b1811219ed2219` — frozen on
@@ -228,5 +240,5 @@ second holdout; then the 30B-A3B MoE class — judgment-class capacity at
 - All adapters, transcripts, and judge caches md5-pinned in DRAFT2
   Appendix A.
 
-*Prepared 2026-08-20. If a number here ever disagrees with DRAFT2, DRAFT2
+*Prepared 2026-08-20, revised 2026-08-28 after audit #2. If a number here ever disagrees with DRAFT2, DRAFT2
 wins — update this pack, never the record.*

@@ -1,10 +1,10 @@
 # The Cube Program
 
-**A 23-run, pre-registered, externally audited study of one question: can
+**A 24-run, pre-registered, twice externally audited study of one question: can
 architecture substitute for scale in small language models?**
 
 Solo work by [Nikhil Jangra](https://github.com/Nikhiljangra07) ·
-Jul 20 – Aug 19, 2026 · ~$207 total compute · Qwen3-4B weight class.
+Jul 20 – Aug 28, 2026 · ~$209 total compute · Qwen3-4B weight class.
 
 ## The result in three sentences
 
@@ -27,7 +27,7 @@ a measured scaling prior pointing at a 14B judgment seat.
 | [INTERVIEW_PACK.md](INTERVIEW_PACK.md) | The 10-minute version: claims with their qualifiers, numbers cheat-sheet, evidence index |
 | [DRAFT2.md](DRAFT2.md) | The full record, runs 7–23: every frozen bar, every outcome, threats to validity, cost ledger |
 | [DRAFT.md](DRAFT.md) | Volume I, runs 1–6: the data-density / storage era that led here |
-| [AUDIT_GPT_2026-08-18.md](AUDIT_GPT_2026-08-18.md) | The external adversarial audit — 8 findings and their dispositions |
+| [AUDIT_GPT_2026-08-18.md](AUDIT_GPT_2026-08-18.md) · [AUDIT_GPT_2026-08-28.md](AUDIT_GPT_2026-08-28.md) | Two external adversarial audits — 8 + 10 findings with dispositions; the second retracted a pre-committed claim |
 | [MINISTUDY_JUDGE.md](MINISTUDY_JUDGE.md) | Two-judge validity study — including the part that *didn't* go our way |
 | RUNBOOK*.md | One frozen protocol per run, success bars written before spend, results appended after |
 
@@ -52,6 +52,9 @@ gitignored; their md5 fingerprints in the runbooks are the freeze record.
   vs both opponents.
 - **Single-judge, qualifier attached:** the realistic-band ordering
   (5/16 vs 2 vs 1) — pending a judge-native severity read.
+- **Non-result, published as such:** run 24 vs a naked 14B reasoning model —
+  5 vs 4 RULER-T-clean, paired McNemar p=1.0; the pre-committed "matched"
+  wording was retracted after audit #2.
 - **Generator-local, published as such:** the 6/16 → 8/16 strict-band
   rematch series.
 
