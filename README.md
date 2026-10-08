@@ -24,7 +24,6 @@ a measured scaling prior pointing at a 14B judgment seat.
 
 | Start here | What it is |
 |---|---|
-| [INTERVIEW_PACK.md](INTERVIEW_PACK.md) | The 10-minute version: claims with their qualifiers, numbers cheat-sheet, evidence index |
 | [DRAFT2.md](DRAFT2.md) | The full record, runs 7–23: every frozen bar, every outcome, threats to validity, cost ledger |
 | [DRAFT.md](DRAFT.md) | Volume I, runs 1–6: the data-density / storage era that led here |
 | [AUDIT_GPT_2026-08-18.md](AUDIT_GPT_2026-08-18.md) · [AUDIT_GPT_2026-08-28.md](AUDIT_GPT_2026-08-28.md) | Two external adversarial audits — 8 + 10 findings with dispositions; the second retracted a pre-committed claim |
